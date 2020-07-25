@@ -1,157 +1,52 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
-import VueI18n from 'vue-i18n';
-import VueProgressBar from 'vue-progressbar';
-
-// local file
-import App from './App';
+// Plugins
+import Message from '@/plugins/message/message';
+import Storage from '@/plugins/storage';
+import Service from '@/plugins/service';
+import Datetime from '@/plugins/datetime';
+import Notifications from '@/plugins/notifications/notification';
+import Progress from '@/plugins/progress-bar/progress';
+import Loading from '@/plugins/loading/loading';
+import Util from '@/plugins/util';
+import Modal from '@/plugins/modal/modal';
+import App from './App.vue';
+import './registerServiceWorker';
 import router from './router';
 import store from './store';
+import vuetify from './plugins/vuetify';
+import './assets/fonts/index.scss';
+import './scss/index.scss';
 
-// Plugins
-import EventBus from '@/common/plugins/event-bus';
-import Util from '@/common/plugins/util';
-import Storage from '@/common/plugins/storage';
-import Datetime from '@/common/plugins/datetime';
-import Filter from '@/common/plugins/filter';
-import Message from '@/common/plugins/message/message';
-import Loading from '@/common/plugins/loading/loading';
-import Service from '@/common/plugins/service';
-import Modal from '@/common/plugins/modal/modal';
-import messages from '@/common/lang/';
-
-import {
-  Vuetify,
-  VApp,
-  VNavigationDrawer,
-  VFooter,
-  VList,
-  VBtn,
-  VIcon,
-  VGrid,
-  VMenu,
-  VToolbar,
-  VDialog,
-  VAvatar,
-  VDivider,
-  VTooltip,
-  VForm,
-  VTextField,
-  VRadioGroup,
-  VCheckbox,
-  VSelect,
-  VAutocomplete,
-  VCombobox,
-  VTextarea,
-  VChip,
-  VSwitch,
-  VDataTable,
-  VCard,
-  VBreadcrumbs,
-  VAlert,
-  VTabs,
-  VDatePicker,
-  VStepper,
-  VSubheader,
-  VProgressCircular,
-  VExpansionPanel,
-  transitions,
-  VOverflowBtn
-} from 'vuetify';
-import '../node_modules/vuetify/src/stylus/app.styl';
-
-const theme = {
-  primary: '#7e4e6e',
-  secondary: '#ffffff',
-  accent: '#82B1FF',
-  info: '#36a3f7',
-  warning: '#ffb822',
-  error: '#f4516c',
-  success: '#34bfa3'
-};
-
-// Config vuetify
-Vue.use(Vuetify, {
-  components: {
-    VApp,
-    VNavigationDrawer,
-    VFooter,
-    VList,
-    VBtn,
-    VIcon,
-    VGrid,
-    VMenu,
-    VToolbar,
-    VDialog,
-    VAvatar,
-    VDivider,
-    VTooltip,
-    VForm,
-    VTextField,
-    VRadioGroup,
-    VCheckbox,
-    VSelect,
-    VAutocomplete,
-    VCombobox,
-    VTextarea,
-    VChip,
-    VSwitch,
-    VDataTable,
-    VCard,
-    VBreadcrumbs,
-    VAlert,
-    VTabs,
-    VDatePicker,
-    VStepper,
-    VProgressCircular,
-    VSubheader,
-    VExpansionPanel,
-    transitions,
-    VOverflowBtn
-  },
-  theme
-});
-
-// Plugins config
-Vue.use(EventBus);
+Vue.use(Progress);
+Vue.use(Message);
+Vue.use(Storage);
 Vue.use(Util);
-Vue.use(Storage, { appName: 'app' });
-Vue.use(Message, { timeout: 6000 });
-Vue.use(Loading);
-Vue.use(Service, {
-  apiUrl: process.env.API_URL,
-  graphqlUrl: process.env.GRAPHQL_URL,
-  authUrl: process.env.AUTH_URL,
-  authToken: process.env.AUTH_TOKEN,
-  errorFormat: 'error'
-});
 Vue.use(Modal);
+Vue.use(Loading);
 Vue.use(Datetime);
-Vue.use(Filter);
-
-// Progressbar config
-Vue.use(VueProgressBar, {
-  color: '#52d1e1',
-  failedColor: '#fc4b6c',
-  thickness: '4px'
-});
-
-// i18n config
-Vue.use(VueI18n);
-const i18n = new VueI18n({
-  locale: process.env.LANG,
-  messages
+Vue.use(Notifications);
+Vue.use(Service, {
+  apiUrl: process.env.VUE_APP_API_URL,
+  baseServer: process.env.VUE_APP_BASE_SERVER,
+  authToken: process.env.VUE_APP_AUTH_TOKEN,
+  filterResponse: (response, Message) => {
+    if (response.datos && response.finalizado) {
+      return response.datos;
+    }
+    if ('finalizado' in response && !response.finalizado) {
+      Message.error(response.message);
+      return response.datos;
+    }
+    return response;
+  },
+  errorFormat: 'mensaje'
 });
 
 Vue.config.productionTip = false;
 
-/* eslint-disable no-new */
 new Vue({
-  el: '#app',
   router,
   store,
-  i18n,
-  components: { App },
-  template: '<App/>'
-});
+  vuetify,
+  render: h => h(App),
+}).$mount('#app');

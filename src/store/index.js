@@ -1,27 +1,26 @@
-'use strict';
-
-import Vuex from 'vuex';
 import Vue from 'vue';
+import Vuex from 'vuex';
 
-import layout from './modules/layout';
-import usuario from './modules/usuario';
-
-import modal from '@/common/plugins/modal/mixins/modal';
+import layout from '../layout/modules/layout';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     main: true,
-    time: null,
-    sessionInterval: null,
     auth: false,
     menu: {},
     user: {},
+    notifications: {
+      show: false
+    },
+    progress: {
+      active: false
+    },
     date: {},
     permissions: {},
-    rol: '',
     sidenav: false,
+    navbar: false,
     state403: false,
     modal: false,
     modal2: false,
@@ -39,12 +38,15 @@ export default new Vuex.Store({
       text: '',
       callback: null
     },
+    waiting: {
+      show: false,
+      message: ''
+    },
     form: {},
-    clean: false,
-    changes: 0,
     confirm: {
       show: false,
       text: '',
+      width: 360,
       callbackOk: null,
       callbackCancel: null,
       textOk: '',
@@ -52,31 +54,33 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    setMain (state, value) {
+    setActive(state, value) {
+      state.sidenav = value;
+      state.navbar = value;
+    },
+    setMain(state, value) {
       state.main = value;
     },
-    setUser (state, value) {
+    setUser(state, value) {
       state.user = value;
     },
-    setMenu (state, value) {
+    setMenu(state, value) {
       state.menu = value;
     },
-    setAuth (state, value) {
+    setAuth(state, value) {
       state.auth = value;
     },
-    setSidenav (state, value) {
+    setSidenav(state, value) {
       state.sidenav = value;
+      state.navbar = value;
     },
-    setPermissions (state, value) {
+    setPermissions(state, value) {
       state.permissions = value;
     },
-    setForm (state, value) {
+    setForm(state, value) {
       state.form = value;
     },
-    setChanges (state, value) {
-      state.changes = value;
-    },
-    setAction (state, value) {
+    setAction(state, value) {
       if (value && value.sleep) {
         setTimeout(() => {
           state.action = value.action;
@@ -86,16 +90,13 @@ export default new Vuex.Store({
         state.action = value;
       }
     },
-    cleanDate (state, value) {
-      state.clean = value;
-    },
-    openModal (state, id = '') {
+    openModal(state, id = '') {
       state[`modal${id}`] = true;
     },
-    closeModal (state, id = '') {
+    closeModal(state, id = '') {
       state[`modal${id}`] = false;
     },
-    setDate (state, value) {
+    setDate(state, value) {
       if (state.date === undefined) {
         state.date = {};
       }
@@ -110,26 +111,16 @@ export default new Vuex.Store({
         state.date = value;
       }
     },
-    setSelected (state, value) {
-      if (Array.isArray(value)) {
-        state.selected = value;
-      } else {
-        if (!state.selected) {
-          state.selected = [];
-        }
-        state.selected.push(value);
-      }
-    },
-    setState403 (state, value) {
+    setState403(state, value) {
       state.state403 = value;
     },
-    setDefault (state) {
+    setDefault(state) {
       state.auth = false;
       state.menu = {};
       state.user = {};
+      state.notifications = {};
       state.date = {};
       state.permissions = {};
-      state.rol = '';
       state.layout.breadcrumbs = {};
       state.modal = false;
       state.modal2 = false;
@@ -142,34 +133,21 @@ export default new Vuex.Store({
       state.state403 = false;
       state.alert.show = false;
       state.confirm.show = false;
-      document.removeEventListener('keydown', modal.methods.bloquear, false);
     },
-    CLOSE_ALERT (state) {
+    CLOSE_ALERT(state) {
       state.alert.show = false;
-      document.removeEventListener('keydown', modal.methods.bloquear, false);
     },
-    CLOSE_CONFIRM (state) {
+    CLOSE_CONFIRM(state) {
       state.confirm.show = false;
-      document.removeEventListener('keydown', modal.methods.bloquear, false);
     },
-    SET_TIME (state, value) {
-      state.time = value;
+    CLOSE_NOTIFICATIONS(state) {
+      state.notifications.show = false;
     },
-    TIME_DECREASE (state) {
-      state.time -= 15;
-    },
-    DESTROY_INTERVAL (state) {
-      if (state.sessionInterval) {
-        window.clearInterval(state.sessionInterval);
-      }
-      state.sessionInterval = null;
-    },
-    INIT_INTERVAL (state, interval) {
-      state.sessionInterval = interval;
+    CLOSE_PROGRESS(state) {
+      state.progress.active = false;
     }
   },
   modules: {
-    layout,
-    usuario
+    layout
   }
 });

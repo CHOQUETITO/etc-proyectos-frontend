@@ -1,44 +1,54 @@
 <template>
   <v-app :class="{ 'app-login': !auth }">
-    <app-sidenav v-if="auth && sidenav"></app-sidenav>
+    <app-sidenav v-if="auth"></app-sidenav>
     <app-navbar v-if="auth"></app-navbar>
     <v-content v-if="main">
-      <app-breadcrumbs v-if="auth"></app-breadcrumbs>
       <div class="main">
         <transition :name="transitionName" mode="out-in">
           <router-view/>
         </transition>
       </div>
     </v-content>
-    <app-notification></app-notification>
-    <app-footer></app-footer>
-    <app-messages></app-messages>
-    <app-alert></app-alert>
-    <app-confirm></app-confirm>
-    <vue-progress-bar></vue-progress-bar>
-    <app-loading></app-loading>
+    <app-footer v-if="auth"></app-footer>
+    <app-notifications/>
+    <app-confirm/>
+    <app-alert/>
+    <app-loading/>
+    <app-progress/>
   </v-app>
 </template>
 
 <script>
-import AppSidenav from '@/common/layout/AppSidenav';
-import AppNavbar from '@/common/layout/AppNavbar';
-import AppFooter from '@/common/layout/AppFooter';
-import AppBreadcrumbs from '@/common/layout/AppBreadcrumbs';
-import AppMessages from '@/common/plugins/message/AppMessages';
-import AppLoading from '@/common/plugins/loading/AppLoading';
-import AppNotification from '@/common/layout/AppNotification';
-import AppAlert from '@/common/plugins/modal/AppAlert';
-import AppConfirm from '@/common/plugins/modal/AppConfirm';
-import Auth from '@/components/admin/auth/mixins/auth';
 import { mapState } from 'vuex';
+import AppSidenav from '@/layout/AppSidenav.vue';
+import AppNavbar from '@/layout/AppNavbar.vue';
+import AppFooter from '@/layout/AppFooter.vue';
+import AppNotifications from '@/plugins/notifications/AppNotifications.vue';
+import AppProgress from '@/plugins/progress-bar/AppProgress.vue';
+import AppConfirm from '@/plugins/modal/AppConfirm.vue';
+import AppAlert from '@/plugins/modal/AppAlert.vue';
+import AppLoading from '@/plugins/loading/AppLoading.vue';
+import Auth from '@/components/auth/mixins/auth';
 
 // Páginas que no necesitan autenticación/token/sesión
-const PageNoLogin = ['login', 'login-ciudadania', 'login-nit'];
+const PageNoLogin = ['login'];
 
 export default {
   name: 'App',
-  mixins: [ Auth ],
+  mixins: [Auth],
+  mounted () {
+    Notification.requestPermission();
+  },
+  components: {
+    AppSidenav,
+    AppNavbar,
+    AppFooter,
+    AppNotifications,
+    AppProgress,
+    AppConfirm,
+    AppAlert,
+    AppLoading
+  },
   created () {
     const error = this.$storage.get('error');
     if (error) {
@@ -55,48 +65,19 @@ export default {
       if (this.$storage.exist('permissions')) {
         this.$store.commit('setPermissions', this.$storage.get('permissions'));
       }
-
-      this.timerSession();
-    } else {
-      if (PageNoLogin.indexOf(this.$route.path.substring(1)) === -1 || this.$route.path === '/') {
-        this.logout();
-      }
+    } else if (PageNoLogin.indexOf(this.$route.path.substring(1)) === -1 || this.$route.path === '/') {
+      this.logout();
     }
-
-    // loading bar config
-    this.$Progress.start();
-    this.$router.beforeEach((to, from, next) => {
-      if (to.meta.progress !== undefined) {
-        let meta = to.meta.progress;
-        this.$Progress.parseMeta(meta);
-      }
-      this.$Progress.start();
-      next();
-    });
-    this.$router.afterEach((to, from) => {
-      this.$Progress.finish();
-    });
-
-    // Cargando
-    this.$util.events();
   },
-  data: () => ({
-    transitionName: ''
-  }),
-  components: {
-    AppSidenav,
-    AppNavbar,
-    AppFooter,
-    AppBreadcrumbs,
-    AppMessages,
-    AppNotification,
-    AppAlert,
-    AppConfirm,
-    AppLoading
+  data () {
+    return {
+      transitionName: ''
+    };
   },
   computed: {
     ...mapState(['auth', 'sidenav', 'main'])
   },
+  methods: {},
   watch: {
     '$route' (to, from) {
       if (!this.$storage.existUser() && PageNoLogin.indexOf(to.path.substring(1)) === -1) {
@@ -107,12 +88,13 @@ export default {
       } else {
         this.transitionName = '';
       }
-      this.$store.commit('closeModal');
+      if (to.path === '/login' && this.$storage.existUser()) {
+        this.$router.push('dashboard');
+      }
     }
   }
 };
 </script>
 
 <style lang="scss">
-@import 'assets/scss/index.scss';
 </style>
