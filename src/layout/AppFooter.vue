@@ -10,7 +10,7 @@
     color="transparent"
     class="black--text"
   >
-    <div>Desarrollado por AGETIC {{ new Date().getFullYear() }}</div>
+    <div>Desarrollado por Eddy H. {{ new Date().getFullYear() }}</div>
   </v-footer>
 </template>
 

@@ -18,7 +18,7 @@
       <v-list-item class="pa-0 ma-0">
         <v-list-item-content class="mb-0 pb-0">
           <v-list-item-title class="title--sidebar pb-2">
-            <span>Frontend Base</span>
+            <span>Catacora</span>
           </v-list-item-title>
           <v-list-item-subtitle>
           <v-card-title class="container--userinfo">

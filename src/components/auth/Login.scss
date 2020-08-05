@@ -1,3 +1,4 @@
+
 @import '../../scss/variables.scss';
 
 .app-login {
@@ -6,63 +7,129 @@
   width: 100%;
   height: 100vh;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  .app-login__background {
-    width: 100%;
-    background: $primary;
-    background: -webkit-linear-gradient(bottom, $primary, $secondary);
+  overflow: hidden;
+  background: $white;
+  .app-login__header {
     position: fixed;
     top: 0;
-    left: 0;
     right: 0;
-    bottom: 0;
+    left: 0;
+    width: 100%;
     z-index: 1;
-    &::after {
-      content: "";
-      display: block;
-      position: absolute;
-      width: 100%;
-      height: 100vh;
-      background: url('../../../public/img/backgroundTransparent.webp');
-      background-repeat: no-repeat;
-      background-size: contain;
-      background-position: bottom left;
-   }
-  }
-  .app-login__container {
-    position: relative;
-    z-index: 3;
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-items: center;
+    background: $white;
+      .logo-derecha {
+        flex-grow: 1;
+        height: 90px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        border-bottom: 1px dashed rgba($color: $primary, $alpha: .3);
+      }
+      .text-central {
+        flex-grow: 1;
+        height: 90px;
+        color: $primary;
+        background: $white;
+        font-size: 30px;
+        font-weight: 600;
+        font-family: $fontFamilySansation;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        border-bottom: 1px dashed rgba($color: $primary, $alpha: .3);
+      }
+      .logo-izquierda {
+        flex-grow: 1;
+        height: 90px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        border-bottom: 1px dashed rgba($color: $primary, $alpha: .3);
+    }
+  }
+  .app-login__container {
+    z-index: 2;
+    right: 0;
+    padding: 15px 0;
+    align-self: flex-end;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
-    min-width: 350px;
-    height: 50vh;
-    padding: 0;
-    background: transparent;
-    border-radius: 8px;
+    align-items: center;
+    width: 330px;
+    margin: auto;
+    background: $white;
+    border: 1px solid $primary;
+    border-radius: 23px;
+    overflow: hidden;
+    // height: 60vh;
+
+    .fichas--epidemiologicas {
+      font-family: $fontFamilySansation;
+      font-size: 1.5em;
+      text-align: center;
+      user-select: none;
+      font-weight: 600;
+      padding: 15px 0;
+    }
     .app-login__ciudadaniaDigital {
       width: 100%;
       height: 35vh;
-      background: url('../../../public/img/ciudadaniaDigital.png') no-repeat;
+      background: none;
       background-position: center;
       background-size: contain;
+      box-shadow: none;
     }
+
     .app-login__boton {
       margin-top: 15px;
-      font-size: 0.9rem;
-      letter-spacing: -0.1px;
-      border-radius: 40px;
+      font-size: 12px;
+      font-weight: 400;
       color: $white;
-      border: 2px solid $secondary;
-      width: 100%;
-      line-height: 1.7 !important;
-      font-weight: 500 !important;
       text-align: center;
       text-decoration: none;
       outline: none;
+    }
+    .recovery--password {
+      background-color: $warning;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) and (min-width: 1px) {
+  .app-login {
+    background: $white;
+    .app-login__background { 
+      filter: none;
+      transform: none;
+    }
+    .app-login__header {
+        .logo-derecha {
+          flex-grow: 1;
+          display: none;
+        }
+        .text-central {
+          flex-grow: 1;
+          height: 90px;
+          color: $primary;
+          background: $white;
+          font-size: 30px;
+          font-weight: 600;
+          font-family: $fontFamilySansation;
+          text-align: center;
+        }
+        .logo-izquierda {
+          flex-grow: 1;
+          display: none;
+      }
     }
   }
 }
