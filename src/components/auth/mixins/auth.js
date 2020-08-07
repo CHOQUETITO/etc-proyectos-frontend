@@ -13,9 +13,9 @@ export default {
         console.log('++++++++', response);
         if (!response) throw new Error('Existen problemas de conexión. Por favor revise su configuración a Internet.');
         if (response.hasOwnProperty('error') || response.finalizado === false) throw new Error(response.error || response.mensaje);
-        this.$storage.set('user', response.datos.usuario);
-        this.$storage.set('roles', response.datos.roles);
-        this.$storage.set('token', response.datos.token);
+        this.$storage.set('user', response.usuario);
+        this.$storage.set('roles', response.roles);
+        this.$storage.set('token', response.token);
         const menus = [
           {
             url: 'profile',
@@ -28,16 +28,16 @@ export default {
             icon: 'power_settings_new'
           }
         ];
-        this.$storage.set('menu', [].concat(response.datos.menu, menus));
+        this.$storage.set('menu', [].concat(response.menu, menus));
         this.$storage.set('sidenav', true);
-        const passwordValid = response.datos.usuario.cambiarContrasena;
+        const passwordValid = response.usuario.cambiarContrasena;
         this.$storage.set('psw', passwordValid);
         if (passwordValid) {
           router.push('/profile');
           this.$store.commit('setChangePassword', true);
         } else {
-          if ((response.datos.menu || []).length > 0) {
-            router.push(response.datos.menu[0] ? response.datos.menu[0].url : '');
+          if ((response.menu || []).length > 0) {
+            router.push(response.menu[0] ? response.menu[0].url : '');
           } else {
             router.push('/profile');
           }

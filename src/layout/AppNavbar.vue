@@ -9,7 +9,6 @@
     flat
   >
     <v-app-bar-nav-icon v-if="auth" class="btn-mini-variant" @click="handleMiniVariant"></v-app-bar-nav-icon>
-    <v-toolbar-title :class="[ auth ? 'black--text' : 'white--text', 'title__servicio']">BOLIVIA A TU SERVICIO : </v-toolbar-title>
     <ul class="redes__sociales">
       <li :style="auth ? '' : 'filter: invert(1)'" tooltip="Facebook" @click.stop="redirect('facebook')">&nbsp;</li>
       <li :style="auth ? '' : 'filter: invert(1)'" tooltip="Twitter" @click.stop="redirect('twitter')">&nbsp;</li>
