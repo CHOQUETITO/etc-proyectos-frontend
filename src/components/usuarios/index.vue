@@ -1,4 +1,3 @@
-
 <template>
   <crud-table
     :headers="headers"
@@ -164,8 +163,6 @@
                     locale="es-EN"
                   ></v-date-picker>
                 </v-menu>
-
-
               </v-col>
             </v-row>
             <v-row>

@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 import Auth from '@/components/auth/mixins/auth';
 import store from '@/store';
@@ -6,7 +5,6 @@ import router from '@/router';
 
 const protocol = window.location.protocol.replace(':', '');
 const PATERN_HOST = protocol === 'https' ? /(https:\/\/|www\.)\S+/i : /(http:\/\/|www\.)\S+/i;
-
 
 export default {
   store,

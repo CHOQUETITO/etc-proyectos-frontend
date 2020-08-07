@@ -1,4 +1,3 @@
-
 <template>
   <v-dialog v-model="show" persistent content-class="dialog--alert" :max-width="width">
     <v-card>

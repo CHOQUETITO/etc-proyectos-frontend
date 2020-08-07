@@ -6,10 +6,11 @@ export default {
     async withCredentials (router, user, pass) {
       try {
         const credentials = {
-          usuario: this.enc(user),
-          password: this.enc(pass)
+          usuario: user,
+          password: pass
         };
         const response = await this.$service.post('auth', credentials);
+        console.log('++++++++', response);
         if (!response) throw new Error('Existen problemas de conexión. Por favor revise su configuración a Internet.');
         if (response.hasOwnProperty('error') || response.finalizado === false) throw new Error(response.error || response.mensaje);
         this.$storage.set('user', response.datos.usuario);
