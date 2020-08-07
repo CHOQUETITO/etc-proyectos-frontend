@@ -3,7 +3,7 @@
     <div class="app-login__header">
       <div class="logo-derecha"></div>
       <div class="text-central">
-        Sistema de gestion y control de proyectos
+        Sistema de Información Para el Seguimiento y Control de Ejecución de Proyectos Municipales
       </div>
       <div class="logo-izquierda"></div>
     </div>
@@ -173,7 +173,8 @@ export default {
     dialog: null,
     showPassword: null,
     form: null,
-    email: null
+    email: null,
+    // mostrarMensaje: null
   }),
   methods: {
     /**
@@ -201,7 +202,9 @@ export default {
     },
     loginWithCredentials () {
       if (this.$refs.form.validate()) {
-        this.withCredentials(this.$router, this.user, this.password);
+        // this.withCredentials(this.$router, this.user, this.password);
+        console.log('Ingreso Correctamente', this.mostrarMensaje);
+        this.mostrarMensaje = true;
       } else {
         this.$message.error('Faltan campos por llenar');
       }
