@@ -202,7 +202,7 @@ export default {
     },
     loginWithCredentials () {
       if (this.$refs.form.validate()) {
-        // this.withCredentials(this.$router, this.user, this.password);
+        this.withCredentials(this.$router, this.user, this.password);
         console.log('Ingreso Correctamente', this.mostrarMensaje);
         this.mostrarMensaje = true;
       } else {

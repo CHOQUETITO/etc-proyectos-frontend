@@ -336,9 +336,10 @@ export default {
           };
           this.options.page = 1;
         }
-        let data = await this.$service.list(this.url, query);
-        if (data.datos) {
-          data = data.datos;
+        const data = await this.$service.list(this.url, query);
+        console.log('----->', data);
+        if (data) {
+          // data = data.datos;
           const items = data[this.attribute];
           const n = parseInt(data.count / this.options.itemsPerPage);
           const isHigher = n * this.options.itemsPerPage >= data.count;

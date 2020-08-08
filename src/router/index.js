@@ -25,6 +25,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "usuarios" */ '../components/usuarios'),
   },
   {
+    path: '/empresas',
+    name: 'Empresas',
+    component: () => import(/* webpackChunkName: "usuarios" */ '../components/empresas'),
+  },
+  {
     path: '/404',
     component: () => import(/* webpackChunkName: "notFound" */ '../layout/AppNotFound.vue'),
   }
