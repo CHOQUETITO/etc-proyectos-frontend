@@ -358,8 +358,8 @@ export default {
     headers: [
       { text: 'Acciones', divider: false, sortable: false, align: 'center', value: 'ACTIONS' },
       { text: 'Nombre', value: 'nombre' },
-      { text: 'Comunidad', value: 'nombre' },
-      { text: 'Poa', value: 'nombre' },
+      { text: 'Comunidad', value: 'comunidad' },
+      { text: 'Poa', value: 'poa' },
       { text: 'Empresa', value: 'empresa' },
       { text: 'Categoria', value: 'categoria' },
       { text: 'Fecha Inicio', value: 'fechaInicio' },
