@@ -27,7 +27,12 @@ const routes = [
   {
     path: '/empresas',
     name: 'Empresas',
-    component: () => import(/* webpackChunkName: "usuarios" */ '../components/empresas'),
+    component: () => import(/* webpackChunkName: "Empresas" */ '../components/empresas'),
+  },
+  {
+    path: '/proyectos',
+    name: 'Proyectos',
+    component: () => import(/* webpackChunkName: "Proyectos" */ '../components/proyectos'),
   },
   {
     path: '/404',
