@@ -40,6 +40,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "Poas" */ '../components/poas'),
   },
   {
+    path: '/cronogramas',
+    name: 'Cronogramas',
+    component: () => import(/* webpackChunkName: "Poas" */ '../components/cronogramas'),
+  },
+  {
     path: '/404',
     component: () => import(/* webpackChunkName: "notFound" */ '../layout/AppNotFound.vue'),
   }

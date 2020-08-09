@@ -418,7 +418,7 @@ export default {
       const message = '¿Está seguro de eliminar este registro?';
       this.$confirm(message, async () => {
         try {
-          await this.$service.delete(`empresas/${items.id}`);
+          await this.$service.delete(`proyectos/${items.id}`);
           this.updateList();
           this.$store.commit('closeModal');
           this.$message.success('Registro eliminado satisfactoriamente');

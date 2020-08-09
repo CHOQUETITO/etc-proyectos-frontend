@@ -16,9 +16,9 @@
             v-on="on"
             @click.native.stop="openModal"
             slot="activator"
-          ><v-icon dark>description</v-icon> Agregar </v-btn>
+          ><v-icon dark>calendar_today</v-icon> Agregar </v-btn>
         </template>
-          <span> Agregar Poa </span>
+          <span> Agregar Cronograma </span>
       </v-tooltip>
     </template>
     <!-- SLOT PARA EL FORMULARIO -->
@@ -30,8 +30,8 @@
               align="start"
               justify="center"
               :cols="11">
-              <v-icon>{{ form.id ? 'folder_open' : 'folder_open' }}</v-icon>
-              {{ form.id ? 'Editar Poa' : 'Adicionar Poa' }}
+              <v-icon>{{ form.id ? 'calendar_today' : 'calendar_today' }}</v-icon>
+              {{ form.id ? 'Editar Cronograma' : 'Adicionar Cronograma' }}
             </v-col>
             <v-col :cols="1">
               <v-tooltip bottom>
@@ -68,8 +68,8 @@
                   clearable
                   required
                   v-model="form.nombre"
-                  prepend-icon="folder_open"
-                  label="Nombre del Poa"
+                  prepend-icon="calendar_today"
+                  label="Nombre del Cronograma"
                   >
                 </v-text-field>
               </v-col>
@@ -87,46 +87,8 @@
                   required
                   dense
                   v-model="form.descripcion"
-                  prepend-icon="folder_open"
-                  label="Descripción del Poa"
-                  >
-                </v-text-field>
-              </v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col
-                cols="12"
-                :md="12"
-                :xs="12"
-                :sm="12"
-                >
-                <v-text-field
-                  color="success"
-                  clearable
-                  required
-                  dense
-                  v-model="form.gestion"
-                  prepend-icon="folder_open"
-                  label="Gestión"
-                  >
-                </v-text-field>
-              </v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col
-                cols="12"
-                :md="12"
-                :xs="12"
-                :sm="12"
-                >
-                <v-text-field
-                  color="success"
-                  clearable
-                  required
-                  dense
-                  v-model="form.monto"
-                  prepend-icon="folder_open"
-                  label="Monto del Poa"
+                  prepend-icon="calendar_today"
+                  label="Descripción del Cronograma"
                   >
                 </v-text-field>
               </v-col>
@@ -215,8 +177,6 @@
         </td>
         <td>{{ item.nombre }}</td>
         <td>{{ item.descripcion }}</td>
-        <td>{{ item.gestion }}</td>
-        <td>{{ item.monto }}</td>
         <td>
           <v-btn outlined :color="item.estado === 'ACTIVO' ? 'info' : 'default'">{{ item.estado}}</v-btn>
         </td>
@@ -255,32 +215,22 @@ export default {
         val => /\S+@\S+\.\S+/.test(val) || 'El campo email no es válido'
       ]
     },
-    url: 'poas',
+    url: 'cronogramas',
     order: ['createdAt', 'DESC'],
     headers: [
       { text: 'Acciones', divider: false, sortable: false, align: 'center', value: 'ACTIONS' },
       { text: 'Nombre', value: 'nombre' },
-      { text: 'Descripción', value: 'descripcion' },
-      { text: 'Gestión', value: 'gestion' },
-      { text: 'Monto', value: 'monto' },
+      { text: 'Descripcion', value: 'descripcion' },
     ],
     form: {
       id: '',
       nombre: '',
-      descripcion: '',
-      gestion: '',
-      monto: ''
+      descripcion: ''
     },
     filters: [
       {
         field: 'nombre',
-        label: 'Nombre del Poa',
-        type: 'text',
-        typeG: 'String'
-      },
-      {
-        field: 'gestion',
-        label: 'Gestión',
+        label: 'Nombre del Cronograma',
         type: 'text',
         typeG: 'String'
       }
@@ -316,7 +266,7 @@ export default {
       const message = '¿Está seguro de eliminar este registro?';
       this.$confirm(message, async () => {
         try {
-          await this.$service.delete(`poas/${items.id}`);
+          await this.$service.delete(`cronogramas/${items.id}`);
           this.updateList();
           this.$store.commit('closeModal');
           this.$message.success('Registro eliminado satisfactoriamente');
