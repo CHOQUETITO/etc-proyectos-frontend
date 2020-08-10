@@ -238,21 +238,13 @@ export default {
         val => (val || '').length > 0 || 'El campo del nombre no puede estar vacío'
       ],
       descripcion: [
-        val => (val || '').length > 0 || 'El campo usuario no puede estar vacío',
-        val => (val || '').length > 5 || 'El campo usuario no puede tener menos de 10 caracteres'
+        val => (val || '').length > 0 || 'El campo descripcion no puede estar vacío',
       ],
-      primerApellido: [
-        val => (val || '').length > 0 || 'El campo del primer apellido no puede estar vacío',
+      gestion: [
+        val => (val || '').length > 0 || 'El campo gestion no puede estar vacío',
       ],
-      segundoApellido: [
-        val => (val || '').length > 0 || 'El campo del segundo apellido no puede estar vacío',
-      ],
-      fechaNacimiento: [
-        val => (val || '').length > 0 || 'El campo de la fecha de nacimiento no puede estar vacío',
-      ],
-      email: [
-        val => (val || '').length > 0 || 'El campo email no puede estar vacío',
-        val => /\S+@\S+\.\S+/.test(val) || 'El campo email no es válido'
+      monto: [
+        val => (val || '').length > 0 || 'El campo monto no puede estar vacío',
       ]
     },
     url: 'poas',
@@ -290,26 +282,11 @@ export default {
   methods: {
     reset () {
       this.form = {
-        id: null,
-        numeroDocumento: '',
-        complemento: '',
-        complementoVisible: false,
-        fechaNacimiento: '',
-        nombres: '',
-        primerApellido: '',
-        segundoApellido: '',
-        apellidoCasada: '',
-        id_pais_origen: null,
-        parIdEstadoCivil: 1,
-        parIdTipoDocumento: 1,
-        parIdTipoPersona: 1,
-        genero: 'MASCULINO',
-        nombre_completo: '',
-        telefono: '',
-        celular: '',
-        correoElectronico: '',
-        fax: '',
-        estado: 'ACTIVO'
+        id: '',
+        nombre: '',
+        descripcion: '',
+        gestion: '',
+        monto: ''
       };
     },
     itemDelete ({ items }) {
@@ -320,7 +297,6 @@ export default {
           this.updateList();
           this.$store.commit('closeModal');
           this.$message.success('Registro eliminado satisfactoriamente');
-          this.updateList();
         } catch (err) {
           this.$message.error(err.message);
         }
@@ -349,14 +325,14 @@ export default {
       if (this.$refs.form.validate()) {
         const data = { ...({}, this.form) };
         if (data.id) {
-          const response = await this.$service.put(`persona/${data.id}`, data);
+          const response = await this.$service.put(`poas/${data.id}`, data);
           if (response) {
             this.$store.commit('closeModal');
             this.updateList();
             this.$message.success('Se actualizó el registro correctamente');
           }
         } else {
-          const response = await this.$service.post('persona', data);
+          const response = await this.$service.post('poas', data);
           if (response) {
             this.$store.commit('closeModal');
             this.updateList();

@@ -372,26 +372,15 @@ export default {
   methods: {
     reset () {
       this.form = {
-        id: null,
-        numeroDocumento: '',
-        complemento: '',
-        complementoVisible: false,
-        fechaNacimiento: '',
-        nombres: '',
-        primerApellido: '',
-        segundoApellido: '',
-        apellidoCasada: '',
-        id_pais_origen: null,
-        parIdEstadoCivil: 1,
-        parIdTipoDocumento: 1,
-        parIdTipoPersona: 1,
-        genero: 'MASCULINO',
-        nombre_completo: '',
-        telefono: '',
-        celular: '',
-        correoElectronico: '',
-        fax: '',
-        estado: 'ACTIVO'
+        id: '',
+        nombre: '',
+        descripcion: '',
+        sigla: '',
+        email: '',
+        telefonos: '',
+        direccion: '',
+        web: '',
+        nit: ''
       };
     },
     itemDelete ({ items }) {
@@ -402,7 +391,6 @@ export default {
           this.updateList();
           this.$store.commit('closeModal');
           this.$message.success('Registro eliminado satisfactoriamente');
-          this.updateList();
         } catch (err) {
           this.$message.error(err.message);
         }
@@ -431,14 +419,14 @@ export default {
       if (this.$refs.form.validate()) {
         const data = { ...({}, this.form) };
         if (data.id) {
-          const response = await this.$service.put(`persona/${data.id}`, data);
+          const response = await this.$service.put(`empresas/${data.id}`, data);
           if (response) {
             this.$store.commit('closeModal');
             this.updateList();
             this.$message.success('Se actualizó el registro correctamente');
           }
         } else {
-          const response = await this.$service.post('persona', data);
+          const response = await this.$service.post('empresas', data);
           if (response) {
             this.$store.commit('closeModal');
             this.updateList();

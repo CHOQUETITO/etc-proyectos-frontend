@@ -25,13 +25,8 @@ export default {
     const Storage = instance.$storage;
     const Confirm = instance.$confirm;
 
-    const getUrl = (url, id) => {
-      id = (typeof id === 'string' || typeof id === 'number') ? `${id}` : typeof id === 'object' && id.id ? `${id.id}` : '';
-      if (url[url.length - 1] !== '/' && id.length > 1) {
-        id = `/${id}`;
-      }
-      return PATERN_HOST.test(url) ? (url + id) : baseServer + url + id;
-    };
+    const getUrl = (url) => PATERN_HOST.test(url) ? (url) : baseServer + url;
+
 
     const filterResponse = (response) => {
       Progress.close();
