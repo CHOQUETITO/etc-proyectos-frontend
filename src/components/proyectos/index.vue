@@ -429,6 +429,10 @@ export default {
       if (this.$refs.form.validate()) {
         const data = { ...({}, this.form) };
         console.log('------>', data);
+        delete data.id_comunidad;
+        delete data.id_empresa;
+        delete data.id_poa;
+        delete data.id_categoria;
         if (data.id) {
           const response = await this.$service.put(`proyectos/${data.id}`, data);
           if (response) {
