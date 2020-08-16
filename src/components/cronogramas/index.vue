@@ -237,7 +237,7 @@ export default {
       this.$confirm(message, async () => {
         try {
           await this.$service.delete(`cronogramas/${items.id}`);
-          this.updateList();
+          await this.updateList();
           this.$store.commit('closeModal');
           this.$message.success('Registro eliminado satisfactoriamente');
         } catch (err) {
@@ -271,14 +271,14 @@ export default {
           const response = await this.$service.put(`cronogramas/${data.id}`, data);
           if (response) {
             this.$store.commit('closeModal');
-            this.updateList();
+            await this.updateList();
             this.$message.success('Se actualizó el registro correctamente');
           }
         } else {
           const response = await this.$service.post('cronogramas', data);
           if (response) {
             this.$store.commit('closeModal');
-            this.updateList();
+            await this.updateList();
             this.$message.success('El registro fue agregado correctamente');
           }
         }

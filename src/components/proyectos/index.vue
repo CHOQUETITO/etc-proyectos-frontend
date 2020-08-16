@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- TEMPLATE PARA PARAMETROS COMUNIDADES, CATEGORIAS -->
+    <!-- TEMPLATE PARA FILTROS COMUNIDADES, CATEGORIAS Y FECHAS-->
     <template>
       <v-container fluid>
         <template>
@@ -11,14 +11,35 @@
               :xs="12"
               :sm="12"
               >
-              <v-select
-                color="success"
-                clearable
-                required
-                dense
-                outlined
-                label="Fecha Inicio"
-              ></v-select>
+              <v-menu
+                v-model="dateFiltroInicio"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="290px"
+                >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    color="success"
+                    dense
+                    v-model="fechaInicio"
+                    label="Fecha Inicio"
+                    prepend-icon="event"
+                    readonly
+                    outlined
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="fechaInicio"
+                  @input="dateFiltroInicio = false"
+                  :first-day-of-week="0"
+                  locale="es-EN"
+                  >
+                </v-date-picker>
+              </v-menu>
             </v-col>
             <v-col class="d-flex"
               cols="12"
@@ -26,14 +47,35 @@
               :xs="12"
               :sm="12"
               >
-              <v-select
-                color="success"
-                clearable
-                required
-                dense
-                outlined
-                label="Fecha Final"
-              ></v-select>
+              <v-menu
+                v-model="dateFiltroFinal"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="290px"
+                >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    color="success"
+                    dense
+                    v-model="fechaFinal"
+                    label="Fecha Final"
+                    prepend-icon="event"
+                    readonly
+                    outlined
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="fechaFinal"
+                  @input="dateFiltroFinal = false"
+                  :first-day-of-week="0"
+                  locale="es-EN"
+                  >
+                </v-date-picker>
+              </v-menu>
             </v-col>
             <v-col
               cols="12"
@@ -47,6 +89,9 @@
                 required
                 dense
                 outlined
+                prepend-icon="terrain"
+                item-text="nombre"
+                item-value="id"
                 :items="listaComunidades"
                 label="Comunidad"
               ></v-select>
@@ -63,6 +108,11 @@
                 required
                 dense
                 outlined
+                prepend-icon="category"
+                v-model="form.idCategoria"
+                item-text="nombre"
+                item-value="id"
+                :items="listaCategorias"
                 label="Categoria"
               ></v-select>
             </v-col>
@@ -141,19 +191,9 @@
               </template>
               <span>Eliminar registro</span>
             </v-tooltip>
-<<<<<<< HEAD
-            <v-tooltip bottom color="blue-grey darken-2">
-              <template v-slot:activator="{ on }">
-                <v-btn icon v-on="on" @click.stop="verCronogramas(Object.assign({}, items))">
-                  <v-icon color="blue-grey darken-2">event</v-icon>
-                </v-btn>
-              </template>
-              <span>Ver Seguimientos</span>
-            </v-tooltip>
-=======
             <v-tooltip bottom color="error">
               <template v-slot:activator="{ on }">
-                <v-btn icon v-on="on" @click.stop="VerCronogramas(Object.assign({}, item))">
+                <v-btn icon v-on="on" @click.stop="verCronogramas(Object.assign({}, item))">
                   <v-icon color="blue">trending_up</v-icon>
                 </v-btn>
               </template>
@@ -161,14 +201,13 @@
             </v-tooltip>
             <v-tooltip bottom color="error">
               <template v-slot:activator="{ on }">
-                <v-btn icon v-on="on" @click.stop="VerCronogramas(Object.assign({}, item))">
+                <v-btn icon v-on="on" @click.stop="verCronogramas(Object.assign({}, item))">
                   <v-icon color="blue">picture_as_pdf</v-icon>
                 </v-btn>
               </template>
               <span>Ver ficha</span>
             </v-tooltip>
 
->>>>>>> 745c7d7d04232b8c16998f5f31015e52029f4d61
           </td>
           <td>{{ item.nombre }}</td>
           <td>{{ item.comunidad.nombre }}</td>
@@ -196,6 +235,29 @@
         @submit.prevent="save"
         >
         <v-card>
+          <v-card-title class="ma-0 pa-1">
+            <v-container fluid>
+              <v-row no-gutters>
+                <v-col
+                  align="start"
+                  justify="center"
+                  :cols="11">
+                  <v-icon>{{ form.id ? 'assignment' : 'assignment' }}</v-icon>
+                  {{ form.id ? 'Editar Proyecto' : 'Adicionar Proyecto' }}
+                </v-col>
+                <v-col :cols="1">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                      <v-btn icon color="gray" v-on="on" @click.stop="closeModal">
+                        <v-icon>close</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Cerrar ventana</span>
+                  </v-tooltip>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-title>
           <v-container fluid>
             <v-row no-gutters>
               <v-col
@@ -334,14 +396,16 @@
                   offset-y
                   locale="es-EN"
                   min-width="290px"
-                >
-                  <template v-slot:activator="{ on }">
+                  >
+                  <template v-slot:activator="{ on, attrs }">
                     <v-text-field
+                      color="seccess"
                       dense
                       v-model="form.fechaInicio"
                       label="Fecha Inicio"
                       prepend-icon="event"
                       readonly
+                      v-bind="attrs"
                       v-on="on"
                     ></v-text-field>
                   </template>
@@ -367,20 +431,22 @@
                   offset-y
                   locale="es-EN"
                   min-width="290px"
-                >
-                  <template v-slot:activator="{ on }">
+                  >
+                  <template v-slot:activator="{ on, attrs }">
                     <v-text-field
+                      color="success"
                       dense
                       v-model="form.fechaFinal"
                       label="Fecha Final"
                       prepend-icon="event"
                       readonly
+                      v-bind="attrs"
                       v-on="on"
                     ></v-text-field>
                   </template>
                   <v-date-picker
                     v-model="form.fechaFinal"
-                    @input="date = false"
+                    @input="dateFinal = false"
                     :first-day-of-week="0"
                     locale="es-EN"
                   ></v-date-picker>
@@ -401,13 +467,11 @@
                   >
                   <small class="error--text text-required">* Los campos son obligatorios</small>
                 </v-col>
-                </v-row>
-                <v-row>
-               
-                  <v-btn @click.stop="closeModal"><v-icon>cancel</v-icon> Cancelar </v-btn>
-                  <v-btn color="primary" type="submit" :disabled="!valid">
-                  <v-icon dark>check</v-icon> Enviar
-                  </v-btn>
+              </v-row>
+              <v-row>
+                <v-btn @click.stop="closeModal"><v-icon>cancel</v-icon> Cancelar </v-btn>
+                <v-btn color="primary" type="submit" :disabled="!valid">
+                <v-icon dark>check</v-icon> Enviar</v-btn>
               </v-row>
             </v-container>
           </v-card-actions>
@@ -487,7 +551,9 @@ export default {
       }
     ],
     date: null,
-    dateFinal: null
+    dateFinal: null,
+    dateFiltroInicio: null,
+    dateFiltroFinal: null
   }),
   methods: {
     reset () {
