@@ -5,7 +5,9 @@
       <div class="text-central">
         Sistema de Información Para el Seguimiento y Control de Ejecución de Proyectos Municipales
       </div>
-      <div class="logo-izquierda"></div>
+      <div class="logo-izquierda">
+        <v-img src="../img/logoCatacora.png" aspect-ratio="0.7"></v-img>
+      </div>
     </div>
     <div class="app-login__container">
       <v-form
