@@ -24,9 +24,7 @@ export default {
     const Message = instance.$message;
     const Storage = instance.$storage;
     const Confirm = instance.$confirm;
-
     const getUrl = (url) => PATERN_HOST.test(url) ? (url) : baseServer + url;
-
 
     const filterResponse = (response) => {
       Progress.close();
