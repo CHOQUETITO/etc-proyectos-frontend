@@ -1,32 +1,127 @@
 <template>
   <v-container fluid>
-    <v-row>
-      <v-col
+        <v-row align="center">
+          <v-col class="d-flex"
+            cols="12"
+            :md="6"
+            :xs="12"
+            :sm="12"
+            >
+            <v-menu
+              v-model="date"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+              >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  color="success"
+                  dense
+                  v-model="fechaInicio"
+                  label="Fecha Inicio"
+                  prepend-icon="event"
+                  readonly
+                  outlined
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="fechaInicio"
+                @input="date = false"
+                :first-day-of-week="0"
+                locale="es-EN"
+                >
+              </v-date-picker>
+            </v-menu>
+          </v-col>
+          <v-col class="d-flex"
+            cols="12"
+            :md="6"
+            :xs="12"
+            :sm="12"
+            >
+            <v-menu
+              v-model="dateFinal"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+              >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  color="success"
+                  dense
+                  v-model="fechaFinal"
+                  label="Fecha Final"
+                  prepend-icon="event"
+                  readonly
+                  outlined
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="fechaFinal"
+                @input="dateFinal = false"
+                :first-day-of-week="0"
+                locale="es-EN"
+                >
+              </v-date-picker>
+            </v-menu>
+           </v-col>
+          <v-col class="d-flex"
+            cols="12"
+            :md="6"
+            :xs="12"
+            :sm="12"
+            >
+            <v-select
+              color="success"
+              clearable
+              required
+              dense
+              outlined
+              prepend-icon="terrain"
+              :items="items"
+              label="Comunidad"
+            ></v-select>
+          </v-col>
+          <v-col class="d-flex"
+            cols="12"
+            :md="6"
+            :xs="12"
+            :sm="12"
+            >
+            <v-select
+              color="success"
+              clearable
+              required
+              dense
+              outlined
+              prepend-icon="category"
+              :items="items"
+              label="Categoria"
+            ></v-select>
+          </v-col>
+        </v-row>
+        <v-row>
+        <v-col
         cols="12"
         :sm="12"
         :md="12"
         :lg="12"
         :xs="12"
-      >
+        >
         <div class="card-chart elevation-1 pa-1">
-          <v-chart :options="barVertical(dataProyectos, 'Numero de proyectos', 'nombre', 'cantidad')" class="mb-5" autoresize ref="numeroProyectos"/>
+        <v-chart :options="barVertical(dataProyectos, 'Numero de proyectos', 'nombre', 'cantidad')" class="mb-5" autoresize ref="numeroProyectos"/>
         </div>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col
-        cols="12"
-        :sm="12"
-        :md="12"
-        :lg="12"
-        :xs="12"
-      >
-        <div class="card-chart elevation-1 pa-1">
-          <v-chart :options="barVertical(dataProyectos, 'Numero de proyectos', 'nombre', 'cantidad')" class="mb-5" autoresize ref="numeroProyectos"/>
-        </div>
-      </v-col>
-    </v-row>
-  </v-container>
+        </v-col>
+        </v-row>
+    </v-container>
 </template>
 <script>
 import ECharts from 'vue-echarts';
@@ -46,6 +141,7 @@ import 'echarts/lib/component/visualMap';
 import 'echarts/lib/component/dataset';
 import 'echarts/map/js/world';
 import 'zrender/lib/svg/svg';
+
 export default {
   components: {
     'v-chart': ECharts,
@@ -55,7 +151,12 @@ export default {
   },
   data () {
     return {
-      dataProyectos: []
+      dataProyectos: [],
+      items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
+      date: null,
+      dateFinal: null,
+      fechaInicio: null,
+      fechaFinal: null
     };
   },
   methods: {
@@ -105,7 +206,7 @@ export default {
           type: 'bar',
           showBackground: true,
           backgroundStyle: {
-              color: 'rgba(220, 220, 220, 0.8)'
+            color: 'rgba(220, 220, 220, 0.8)'
           },
           itemStyle: {
             normal: {
@@ -141,7 +242,7 @@ export default {
         this.$message.error(error.message);
       }
     });
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>

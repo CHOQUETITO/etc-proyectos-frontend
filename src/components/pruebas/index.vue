@@ -1,6 +1,130 @@
 <template>
+  <v-container fluid>
+    <v-row no-gutters>
+      <v-col
+        cols="12"
+        :sm="12"
+        :md="12"
+        :lg="12"
+        :xs="12"
+      >
+        <v-alert
+          text
+          type="info"
+        >
+          Modal para confirmaciones o alertas
+        </v-alert>
+      </v-col>
+      <v-col
+        cols="12"
+        :sm="12"
+        :md="12"
+        :lg="12"
+        :xs="12"
+        class="mt-2 mb-2"
+      >
+        <v-btn color="warning" @click.stop="showConfirmation">Confirmación</v-btn>
+        <v-btn class="ml-2" color="info" @click.stop="showAlert">Alert</v-btn>
+      </v-col>
+      <v-col
+        cols="12"
+        :sm="12"
+        :md="12"
+        :lg="12"
+        :xs="12"
+        class="mt-2 mb-2"
+      >
+        <v-alert
+          border="left"
+          type="success"
+          text
+        >
+          Para mejorar la espera de datos, por ejemplo en el crud-table se esta utilizando skeleton loaders <br>
+          <strong><small>En este ejemplo estamos viendo que esta esperando a que se carguen articulos, imagenes, y acciones</small></strong>
+        </v-alert>
+      </v-col>
+      <v-col
+        cols="12"
+        :sm="12"
+        :md="12"
+        :lg="12"
+        :xs="12"
+      >
+        <v-sheet
+          color="transparent"
+          class="px-3 pt-3 pb-3"
+        >
+          <v-skeleton-loader
+            class="mx-auto"
+            type="article, image, table-tfoot"
+          ></v-skeleton-loader>
+        </v-sheet>
+      </v-col>
+      <v-col
+        cols="12"
+        :sm="12"
+        :md="12"
+        :lg="12"
+        :xs="12"
+        class="mt-2 mb-2"
+      >
+        <v-alert
+          type="error"
+          text
+          outlined
+        >
+          Pantallas bloqueantes
+        </v-alert>
+      </v-col>
+      <v-col
+        cols="12"
+        :sm="12"
+        :md="12"
+        :lg="12"
+        :xs="12"
+      >
+        <v-btn color="error" outlined text @click.stop="showBlock">Bloquear pantalla</v-btn>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+<script>
+
+export default {
+  data () {
+    return {
+    };
+  },
+  methods: {
+    showConfirmation () {
+      this.$confirm('Modal demo para mostrar la confirmacion', () => {
+        this.$message.success('Presionaste aceptar');
+      }, () => {
+        this.$message.warning('Presionaste cancelar');
+      });
+    },
+    showAlert () {
+      this.$alert('Modal demo para mostrar un alert');
+    },
+    showBlock () {
+      this.$waiting(true, 'Modal demo para mostrar una pantalla bloqueante que se eliminar dentro de 5 segundos');
+      setTimeout(() => {
+        this.$waiting(false);
+      }, 5000);
+    }
+  },
+  mounted () {
+    this.$nextTick(() => {
+    });
+  }
+};
+</script>
+<style lang="scss" scoped>
+</style>
+
+<template>
   <div>
-    <!-- TEMPLATE PARA FILTROS COMUNIDADES, CATEGORIAS Y FECHAS-->
+    <!-- TEMPLATE PARA PARAMETROS COMUNIDADES, CATEGORIAS -->
     <template>
       <v-container fluid>
         <template>
@@ -11,35 +135,14 @@
               :xs="12"
               :sm="12"
               >
-              <v-menu
-                v-model="dateFiltroInicio"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="290px"
-                >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    color="success"
-                    dense
-                    v-model="fechaInicio"
-                    label="Fecha Inicio"
-                    prepend-icon="event"
-                    readonly
-                    outlined
-                    v-bind="attrs"
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  v-model="fechaInicio"
-                  @input="dateFiltroInicio = false"
-                  :first-day-of-week="0"
-                  locale="es-EN"
-                  >
-                </v-date-picker>
-              </v-menu>
+              <v-select
+                color="success"
+                clearable
+                required
+                dense
+                outlined
+                label="Fecha Inicio"
+              ></v-select>
             </v-col>
             <v-col class="d-flex"
               cols="12"
@@ -47,35 +150,14 @@
               :xs="12"
               :sm="12"
               >
-              <v-menu
-                v-model="dateFiltroFinal"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="290px"
-                >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    color="success"
-                    dense
-                    v-model="fechaFinal"
-                    label="Fecha Final"
-                    prepend-icon="event"
-                    readonly
-                    outlined
-                    v-bind="attrs"
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  v-model="fechaFinal"
-                  @input="dateFiltroFinal = false"
-                  :first-day-of-week="0"
-                  locale="es-EN"
-                  >
-                </v-date-picker>
-              </v-menu>
+              <v-select
+                color="success"
+                clearable
+                required
+                dense
+                outlined
+                label="Fecha Final"
+              ></v-select>
             </v-col>
             <v-col
               cols="12"
@@ -89,9 +171,6 @@
                 required
                 dense
                 outlined
-                prepend-icon="terrain"
-                item-text="nombre"
-                item-value="id"
                 :items="listaComunidades"
                 label="Comunidad"
               ></v-select>
@@ -108,11 +187,6 @@
                 required
                 dense
                 outlined
-                prepend-icon="category"
-                v-model="form.idCategoria"
-                item-text="nombre"
-                item-value="id"
-                :items="listaCategorias"
                 label="Categoria"
               ></v-select>
             </v-col>
@@ -139,7 +213,7 @@
               v-on="on"
               @click.native.stop="openModal"
               slot="activator"
-            ><v-icon dark>add</v-icon> Agregar </v-btn>
+            ><v-icon dark>assignment</v-icon> Agregar </v-btn>
           </template>
             <span> Agregar Proyecto </span>
         </v-tooltip>
@@ -191,23 +265,14 @@
               </template>
               <span>Eliminar registro</span>
             </v-tooltip>
-            <v-tooltip bottom color="error">
+            <v-tooltip bottom color="blue-grey darken-2">
               <template v-slot:activator="{ on }">
-                <v-btn icon v-on="on" @click.stop="verCronogramas(Object.assign({}, item))">
-                  <v-icon color="blue">trending_up</v-icon>
+                <v-btn icon v-on="on" @click.stop="verCronogramas(Object.assign({}, items))">
+                  <v-icon color="blue-grey darken-2">event</v-icon>
                 </v-btn>
               </template>
-              <span>Ver seguimiento</span>
+              <span>Ver Seguimientos</span>
             </v-tooltip>
-            <v-tooltip bottom color="error">
-              <template v-slot:activator="{ on }">
-                <v-btn icon v-on="on" @click.stop="verFicha(Object.assign({}, item))">
-                  <v-icon color="blue">picture_as_pdf</v-icon>
-                </v-btn>
-              </template>
-              <span>Ver ficha</span>
-            </v-tooltip>
-
           </td>
           <td>{{ item.nombre }}</td>
           <td>{{ item.comunidad.nombre }}</td>
@@ -235,29 +300,6 @@
         @submit.prevent="save"
         >
         <v-card>
-          <v-card-title class="ma-0 pa-1">
-            <v-container fluid>
-              <v-row no-gutters>
-                <v-col
-                  align="start"
-                  justify="center"
-                  :cols="11">
-                  <v-icon>{{ form.id ? 'assignment' : 'assignment' }}</v-icon>
-                  {{ form.id ? 'Editar Proyecto' : 'Adicionar Proyecto' }}
-                </v-col>
-                <v-col :cols="1">
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on }">
-                      <v-btn icon color="gray" v-on="on" @click.stop="closeModal">
-                        <v-icon>close</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>Cerrar ventana</span>
-                  </v-tooltip>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card-title>
           <v-container fluid>
             <v-row no-gutters>
               <v-col
@@ -299,10 +341,10 @@
             </v-row>
             <v-row no-gutters>
               <v-col
-                cols="12"
-                :md="6"
+                cols="6"
+                :md="12"
                 :xs="12"
-                :sm="6"
+                :sm="12"
                 >
                 <v-select
                   color="success"
@@ -319,30 +361,10 @@
                 </v-select>
               </v-col>
               <v-col
-                cols="12"
-                :md="6"
+                cols="6"
+                :md="12"
                 :xs="12"
-                :sm="6"
-                >
-                <v-select
-                  color="success"
-                  clearable
-                  required
-                  dense
-                  v-model="form.idCategoria"
-                  item-text="nombre"
-                  item-value="id"
-                  :items="listaCategorias"
-                  prepend-icon="assignment"
-                  label="Categoria del Proyecto"
-                  >
-                </v-select>
-              </v-col>
-              <v-col
-                cols="12"
-                :md="6"
-                :xs="12"
-                :sm="6"
+                :sm="12"
                 >
                 <v-select
                   color="success"
@@ -358,11 +380,13 @@
                   >
                 </v-select>
               </v-col>
+            </v-row>
+            <v-row no-gutters>
               <v-col
                 cols="12"
-                :md="6"
+                :md="12"
                 :xs="12"
-                :sm="6"
+                :sm="12"
                 >
                 <v-select
                   color="success"
@@ -380,77 +404,63 @@
               </v-col>
             </v-row>
             <v-row no-gutters>
+              <v-col
+                cols="12"
+                :md="12"
+                :xs="12"
+                :sm="12"
+                >
+                <v-select
+                  color="success"
+                  clearable
+                  required
+                  dense
+                  v-model="form.idCategoria"
+                  item-text="nombre"
+                  item-value="id"
+                  :items="listaCategorias"
+                  prepend-icon="assignment"
+                  label="Categoria del Proyecto"
+                  >
+                </v-select>
+              </v-col>
             </v-row>
             <v-row no-gutters>
               <v-col
                 cols="12"
-                :md="6"
+                :md="12"
                 :xs="12"
-                :sm="6"
+                :sm="12"
                 >
-                <v-menu
-                  v-model="date"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  locale="es-EN"
-                  min-width="290px"
+                <v-text-field
+                  color="success"
+                  clearable
+                  required
+                  dense
+                  v-model="form.fechaInicio"
+                  prepend-icon="assignment"
+                  label="Fecha de Inicio del Proyecto"
                   >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      color="seccess"
-                      dense
-                      v-model="form.fechaInicio"
-                      label="Fecha Inicio"
-                      prepend-icon="event"
-                      readonly
-                      v-bind="attrs"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker
-                    v-model="form.fechaInicio"
-                    @input="date = false"
-                    :first-day-of-week="0"
-                    locale="es-EN"
-                  ></v-date-picker>
-                </v-menu>
+                </v-text-field>
               </v-col>
+            </v-row>
+            <v-row no-gutters>
               <v-col
                 cols="12"
-                :md="6"
+                :md="12"
                 :xs="12"
-                :sm="6"
+                :sm="12"
                 >
-                <v-menu
-                  v-model="dateFinal"
-                  :close-on-content-click="false"
-                  :nudge-right="40"
-                  transition="scale-transition"
-                  offset-y
-                  locale="es-EN"
-                  min-width="290px"
+                <v-text-field
+                  color="success"
+                  clearable
+                  required
+                  dense
+                  v-model="form.fechaFinal"
+                  prepend-icon="assignment"
+                  label="Fecha de culminación del Proyecto"
                   >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      color="success"
-                      dense
-                      v-model="form.fechaFinal"
-                      label="Fecha Final"
-                      prepend-icon="event"
-                      readonly
-                      v-bind="attrs"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker
-                    v-model="form.fechaFinal"
-                    @input="dateFinal = false"
-                    :first-day-of-week="0"
-                    locale="es-EN"
-                  ></v-date-picker>
-                </v-menu>
+                </v-text-field>
               </v-col>
             </v-row>
           </v-container>
@@ -461,37 +471,30 @@
                   justify="start"
                   :xs="12"
                   :sm="12"
-                  :md="12"
+                  :md="5"
                   :lg="5"
                   cols="12"
                   >
                   <small class="error--text text-required">* Los campos son obligatorios</small>
                 </v-col>
-              </v-row>
-              <v-row>
-                <v-btn @click.stop="closeModal"><v-icon>cancel</v-icon> Cancelar </v-btn>
-                <v-btn color="primary" type="submit" :disabled="!valid">
-                <v-icon dark>check</v-icon> Enviar</v-btn>
+                <v-col
+                  align="right"
+                  :sm="12"
+                  :xs="12"
+                  :md="3"
+                  :lg="3"
+                  cols="12"
+                  >
+                  <v-btn @click.stop="closeModal"><v-icon>cancel</v-icon> Cancelar </v-btn>
+                  <v-btn color="primary" type="submit" :disabled="!valid">
+                  <v-icon dark>check</v-icon> Enviar
+                  </v-btn>
+                </v-col>
               </v-row>
             </v-container>
           </v-card-actions>
         </v-card>
       </v-form>
-    </v-dialog>
-
-    <v-dialog v-model="pdfGenerado" width="800" persistent>
-      <v-toolbar color="secondary" dark text>
-        <span class="title">Ficha de proyecto</span>
-        <v-spacer></v-spacer>
-        <v-btn class="mx-2" fab dark small color="primary" @click="pdfGenerado = false">
-          <v-icon dark>close</v-icon>
-        </v-btn>
-      </v-toolbar>
-      <v-card style="height: 80vh">
-        <v-card-text class="pa-0" style="height: 100%">
-          <iframe :src="documentoPdf" width="100%"  height="100%" type="application/pdf"></iframe>
-        </v-card-text>
-      </v-card>
     </v-dialog>
   </div>
 </template>
@@ -565,12 +568,7 @@ export default {
         typeG: 'String'
       }
     ],
-    date: null,
-    dateFinal: null,
-    pdfGenerado: false,
-    documentoPdf: null,
-    dateFiltroInicio: null,
-    dateFiltroFinal: null
+    date: null
   }),
   methods: {
     reset () {
@@ -590,20 +588,12 @@ export default {
     verCronogramas() {
       console.log('Cronogra en desarrollo');
     },
-    async verFicha(proyecto) {
-      console.log('Cronogra en desarrollo');
-      const pdf = await this.$service.post(`proyectos/reporte/${proyecto.id}`);
-      const contentType = 'application/pdf';
-      const blob = this.b64toBlob(pdf, contentType);
-      this.documentoPdf = URL.createObjectURL(blob);
-      this.pdfGenerado = true;
-    },
     itemDelete ({ items }) {
       const message = '¿Está seguro de eliminar este registro?';
       this.$confirm(message, async () => {
         try {
           await this.$service.delete(`proyectos/${items.id}`);
-          await this.updateList();
+          this.updateList();
           this.$message.success('Registro eliminado satisfactoriamente');
         } catch (err) {
           this.$message.error(err.message);
@@ -615,6 +605,7 @@ export default {
       this.reset();
     },
     async openModal ({ items }) {
+      console.log('items---------->', items);
       if (items && items.id) {
         this.$nextTick(() => {
           this.form = items;
@@ -650,7 +641,7 @@ export default {
           const response = await this.$service.put(`proyectos/${data.id}`, data);
           if (response) {
             this.abrirDialogo = false;
-            await this.updateList();
+            this.updateList();
             this.$message.success('Se actualizó el registro correctamente');
           }
         } else {
@@ -658,7 +649,7 @@ export default {
           console.log('response', response);
           if (response) {
             this.abrirDialogo = false;
-            await this.updateList();
+            this.updateList();
             this.$message.success('El registro fue agregado correctamente');
           }
         }
