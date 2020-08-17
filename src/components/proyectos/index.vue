@@ -80,7 +80,7 @@
             </v-tooltip>
             <v-tooltip bottom color="error">
               <template v-slot:activator="{ on }">
-                <v-btn icon v-on="on" @click.stop="VerCronogramas(Object.assign({}, item))">
+                <v-btn icon v-on="on" @click.stop="verFicha(Object.assign({}, item))">
                   <v-icon color="blue">picture_as_pdf</v-icon>
                 </v-btn>
               </template>
@@ -331,6 +331,21 @@
         </v-card>
       </v-form>
     </v-dialog>
+
+    <v-dialog v-model="pdfGenerado" width="800" persistent>
+      <v-toolbar color="secondary" dark text>
+        <span class="title">Ficha de proyecto</span>
+        <v-spacer></v-spacer>
+        <v-btn class="mx-2" fab dark small color="primary" @click="pdfGenerado = false">
+          <v-icon dark>close</v-icon>
+        </v-btn>
+      </v-toolbar>
+      <v-card style="height: 80vh">
+        <v-card-text class="pa-0" style="height: 100%">
+          <iframe :src="documentoPdf" width="100%"  height="100%" type="application/pdf"></iframe>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -404,7 +419,9 @@ export default {
       }
     ],
     date: null,
-    dateFinal: null
+    dateFinal: null,
+    pdfGenerado: false,
+    documentoPdf: null
   }),
   methods: {
     reset () {
@@ -423,6 +440,14 @@ export default {
     },
     verCronogramas() {
       console.log('Cronogra en desarrollo');
+    },
+    async verFicha(proyecto) {
+      console.log('Cronogra en desarrollo');
+      const pdf = await this.$service.post(`proyectos/reporte/${proyecto.id}`);
+      const contentType = 'application/pdf';
+      const blob = this.b64toBlob(pdf, contentType);
+      this.documentoPdf = URL.createObjectURL(blob);
+      this.pdfGenerado = true;
     },
     itemDelete ({ items }) {
       const message = '¿Está seguro de eliminar este registro?';
