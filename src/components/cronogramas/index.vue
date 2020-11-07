@@ -176,7 +176,9 @@
           </v-tooltip>
         </td>
         <td>{{ item.nombre }}</td>
-        <td>{{ item.descripcion }}</td>
+        <td>{{ item.actividad }}</td>
+        <td>{{ item.fecIniCronograma }}</td>
+        <td>{{ item.fecFinCronograma }}</td>
         <td>
           <v-btn outlined :color="item.estado === 'ACTIVO' ? 'info' : 'default'">{{ item.estado}}</v-btn>
         </td>
@@ -197,7 +199,7 @@ export default {
       nombre: [
         val => (val || '').length > 0 || 'El campo del nombre no puede estar vacío'
       ],
-      descripcion: [
+      actividad: [
         val => (val || '').length > 0 || 'El campo descripcion no puede estar vacío',
       ]
     },
@@ -206,7 +208,10 @@ export default {
     headers: [
       { text: 'Acciones', divider: false, sortable: false, align: 'center', value: 'ACTIONS' },
       { text: 'Nombre', value: 'nombre' },
-      { text: 'Descripcion', value: 'descripcion' },
+      { text: 'Actividad', value: 'actividad' },
+      { text: 'Fecha Inicio', value: 'fecIniCronograma' },
+      { text: 'Fecha Final', value: 'fecFinCronograma' },
+      { text: 'Estado', value: 'estado' }
     ],
     form: {
       id: '',

@@ -1,15 +1,18 @@
 <template>
   <div class="app-login">
+    <!--<v-img src="../img/logo-catacora.png" aspect-ratio="4" contain></v-img> -->
+    <!--<v-img src="../img/fondo2.png"></v-img>-->
     <div class="app-login__header">
-      <div class="logo-derecha"></div>
+      <!-- <div class="logo-derecha"></div> -->
       <div class="text-central">
         Sistema de Información Para el Seguimiento y Control de Ejecución de Proyectos Municipales
+        <br>
+        Gobierno Autónomo Municipal de Catacora
       </div>
-      <div class="logo-izquierda">
-        <v-img src="../img/logoCatacora.png" aspect-ratio="0.7"></v-img>
-      </div>
+      <!-- <div class="logo-izquierda"></div> -->
     </div>
     <div class="app-login__container">
+         <h3>Ingreso al Sistema/SISCEPROM</h3>
       <v-form
         ref="form"
         v-model="valid"
@@ -74,7 +77,6 @@
                 label="¿Olvidó su contraseña?"
               >
               </v-switch>
-
             </v-alert>
           </v-col>
         </v-row>

@@ -4,6 +4,7 @@
     :clipped-left="clipped"
     fixed
     height="50"
+    color="rgba(0,77,64)"
     class="bolivia__servicio"
     :class="[auth ? 'app-navbar' : 'view--init', $store.state.layout.miniVariant ? 'isMiniVariant' : auth ? 'normalMiniVariant' : '']"
     flat

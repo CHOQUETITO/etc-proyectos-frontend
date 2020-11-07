@@ -23,7 +23,7 @@
                   <v-text-field
                     color="success"
                     dense
-                    v-model="fechaInicio"
+                    v-model="form.fechaInicio"
                     label="Fecha Inicio"
                     prepend-icon="event"
                     readonly
@@ -33,7 +33,7 @@
                   ></v-text-field>
                 </template>
                 <v-date-picker
-                  v-model="fechaInicio"
+                  v-model="form.fechaInicio"
                   @input="dateFiltroInicio = false"
                   :first-day-of-week="0"
                   locale="es-EN"
@@ -59,7 +59,7 @@
                   <v-text-field
                     color="success"
                     dense
-                    v-model="fechaFinal"
+                    v-model="form.fechaFinal"
                     label="Fecha Final"
                     prepend-icon="event"
                     readonly
@@ -69,7 +69,7 @@
                   ></v-text-field>
                 </template>
                 <v-date-picker
-                  v-model="fechaFinal"
+                  v-model="form.fechaFinal"
                   @input="dateFiltroFinal = false"
                   :first-day-of-week="0"
                   locale="es-EN"
@@ -666,6 +666,15 @@ export default {
         this.$message.error('Faltan campos por llenar');
       }
     }
+  },
+  async mounted () {
+    this.$nextTick(() => {
+
+    });
+    const respuestaComunidades = await this.$service.get('comunidades');
+    this.listaComunidades = respuestaComunidades.rows;
+    const respuestaCategorias = await this.$service.get('categorias');
+    this.listaCategorias = respuestaCategorias.rows;
   },
   components: {
     CrudTable

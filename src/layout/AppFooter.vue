@@ -7,10 +7,10 @@
     tile
     v-if="auth"
     padless
-    color="transparent"
+    color="trasnparent"
     class="black--text"
   >
-    <div>Desarrollado por Eddy H. {{ new Date().getFullYear() }}</div>
+    <div>Desarrollado por Eddy Heberson. {{ new Date().getFullYear() }}</div>
   </v-footer>
 </template>
 

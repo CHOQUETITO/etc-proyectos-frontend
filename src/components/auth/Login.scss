@@ -7,11 +7,12 @@
   width: 100%;
   height: 100vh;
   display: flex;
-  flex-direction: column;
+  //flex-direction: column;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: $white;
+  background:#004D40;
+  //background-size: contain;
   .app-login__header {
     position: fixed;
     top: 0;
@@ -34,7 +35,8 @@
       .text-central {
         flex-grow: 1;
         height: 90px;
-        color: $primary;
+        //color: $primary;
+        color: yellow;
         background: $white;
         font-size: 25px;
         font-weight: 600;
@@ -45,6 +47,7 @@
         justify-content: center;
         text-align: center;
         border-bottom: 1px dashed rgba($color: $primary, $alpha: .3);
+        background:#004D40;
       }
       .logo-izquierda {
         flex-grow: 1;
@@ -67,7 +70,7 @@
     width: 330px;
     margin: auto;
     background: $white;
-    border: 1px solid $primary;
+    border: 2px solid $primary;
     border-radius: 23px;
     overflow: hidden;
     // height: 60vh;
@@ -87,6 +90,7 @@
       background-position: center;
       background-size: contain;
       box-shadow: none;
+
     }
 
     .app-login__boton {

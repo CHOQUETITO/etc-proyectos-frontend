@@ -18,7 +18,7 @@
       <v-list-item class="pa-0 ma-0">
         <v-list-item-content class="mb-0 pb-0">
           <v-list-item-title class="title--sidebar pb-2">
-            <span>Catacora</span>
+            <span>Gobierno Aútonomo Municipal de Catacora</span>
           </v-list-item-title>
           <v-list-item-subtitle>
           <v-card-title class="container--userinfo">
@@ -169,14 +169,15 @@ export default {
 @import '../scss/variables.scss';
   .app--sidenav {
     .title--sidebar {
-      font-size: 15px;
+      font-size: 12px;
+      font-weight: bold;
       color: $white;
       text-align: center;
       user-select: none;
     }
     .container--userinfo {
       flex-direction: column;
-      background: url('../../public/img/geometric.png') no-repeat;
+      background: url('../../public/img/catacora.png') no-repeat;
       background-size: cover;
       width: 100%;
       height: 100%;
@@ -190,7 +191,7 @@ export default {
         margin: 0 auto;
         text-align: center;
         text-transform: uppercase;
-        background: $white;
+        background: transparent;
         width: 100px;
         & + div {
           font-family: $fontFamilyTitilliumWeb;
