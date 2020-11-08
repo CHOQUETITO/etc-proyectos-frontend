@@ -109,17 +109,17 @@
           </v-col>
         </v-row>
         <v-row>
-        <v-col
-        cols="12"
-        :sm="12"
-        :md="12"
-        :lg="12"
-        :xs="12"
-        >
-        <div class="card-chart elevation-1 pa-1">
-        <v-chart :options="barVertical(dataProyectos, 'Numero de proyectos', 'nombre', 'cantidad')" class="mb-5" autoresize ref="numeroProyectos"/>
-        </div>
-        </v-col>
+          <v-col
+          cols="12"
+          :sm="12"
+          :md="12"
+          :lg="12"
+          :xs="12"
+          >
+          <div class="card-chart elevation-1 pa-1">
+          <v-chart :options="barVertical(dataProyectos, 'Número de Proyectos', 'nombre', 'cantidad')" class="mb-5" autoresize ref="numeroProyectos"/>
+          </div>
+          </v-col>
         </v-row>
     </v-container>
 </template>

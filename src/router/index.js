@@ -42,7 +42,7 @@ const routes = [
   {
     path: '/cronogramas',
     name: 'Cronogramas',
-    component: () => import(/* webpackChunkName: "Poas" */ '../components/cronogramas'),
+    component: () => import(/* webpackChunkName: "Cronogramas" */ '../components/cronogramas'),
   },
   {
     path: '/404',

@@ -294,7 +294,6 @@ export default {
     /**
      * @function handleCleanFilters
      * @description Limpiar los filtros
-     * @author dbarra@agetic.gob.bo
      */
     handleCleanFilters () {
       this.search = {};
@@ -304,7 +303,6 @@ export default {
     /**
      * @function getData
      * @description Obtener los registros para el crudTable
-     * @author dbarra@agetic.gob.bo
      */
     async getData (refresh = false) {
       try {

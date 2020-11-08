@@ -294,8 +294,8 @@
           </td>
         </tr>
       </template>
-    </crud-table>
-  </template>
+  </crud-table>
+</template>
 <script>
 import CrudTable from '@/plugins/crud-table/CrudTable.vue';
 import actions from '@/plugins/crud-table/mixins/crud-table';
@@ -445,7 +445,6 @@ export default {
     /**
      * @function save
      * @description Esta funcion esta creada para guardar en la BD
-     * @author dbarra@agetic.gob.bo
      */
     async save () {
       if (this.$refs.form.validate()) {

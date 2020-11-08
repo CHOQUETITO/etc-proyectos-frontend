@@ -317,7 +317,6 @@ export default {
     /**
      * @function save
      * @description Esta funcion esta creada para guardar en la BD
-     * @author dbarra@agetic.gob.bo
      */
     async save () {
       if (this.$refs.form.validate()) {
