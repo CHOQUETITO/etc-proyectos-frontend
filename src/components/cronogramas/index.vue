@@ -67,6 +67,7 @@
                   color="success"
                   clearable
                   required
+                  :rules="rules.nombre"
                   v-model="form.nombre"
                   prepend-icon="calendar_today"
                   label="Nombre del Cronograma"
@@ -86,13 +87,54 @@
                   clearable
                   required
                   dense
-                  v-model="form.descripcion"
+                  :rules="rules.actividad"
+                  v-model="form.actividad"
                   prepend-icon="calendar_today"
-                  label="Descripción del Cronograma"
+                  label="Actividad del Cronograma"
                   >
                 </v-text-field>
               </v-col>
             </v-row>
+             <v-row no-gutters>
+              <v-col
+                cols="12"
+                :md="12"
+                :xs="12"
+                :sm="12"
+                >
+                <v-text-field
+                  color="success"
+                  clearable
+                  required
+                  dense
+                  :rules="rules.fechaInicio"
+                  v-model="form.fecIniCronograma"
+                  prepend-icon="calendar_today"
+                  label="Fecha Inicio del Cronograma"
+                  >
+                </v-text-field>
+              </v-col>
+             </v-row>
+             <v-row no-gutters>
+              <v-col
+                cols="12"
+                :md="12"
+                :xs="12"
+                :sm="12"
+                >
+                <v-text-field
+                  color="success"
+                  clearable
+                  required
+                  dense
+                  :rules="rules.fechaFinal"
+                  v-model="form.fecFinCronograma"
+                  prepend-icon="calendar_today"
+                  label="Fecha Fin del Cronograma"
+                  >
+                </v-text-field>
+              </v-col>
+             </v-row>
           </v-container>
             <v-card-actions>
               <v-container fluid>
@@ -197,10 +239,16 @@ export default {
     valid: false,
     rules: {
       nombre: [
-        val => (val || '').length > 0 || 'El campo del nombre no puede estar vacío'
+        val => (val || '').length > 0 || 'El campo Nombre no puede estar vacío'
       ],
       actividad: [
-        val => (val || '').length > 0 || 'El campo descripcion no puede estar vacío',
+        val => (val || '').length > 0 || 'El campo Actividad no puede estar vacío',
+      ],
+      fechaInicio: [
+        val => (val || '').length > 0 || 'El campo Fecha Inicio no puede estar vacío',
+      ],
+      fechaFinal: [
+        val => (val || '').length > 0 || 'El campo Fecha Fin no puede estar vacío',
       ]
     },
     url: 'cronogramas',
@@ -216,7 +264,9 @@ export default {
     form: {
       id: '',
       nombre: '',
-      descripcion: ''
+      actividad: '',
+      fecIniCronograma: '',
+      fecFinCronograma: ''
     },
     filters: [
       {

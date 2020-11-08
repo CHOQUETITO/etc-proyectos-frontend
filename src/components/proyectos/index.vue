@@ -271,6 +271,7 @@
                   color="success"
                   clearable
                   required
+                  :rules="rules.nombre"
                   v-model="form.nombre"
                   prepend-icon="assignment"
                   label="Nombre del Proyecto"
@@ -290,6 +291,7 @@
                   clearable
                   required
                   dense
+                  :rules="rules.descripcion"
                   v-model="form.descripcion"
                   prepend-icon="assignment"
                   label="Descripción del Proyecto"
@@ -309,6 +311,7 @@
                   clearable
                   required
                   dense
+                  :rules="rules.idComunidad"
                   v-model="form.idComunidad"
                   item-text="nombre"
                   item-value="id"
@@ -329,6 +332,7 @@
                   clearable
                   required
                   dense
+                  :rules="rules.categoria"
                   v-model="form.idCategoria"
                   item-text="nombre"
                   item-value="id"
@@ -349,6 +353,7 @@
                   clearable
                   required
                   dense
+                  :rules="rules.poa"
                   v-model="form.idPoa"
                   item-text="nombre"
                   item-value="id"
@@ -369,6 +374,7 @@
                   clearable
                   required
                   dense
+                  :rules="rules.empresa"
                   v-model="form.idEmpresa"
                   item-text="nombre"
                   item-value="id"
@@ -401,6 +407,7 @@
                     <v-text-field
                       color="seccess"
                       dense
+                      :rules="rules.fechaInicio"
                       v-model="form.fechaInicio"
                       label="Fecha Inicio"
                       prepend-icon="event"
@@ -436,6 +443,7 @@
                     <v-text-field
                       color="success"
                       dense
+                      :rules="rules.fechaFinal"
                       v-model="form.fechaFinal"
                       label="Fecha Final"
                       prepend-icon="event"
@@ -511,24 +519,28 @@ export default {
     abrirDialogo: false,
     rules: {
       nombre: [
-        val => (val || '').length > 0 || 'El campo del nombre no puede estar vacío'
+        val => (val || '').length > 0 || 'El campo nombre no puede estar vacío'
       ],
       descripcion: [
-        val => (val || '').length > 0 || 'El campo usuario no puede estar vacío',
-        val => (val || '').length > 5 || 'El campo usuario no puede tener menos de 10 caracteres'
+        val => (val || '').length > 0 || 'El campo descripción no puede estar vacío'
       ],
-      primerApellido: [
-        val => (val || '').length > 0 || 'El campo del primer apellido no puede estar vacío',
+      idComunidad: [
+        val => (val || '') || 'Seleccione una comunidad'
       ],
-      segundoApellido: [
-        val => (val || '').length > 0 || 'El campo del segundo apellido no puede estar vacío',
+      categoria: [
+        val => (val || '') || 'Selecciones una categoria'
       ],
-      fechaNacimiento: [
-        val => (val || '').length > 0 || 'El campo de la fecha de nacimiento no puede estar vacío',
+      poa: [
+        val => (val || '') || 'Seleccione el poa'
       ],
-      email: [
-        val => (val || '').length > 0 || 'El campo email no puede estar vacío',
-        val => /\S+@\S+\.\S+/.test(val) || 'El campo email no es válido'
+      empresa: [
+        val => (val || '') || 'Seleccione una empresa'
+      ],
+      fechaInicio: [
+        val => (val || '').length > 0 || 'El campo de la fecha inicio no puede estar vacío'
+      ],
+      fechaFinal: [
+        val => (val || '').length > 0 || 'El campo de la fecha final no puede estar vacío'
       ]
     },
     url: 'proyectos',

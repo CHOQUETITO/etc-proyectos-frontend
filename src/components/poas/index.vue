@@ -67,6 +67,7 @@
                   color="success"
                   clearable
                   required
+                  :rules="rules.nombre"
                   v-model="form.nombre"
                   prepend-icon="folder_open"
                   label="Nombre del Poa"
@@ -86,6 +87,7 @@
                   clearable
                   required
                   dense
+                  :rules="rules.descripcion"
                   v-model="form.descripcion"
                   prepend-icon="folder_open"
                   label="Descripción del Poa"
@@ -105,6 +107,8 @@
                   clearable
                   required
                   dense
+                  oninput="this.value = this.value.replace(/[^0-9]/g,'');"
+                  :rules="rules.gestion"
                   v-model="form.gestion"
                   prepend-icon="folder_open"
                   label="Gestión"
@@ -124,9 +128,11 @@
                   clearable
                   required
                   dense
+                  oninput="this.value = this.value.replace(/[^0-9.]/g,'');"
+                  :rules="rules.monto"
                   v-model="form.monto"
                   prepend-icon="folder_open"
-                  label="Monto del Poa"
+                  label="Monto del Poa/Bs."
                   >
                 </v-text-field>
               </v-col>
@@ -254,7 +260,7 @@ export default {
       { text: 'Nombre', value: 'nombre' },
       { text: 'Descripción', value: 'descripcion' },
       { text: 'Gestión', value: 'gestion' },
-      { text: 'Monto', value: 'monto' },
+      { text: 'Monto/Bs.', value: 'monto' },
     ],
     form: {
       id: '',

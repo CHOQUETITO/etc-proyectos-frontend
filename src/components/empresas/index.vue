@@ -67,6 +67,7 @@
                   color="success"
                   clearable
                   required
+                  :rules="rules.nombre"
                   v-model="form.nombre"
                   prepend-icon="business"
                   label="Nombre de la Empresa"
@@ -105,6 +106,7 @@
                   clearable
                   required
                   dense
+                  :rules="rules.sigla"
                   v-model="form.sigla"
                   prepend-icon="business"
                   label="Sigla de la Empresa"
@@ -124,6 +126,7 @@
                   clearable
                   required
                   dense
+                  :rules="rules.email"
                   v-model="form.email"
                   prepend-icon="business"
                   label="Email de la Empresa"
@@ -143,9 +146,11 @@
                   clearable
                   required
                   dense
+                  oninput="this.value = this.value.replace(/[^0-9]/g,'');"
+                  :rules="rules.telefono"
                   v-model="form.telefonos"
                   prepend-icon="business"
-                  label="Telefonos de la Empresa"
+                  label="Telefono/Celular de la Empresa"
                   >
                 </v-text-field>
               </v-col>
@@ -162,6 +167,7 @@
                   clearable
                   required
                   dense
+                  :rules="rules.direccion"
                   v-model="form.direccion"
                   prepend-icon="business"
                   label="Dirección de la Empresa"
@@ -181,6 +187,7 @@
                   clearable
                   required
                   dense
+                  :rules="rules.web"
                   v-model="form.web"
                   prepend-icon="business"
                   label="Pagina Web de la Empresa"
@@ -200,6 +207,8 @@
                   clearable
                   required
                   dense
+                  oninput="this.value = this.value.replace(/[^0-9]/g,'');"
+                  :rules="rules.nit"
                   v-model="form.nit"
                   prepend-icon="business"
                   label="Nit de la Empresa"
@@ -314,24 +323,27 @@ export default {
     valid: false,
     rules: {
       nombre: [
-        val => (val || '').length > 0 || 'El campo del nombre no puede estar vacío'
+        val => (val || '').length > 0 || 'El campo nombre de la empresa no puede estar vacío'
       ],
-      descripcion: [
-        val => (val || '').length > 0 || 'El campo usuario no puede estar vacío',
-        val => (val || '').length > 5 || 'El campo usuario no puede tener menos de 10 caracteres'
-      ],
-      primerApellido: [
-        val => (val || '').length > 0 || 'El campo del primer apellido no puede estar vacío',
-      ],
-      segundoApellido: [
-        val => (val || '').length > 0 || 'El campo del segundo apellido no puede estar vacío',
-      ],
-      fechaNacimiento: [
-        val => (val || '').length > 0 || 'El campo de la fecha de nacimiento no puede estar vacío',
+      sigla: [
+        val => (val || '').length > 0 || 'El campo sigla no puede estar vacío'
       ],
       email: [
         val => (val || '').length > 0 || 'El campo email no puede estar vacío',
-        val => /\S+@\S+\.\S+/.test(val) || 'El campo email no es válido'
+        val => /\S+@\S+\.\S+/.test(val)
+      ],
+      telefono: [
+        val => (val || '').length > 0 || 'El campo teléfono no puede estar vacío'
+      ],
+      direccion: [
+        val => (val || '').length > 0 || 'El campo direccion no puede estar vacío'
+      ],
+      web: [
+        val => (val || '').length > 0 || 'El campo web no puede estar vacío',
+        val => /www\.+\S+\.\S+/.test(val) || 'El campo email no es válido'
+      ],
+      nit: [
+        val => (val || '').length > 0 || 'El campo nit no puede estar vacío'
       ]
     },
     url: 'empresas',

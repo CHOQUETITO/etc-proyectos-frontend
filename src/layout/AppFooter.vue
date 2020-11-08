@@ -7,10 +7,10 @@
     tile
     v-if="auth"
     padless
-    color="trasnparent"
+    color="#004D40"
     class="black--text"
   >
-    <div>Desarrollado por Eddy Heberson. {{ new Date().getFullYear() }}</div>
+    <div class="titulo">Desarrollado por Eddy Heberson Choque Tito {{ new Date().getFullYear() }}</div>
   </v-footer>
 </template>
 
@@ -37,5 +37,8 @@ export default {
   align-items: center;
   justify-content: center;
   font-size: 0.8rem;
+}
+.titulo {
+  color: white;
 }
 </style>

@@ -10,16 +10,7 @@
     flat
   >
     <v-app-bar-nav-icon v-if="auth" class="btn-mini-variant" @click="handleMiniVariant"></v-app-bar-nav-icon>
-    <ul class="redes__sociales">
-      <li :style="auth ? '' : 'filter: invert(1)'" tooltip="Facebook" @click.stop="redirect('facebook')">&nbsp;</li>
-      <li :style="auth ? '' : 'filter: invert(1)'" tooltip="Twitter" @click.stop="redirect('twitter')">&nbsp;</li>
-      <li :style="auth ? '' : 'filter: invert(1)'" tooltip="Youtube" @click.stop="redirect('youtube')">&nbsp;</li>
-      <li :style="auth ? '' : 'filter: invert(1)'" tooltip="Teléfono de contacto" @click.stop="redirect('contacto')">&nbsp;</li>
-      <li :style="auth ? '' : 'filter: invert(1)'" tooltip="Correo electrónico" @click.stop="redirect('email')">&nbsp;</li>
-      <li :style="auth ? '' : 'filter: invert(1)'" tooltip="Whatsapp" @click.stop="redirect('whatsapp')">&nbsp;</li>
-      <li :style="auth ? '' : 'filter: invert(1)'" tooltip="Messenger" @click.stop="redirect('messenger')">&nbsp;</li>
-    </ul>
-    <v-spacer></v-spacer>
+    <h3 class="titulo"> Sistema de Información para el Seguimiento y Control de Proyectos Municipales </h3>
   </v-app-bar>
 </template>
 
@@ -95,6 +86,9 @@ $bgNabvar: rgba($color: darken($primary, 35%), $alpha: .75);
     letter-spacing: 0;
     font-size: .8rem;
   }
+}
+.titulo {
+color: white;
 }
 .app-navbar {
   width: auto;
