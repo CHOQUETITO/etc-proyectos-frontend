@@ -108,20 +108,30 @@
             ></v-select>
           </v-col>
         </v-row>
+        <!------- para los Echarts ------->
         <v-row>
-          <v-col
-          cols="12"
-          :sm="12"
-          :md="12"
-          :lg="12"
-          :xs="12"
-          >
-          <div class="card-chart elevation-1 pa-1">
-          <v-chart :options="barVertical(dataProyectos, 'Número de Proyectos', 'nombre', 'cantidad')" class="mb-5" autoresize ref="numeroProyectos"/>
-          </div>
+          <v-col class="d-flex"
+            cols="12"
+            :md="6"
+            :xs="12"
+            :sm="12"
+            >
+            <div class="card-chart elevation-1 pa-1">
+            <v-chart :options="barVertical(dataProyectos, 'Número de Proyectos por Comunidad', 'nombre', 'cantidad')" class="mb-5" autoresize ref="numeroProyectos"/>
+            </div>
+          </v-col>
+          <v-col class="d-flex"
+            cols="12"
+            :md="6"
+            :xs="12"
+            :sm="12"
+            >
+            <div class="card-chart elevation-1 pa-1">
+            <v-chart :options="barVertical(dataProyectosCategorias, 'Número de Proyectos por Categorias', 'nombre', 'cantidad')" class="mb-5" autoresize ref="numeroProyectos"/>
+            </div>
           </v-col>
         </v-row>
-    </v-container>
+  </v-container>
 </template>
 <script>
 import ECharts from 'vue-echarts';
@@ -152,6 +162,7 @@ export default {
   data () {
     return {
       dataProyectos: [],
+      dataProyectosCategorias: [],
       items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
       date: null,
       dateFinal: null,
@@ -163,6 +174,9 @@ export default {
     async getData () {
       const respuestaCantidad = await this.$service.get('proyectos/cantidad-proyectos');
       this.dataProyectos = respuestaCantidad;
+
+      const respuestaCantidadCategorias = await this.$service.get('proyectos/cantidad-proyectos-categorias');
+      this.dataProyectosCategorias = respuestaCantidadCategorias;
     },
     setDataInCharts() {
       const { numeroProyectos } = this.$refs;
