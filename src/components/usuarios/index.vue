@@ -281,13 +281,13 @@
               <span>Eliminar registro</span>
             </v-tooltip>
           </td>
-          <td>{{ item.nombres }}</td>
-          <td>{{ item.primerApellido }}</td>
-          <td>{{ item.segundoApellido }}</td>
-          <td>{{ $datetime.format(item.fechaNacimiento, 'dd/MM/YYYY') }}</td>
+          <td>{{ item.persona.nombres }}</td>
+          <td>{{ item.persona.primer_apellido }}</td>
+          <td>{{ item.persona.segundo_apellido }}</td>
+          <td>{{ $datetime.format(item.persona.fecha_nacimiento, 'dd/MM/YYYY') }}</td>
           <td>{{ item.correoElectronico }}</td>
-          <td>{{ item.telefono }}</td>
-          <td>{{ item.genero }}</td>
+          <td>{{ item.persona.telefono }}</td>
+          <td>{{ item.persona.genero }}</td>
           <td>{{ $datetime.format(item._created_at, 'dd/MM/YYYY' )}}</td>
           <td>
             <v-btn outlined :color="item.estado === 'ACTIVO' ? 'info' : 'default'">{{ item.estado}}</v-btn>
@@ -326,7 +326,7 @@ export default {
         val => /\S+@\S+\.\S+/.test(val) || 'El campo email no es válido'
       ]
     },
-    url: 'persona',
+    url: 'system/usuario',
     order: ['createdAt', 'DESC'],
     headers: [
       { text: 'Acciones', divider: false, sortable: false, align: 'center', value: 'ACTIONS' },
