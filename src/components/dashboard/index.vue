@@ -72,7 +72,7 @@
                 >
               </v-date-picker>
             </v-menu>
-           </v-col>
+          </v-col>
           <v-col class="d-flex"
             cols="12"
             :md="6"
@@ -86,7 +86,9 @@
               dense
               outlined
               prepend-icon="terrain"
-              :items="items"
+              item-text="nombre"
+              item-value="id"
+              :items="listaComunidades"
               label="Comunidad"
             ></v-select>
           </v-col>
@@ -103,13 +105,16 @@
               dense
               outlined
               prepend-icon="category"
-              :items="items"
+              item-text="nombre"
+              item-value="id"
+              :items="listaCategorias"
               label="Categoria"
             ></v-select>
           </v-col>
         </v-row>
-        <!------- para los Echarts ------->
+        <!------- Echarts ------->
         <v-row>
+          <!-- pie proyectos por Comunidades -->
           <v-col class="d-flex"
             cols="12"
             :md="6"
@@ -117,9 +122,33 @@
             :sm="12"
             >
             <div class="card-chart elevation-1 pa-1">
-            <v-chart :options="barVertical(dataProyectos, 'Número de Proyectos por Comunidad', 'nombre', 'cantidad')" class="mb-5" autoresize ref="numeroProyectos"/>
+            <v-chart :options="pieProyectos(dataProyectosComunidades, 'Número de Proyectos por Comunidades', 'nombre', 'cantidad')" class="mb-5" autoresize ref="numeroProyectos"/>
             </div>
           </v-col>
+          <!-- pie proyectos por Categorias -->
+          <v-col class="d-flex"
+            cols="12"
+            :md="6"
+            :xs="12"
+            :sm="12"
+            >
+            <div class="card-chart elevation-1 pa-1">
+            <v-chart :options="pieProyectos(dataProyectosCategorias, 'Número de Proyectos por Categorias', 'nombre', 'cantidad')" class="mb-5" autoresize ref="numeroProyectos"/>
+            </div>
+          </v-col>
+          <v-divider></v-divider>
+          <!-- Bar para proyectos por comunidades -->
+          <v-col class="d-flex"
+            cols="12"
+            :md="6"
+            :xs="12"
+            :sm="12"
+            >
+            <div class="card-chart elevation-1 pa-1">
+            <v-chart :options="barVertical(dataProyectosComunidades, 'Número de Proyectos por Comunidad', 'nombre', 'cantidad')" class="mb-5" autoresize ref="numeroProyectos"/>
+            </div>
+          </v-col>
+          <!-- Bar para proyectos por Categorias -->
           <v-col class="d-flex"
             cols="12"
             :md="6"
@@ -161,7 +190,9 @@ export default {
   },
   data () {
     return {
-      dataProyectos: [],
+      listaComunidades: [],
+      listaCategorias: [],
+      dataProyectosComunidades: [],
       dataProyectosCategorias: [],
       items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
       date: null,
@@ -173,7 +204,7 @@ export default {
   methods: {
     async getData () {
       const respuestaCantidad = await this.$service.get('proyectos/cantidad-proyectos');
-      this.dataProyectos = respuestaCantidad;
+      this.dataProyectosComunidades = respuestaCantidad;
 
       const respuestaCantidadCategorias = await this.$service.get('proyectos/cantidad-proyectos-categorias');
       this.dataProyectosCategorias = respuestaCantidadCategorias;
@@ -184,6 +215,68 @@ export default {
         numeroProyectos.hideLoading();
       }
     },
+
+    pieProyectos(data, title, key = 'name', value = 'value') {
+      const nombre = data.map(d => d[key]);
+      const pie = data.map(d => d[value]);
+      return {
+        // backgroundColor: '#2c343c',
+        title: {
+          text: title,
+          textStyle: {
+            color: '#004D40'
+          },
+          subtext: title,
+          left: 'center'
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {
+              title: 'Descargar como imagen'
+            }
+          },
+          left: 10
+        },
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+          type: 'scroll',
+          orient: 'vertical',
+          left: 'left',
+          top: 'bottom',
+          data: nombre,
+        },
+        series: [
+          {
+            type: 'pie',
+            radius: '50%',
+            name: 'Pie',
+            data: [
+              { value: pie[0], name: nombre[0] },
+              { value: pie[1], name: nombre[1] },
+              { value: pie[2], name: nombre[2] },
+              { value: pie[3], name: nombre[3] },
+              { value: pie[4], name: nombre[4] },
+              { value: pie[5], name: nombre[5] },
+              { value: pie[6], name: nombre[6] },
+              { value: pie[7], name: nombre[7] },
+              { value: pie[8], name: nombre[8] },
+              { value: pie[9], name: nombre[9] }
+            ],
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      };
+    },
+
     barVertical(data, title, key = 'name', value = 'value') {
       const xAxis = data.map(d => d[key]);
       const yAxis = data.map(d => d[value]);
@@ -192,6 +285,9 @@ export default {
       return {
         title: {
           text: title,
+          textStyle: {
+            color: '#004D40'
+          },
           left: 'center'
         },
         toolbox: {
@@ -235,7 +331,7 @@ export default {
       };
     },
   },
-  mounted () {
+  async mounted () {
     this.$nextTick(async () => {
       try {
         const chartLoader = {
@@ -256,6 +352,10 @@ export default {
         this.$message.error(error.message);
       }
     });
+    const respuestaComunidades = await this.$service.get('comunidades');
+    this.listaComunidades = respuestaComunidades.rows;
+    const respuestaCategorias = await this.$service.get('categorias');
+    this.listaCategorias = respuestaCategorias.rows;
   },
 };
 </script>

@@ -62,6 +62,29 @@
                 :xs="12"
                 :sm="12"
                 >
+                <v-select
+                  color="success"
+                  clearable
+                  required
+                  dense
+                  :rules="rules.nombreProyecto"
+                  v-model="form.idProyecto"
+                  item-text="nombre"
+                  item-value="id"
+                  :items="listaProyectos"
+                  prepend-icon="assignment"
+                  label="Nombre del Proyecto"
+                  >
+                </v-select>
+              </v-col>
+            </v-row>
+            <v-row no-gutters>
+              <v-col
+                cols="12"
+                :md="12"
+                :xs="12"
+                :sm="12"
+                >
                 <v-text-field
                   dense
                   color="success"
@@ -95,7 +118,101 @@
                 </v-text-field>
               </v-col>
             </v-row>
-             <v-row no-gutters>
+            <v-row no-gutters>
+              <v-col
+                cols="12"
+                :md="6"
+                :xs="12"
+                :sm="6"
+                >
+                <v-menu
+                  v-model="date"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  locale="es-EN"
+                  min-width="290px"
+                  >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      color="seccess"
+                      dense
+                      :rules="rules.fecIniCronograma"
+                      v-model="form.fecIniCronograma"
+                      label="Fecha Inicio de la Actividad"
+                      prepend-icon="event"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="form.fecIniCronograma"
+                    @input="date = false"
+                    :first-day-of-week="0"
+                    locale="es-EN"
+                  ></v-date-picker>
+                </v-menu>
+              </v-col>
+              <v-col
+                cols="12"
+                :md="6"
+                :xs="12"
+                :sm="6"
+                >
+                <v-menu
+                  v-model="dateFinal"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  locale="es-EN"
+                  min-width="290px"
+                  >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      color="success"
+                      dense
+                      :rules="rules.fecFinCronograma"
+                      v-model="form.fecFinCronograma"
+                      label="Fecha Final de la Actividad"
+                      prepend-icon="event"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="form.fecFinCronograma"
+                    @input="dateFinal = false"
+                    :first-day-of-week="0"
+                    locale="es-EN"
+                  ></v-date-picker>
+                </v-menu>
+              </v-col>
+            </v-row>
+            <v-row no-gutters>
+              <v-col
+                cols="12"
+                :md="12"
+                :xs="12"
+                :sm="12"
+                >
+                <v-select
+                  color="success"
+                  clearable
+                  required
+                  dense
+                  prepend-icon="account_circle"
+                  v-model="form.estadoActividad"
+                  :rules="rules.estadoActividad"
+                  :items="estadoActividad"
+                  label="Estado de la Actividad"
+                ></v-select>
+              </v-col>
+            </v-row>
+            <v-row no-gutters>
               <v-col
                 cols="12"
                 :md="12"
@@ -107,34 +224,14 @@
                   clearable
                   required
                   dense
-                  :rules="rules.fechaInicio"
-                  v-model="form.fecIniCronograma"
+                  :rules="rules.observacion"
+                  v-model="form.observacion"
                   prepend-icon="calendar_today"
-                  label="Fecha Inicio del Cronograma"
+                  label="Observaciones"
                   >
                 </v-text-field>
               </v-col>
-             </v-row>
-             <v-row no-gutters>
-              <v-col
-                cols="12"
-                :md="12"
-                :xs="12"
-                :sm="12"
-                >
-                <v-text-field
-                  color="success"
-                  clearable
-                  required
-                  dense
-                  :rules="rules.fechaFinal"
-                  v-model="form.fecFinCronograma"
-                  prepend-icon="calendar_today"
-                  label="Fecha Fin del Cronograma"
-                  >
-                </v-text-field>
-              </v-col>
-             </v-row>
+            </v-row>
           </v-container>
             <v-card-actions>
               <v-container fluid>
@@ -217,10 +314,15 @@
             <span>Eliminar registro</span>
           </v-tooltip>
         </td>
+        <td>{{ item.proyecto.nombre }}</td>
         <td>{{ item.nombre }}</td>
         <td>{{ item.actividad }}</td>
         <td>{{ item.fecIniCronograma }}</td>
         <td>{{ item.fecFinCronograma }}</td>
+        <td>
+          <v-btn outlined :color="item.estadoActividad === 'PENDIENTE' ? 'error' : 'success'">{{ item.estadoActividad}}</v-btn>
+        </td>
+        <td>{{ item.observacion }}</td>
         <td>
           <v-btn outlined :color="item.estado === 'ACTIVO' ? 'info' : 'default'">{{ item.estado}}</v-btn>
         </td>
@@ -237,6 +339,10 @@ export default {
   mixins: [actions],
   data: () => ({
     valid: false,
+    date: null,
+    dateFinal: null,
+    listaProyectos: [],
+    estadoActividad: ['PENDIENTE', 'DESARROLLO', 'CONCLUIDO'],
     rules: {
       nombre: [
         val => (val || '').length > 0 || 'El campo Nombre no puede estar vacío'
@@ -255,18 +361,24 @@ export default {
     order: ['createdAt', 'DESC'],
     headers: [
       { text: 'Acciones', divider: false, sortable: false, align: 'center', value: 'ACTIONS' },
+      { text: 'Proyecto', value: 'nombre' },
       { text: 'Nombre', value: 'nombre' },
       { text: 'Actividad', value: 'actividad' },
       { text: 'Fecha Inicio', value: 'fecIniCronograma' },
       { text: 'Fecha Final', value: 'fecFinCronograma' },
+      { text: 'Estado de Actividad', value: 'estadoActividad' },
+      { text: 'Observación', value: 'observacion' },
       { text: 'Estado', value: 'estado' }
     ],
     form: {
       id: '',
+      idProyecto: '',
       nombre: '',
       actividad: '',
       fecIniCronograma: '',
-      fecFinCronograma: ''
+      fecFinCronograma: '',
+      estadoActividad: '',
+      observacion: ''
     },
     filters: [
       {
@@ -276,15 +388,18 @@ export default {
         typeG: 'String'
       }
     ],
-    date: null
   }),
   methods: {
     reset () {
       this.form = {
-        id: null,
+        id: '',
+        idProyecto: '',
         nombre: '',
-        descripcion: '',
-        estado: 'ACTIVO'
+        fecIniCronograma: '',
+        fecFinCronograma: '',
+        estadoActividad: '',
+        observacion: '',
+        estado: 'ACTIVO',
       };
     },
     itemDelete ({ items }) {
@@ -304,7 +419,7 @@ export default {
       this.reset();
       this.$store.commit('closeModal');
     },
-    openModal ({ items }) {
+    async openModal ({ items }) {
       if (items && items.id) {
         this.$nextTick(() => {
           this.form = items;
@@ -312,6 +427,8 @@ export default {
       } else {
         this.reset();
       }
+      const respuestaProyectos = await this.$service.get('proyectos');
+      this.listaProyectos = respuestaProyectos.rows;
       this.$store.commit('openModal');
     },
     /**

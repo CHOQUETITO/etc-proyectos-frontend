@@ -16,6 +16,7 @@ import store from './store';
 import vuetify from './plugins/vuetify';
 import './assets/fonts/index.scss';
 import './scss/index.scss';
+// import MultiFiltersPlugin from './plugins/MultiFilters';
 
 Vue.use(Progress);
 Vue.use(Message);
@@ -25,6 +26,7 @@ Vue.use(Modal);
 Vue.use(Loading);
 Vue.use(Datetime);
 Vue.use(Notifications);
+// Vue.use(MultiFiltersPlugin);
 Vue.use(Service, {
   apiUrl: process.env.VUE_APP_API_URL,
   baseServer: process.env.VUE_APP_BASE_SERVER,

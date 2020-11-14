@@ -68,31 +68,14 @@
                   color="success"
                   clearable
                   required
-                  :rules="rules.numeroDocumento"
-                  v-model="form.numeroDocumento"
-                  prepend-icon="account_circle"
-                  label="Número de documento"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col
-                cols="12"
-                :md="6"
-                :xs="12"
-                :sm="12"
-              >
-                <v-text-field
-                  color="success"
-                  clearable
-                  required
-                  dense
                   :rules="rules.nombres"
                   v-model="form.nombres"
                   prepend-icon="account_circle"
                   label="Nombres"
                 ></v-text-field>
               </v-col>
+            </v-row>
+            <v-row>
               <v-col
                 cols="12"
                 :md="6"
@@ -101,11 +84,28 @@
               >
                 <v-text-field
                   color="success"
-                  label="Primer apellido"
+                  clearable
                   required
                   dense
-                  v-model="form.primerApellido"
                   :rules="rules.primerApellido"
+                  v-model="form.primer_apellido"
+                  prepend-icon="account_circle"
+                  label="Apellido Paterno"
+                ></v-text-field>
+              </v-col>
+              <v-col
+                cols="12"
+                :md="6"
+                :xs="12"
+                :sm="12"
+              >
+                <v-text-field
+                  color="success"
+                  label="Apellido Materno"
+                  required
+                  dense
+                  v-model="form.segundo_apellido"
+                  :rules="rules.segundoApellido"
                   prepend-icon="account_circle"
                   clearable
                 ></v-text-field>
@@ -119,16 +119,36 @@
                 :sm="12"
               >
                 <v-text-field
-                  color="primary"
+                  color="success"
+                  clearable
                   required
                   dense
-                  label="Segundo apellido"
-                  v-model="form.segundoApellido"
-                  :rules="rules.segundoApellido"
+                  :rules="rules.numeroDocumento"
+                  v-model="form.nro_documento"
                   prepend-icon="account_circle"
-                  clearable
+                  label="Cedula de Identidad"
                 ></v-text-field>
               </v-col>
+              <v-col
+                cols="12"
+                :md="6"
+                :xs="12"
+                :sm="12"
+                >
+                <v-select
+                  color="success"
+                  clearable
+                  required
+                  dense
+                  prepend-icon="account_circle"
+                  v-model="form.documento_expedido"
+                  :rules="rules.documentoExpedido"
+                  :items="expedido"
+                  label="Expedido"
+                ></v-select>
+              </v-col>
+            </v-row>
+            <v-row>
               <v-col
                 cols="12"
                 :md="6"
@@ -148,7 +168,7 @@
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       dense
-                      v-model="form.fechaNacimiento"
+                      v-model="form.fecha_nacimiento"
                       label="Fecha de nacimiento"
                       prepend-icon="event"
                       readonly
@@ -157,12 +177,30 @@
                     ></v-text-field>
                   </template>
                   <v-date-picker
-                    v-model="form.fechaNacimiento"
+                    v-model="form.fecha_nacimiento"
                     @input="date = false"
                     :first-day-of-week="0"
                     locale="es-EN"
                   ></v-date-picker>
                 </v-menu>
+              </v-col>
+              <v-col
+                cols="12"
+                :md="6"
+                :xs="12"
+                :sm="12"
+                >
+                <v-select
+                  color="success"
+                  clearable
+                  required
+                  dense
+                  prepend-icon="account_circle"
+                  v-model="form.genero"
+                  :rules="rules.genero"
+                  :items="genero"
+                  label="Género"
+                ></v-select>
               </v-col>
             </v-row>
             <v-row>
@@ -174,12 +212,11 @@
               >
                 <v-text-field
                   color="primary"
-                  required
+                  label="Teléfono"
                   dense
-                  label="Correo electrónico"
-                  v-model="form.correoElectronico"
-                  :rules="rules.correoElectronico"
-                  prepend-icon="contact_mail"
+                  v-model="form.telefono"
+                  :rules="rules.telefono"
+                  prepend-icon="contact_phone"
                   clearable
                 ></v-text-field>
               </v-col>
@@ -191,10 +228,12 @@
               >
                 <v-text-field
                   color="primary"
-                  label="Teléfono"
+                  required
                   dense
-                  v-model="form.telefono"
-                  prepend-icon="contact_phone"
+                  label="Correo electrónico"
+                  v-model="form.email"
+                  :rules="rules.email"
+                  prepend-icon="contact_mail"
                   clearable
                 ></v-text-field>
               </v-col>
@@ -281,14 +320,15 @@
               <span>Eliminar registro</span>
             </v-tooltip>
           </td>
-          <td>{{ item.persona.nombres }}</td>
-          <td>{{ item.persona.primer_apellido }}</td>
-          <td>{{ item.persona.segundo_apellido }}</td>
-          <td>{{ $datetime.format(item.persona.fecha_nacimiento, 'dd/MM/YYYY') }}</td>
-          <td>{{ item.correoElectronico }}</td>
-          <td>{{ item.persona.telefono }}</td>
-          <td>{{ item.persona.genero }}</td>
-          <td>{{ $datetime.format(item._created_at, 'dd/MM/YYYY' )}}</td>
+          <td>{{ item.nombres }}</td>
+          <td>{{ item.primer_apellido }}</td>
+          <td>{{ item.segundo_apellido }}</td>
+          <td>{{ item.nro_documento }}</td>
+          <td>{{ item.documento_expedido }}</td>
+          <td>{{ $datetime.format(item.fecha_nacimiento, 'dd/MM/YYYY') }}</td>
+          <td>{{ item.genero }}</td>
+          <td>{{ item.telefono }}</td>
+          <td>{{ item.email }}</td>
           <td>
             <v-btn outlined :color="item.estado === 'ACTIVO' ? 'info' : 'default'">{{ item.estado}}</v-btn>
           </td>
@@ -305,10 +345,9 @@ export default {
   mixins: [actions],
   data: () => ({
     valid: false,
+    expedido: ['LP', 'CB', 'SC', 'CH', 'OR', 'PT', 'TJ', 'BE', 'PD'],
+    genero: ['M', 'F', 'OTRO'],
     rules: {
-      numeroDocumento: [
-        val => (val || '').length > 0 || 'El campo del número de documento no puede estar vacío'
-      ],
       nombres: [
         val => (val || '').length > 0 || 'El campo usuario no puede estar vacío',
         val => (val || '').length > 5 || 'El campo usuario no puede tener menos de 10 caracteres'
@@ -319,72 +358,57 @@ export default {
       segundoApellido: [
         val => (val || '').length > 0 || 'El campo del segundo apellido no puede estar vacío',
       ],
+      numeroDocumento: [
+        val => (val || '').length > 0 || 'El campo del número de documento no puede estar vacío'
+      ],
+      documentoExpedido: [
+        val => (val || '').length > 0 || 'El campo expedido no puede estar vacío'
+      ],
       fechaNacimiento: [
         val => (val || '').length > 0 || 'El campo de la fecha de nacimiento no puede estar vacío',
       ],
-      correoElectronico: [
+      genero: [
+        val => (val || '').length > 0 || 'El campo genero no puede estar vacío'
+      ],
+      telefono: [
+        val => (val || '').length > 0 || 'El campo telefóno no puede estar vacío'
+      ],
+      email: [
         val => (val || '').length > 0 || 'El campo email no puede estar vacío',
         val => /\S+@\S+\.\S+/.test(val) || 'El campo email no es válido'
       ]
     },
-    url: 'system/usuario',
+    url: 'personas',
     order: ['createdAt', 'DESC'],
     headers: [
       { text: 'Acciones', divider: false, sortable: false, align: 'center', value: 'ACTIONS' },
       { text: 'Nombres', align: 'center', value: 'nombres' },
       { text: 'Primer apellido', value: 'primerApellido' },
       { text: 'Segundo apellido', value: 'segundoApellido' },
-      { text: 'Fecha de Nacimiento', value: 'fechaNacimiento' },
-      { text: 'Correo Electrónico', value: 'correoElectronico' },
-      { text: 'Número telefónico', value: 'telefono' },
+      { text: 'Cedula de Identidad', value: 'nro_documento' },
+      { text: 'Expedido', value: 'documento_expedido' },
+      { text: 'Fecha de Nacimiento', value: 'fecha_nacimiento' },
       { text: 'Género', value: 'genero' },
-      { text: 'Fecha de creación', value: '_created_at' },
-      { text: 'Estado', sortable: false, value: 'estado' }
+      { text: 'Número telefónico', value: 'telefono' },
+      { text: 'Correo Electrónico', value: 'email' },
+      { text: 'Estado', value: 'estado' }
     ],
     form: {
       id: '',
-      numeroDocumento: '',
-      complemento: '',
-      complementoVisible: false,
-      fechaNacimiento: '',
       nombres: '',
-      primerApellido: '',
-      segundoApellido: '',
-      apellidoCasada: '',
-      id_pais_origen: null,
-      parIdEstadoCivil: 1,
-      parIdTipoDocumento: 1,
-      parIdTipoPersona: 1,
-      genero: 'MASCULINO',
-      nombre_completo: '',
+      primer_apellido: '',
+      segundo_apellido: '',
+      nro_documento: '',
+      documento_expedido: '',
+      fecha_nacimiento: '',
+      genero: '',
       telefono: '',
-      celular: '',
-      correoElectronico: '',
-      fax: '',
-      estado: 'ACTIVO'
+      email: ''
     },
     filters: [
       {
         field: 'nombres',
         label: 'Nombres',
-        type: 'text',
-        typeG: 'String'
-      },
-      {
-        field: 'primerApellido',
-        label: 'Primer Apellido',
-        type: 'text',
-        typeG: 'String'
-      },
-      {
-        field: 'segundoApellido',
-        label: 'Segundo Apellido',
-        type: 'text',
-        typeG: 'String'
-      },
-      {
-        field: 'telefono',
-        label: 'Teléfono',
         type: 'text',
         typeG: 'String'
       }
@@ -394,33 +418,23 @@ export default {
   methods: {
     reset () {
       this.form = {
-        id: null,
-        numeroDocumento: '',
-        complemento: '',
-        complementoVisible: false,
-        fechaNacimiento: '',
+        id: '',
         nombres: '',
-        primerApellido: '',
-        segundoApellido: '',
-        apellidoCasada: '',
-        id_pais_origen: null,
-        parIdEstadoCivil: 1,
-        parIdTipoDocumento: 1,
-        parIdTipoPersona: 1,
-        genero: 'MASCULINO',
-        nombre_completo: '',
+        primer_apellido: '',
+        segundo_apellido: '',
+        nro_documento: '',
+        documento_expedido: '',
+        fecha_nacimiento: '',
+        genero: '',
         telefono: '',
-        celular: '',
-        correoElectronico: '',
-        fax: '',
-        estado: 'ACTIVO'
+        email: ''
       };
     },
     itemDelete ({ items }) {
       const message = '¿Está seguro de eliminar este registro?';
       this.$confirm(message, async () => {
         try {
-          await this.$service.delete(`persona/${items.id}`);
+          await this.$service.delete(`personas/${items.id}`);
           this.updateList();
           this.$store.commit('closeModal');
           this.$message.success('Registro eliminado satisfactoriamente');
@@ -451,14 +465,14 @@ export default {
       if (this.$refs.form.validate()) {
         const data = { ...({}, this.form) };
         if (data.id) {
-          const response = await this.$service.put(`persona/${data.id}`, data);
+          const response = await this.$service.put(`personas/${data.id}`, data);
           if (response) {
             this.$store.commit('closeModal');
             this.updateList();
             this.$message.success('Se actualizó el registro correctamente');
           }
         } else {
-          const response = await this.$service.post('persona', data);
+          const response = await this.$service.post('personas', data);
           if (response) {
             this.$store.commit('closeModal');
             this.updateList();

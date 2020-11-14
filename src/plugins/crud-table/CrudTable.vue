@@ -335,10 +335,11 @@ export default {
           this.options.page = 1;
         }
         const data = await this.$service.list(this.url, query);
-        console.log('----->', data);
+        console.log('---RUSSELL-->', data);
         if (data) {
           // data = data.datos;
           const items = data[this.attribute];
+          console.log('---KHEDDY-->', items);
           const n = parseInt(data.count / this.options.itemsPerPage);
           const isHigher = n * this.options.itemsPerPage >= data.count;
           this.numbers = [...Array(n > 0 ? isHigher ? n : n + 1 : 1).keys()].map(item => item + 1);

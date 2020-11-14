@@ -369,12 +369,17 @@ export default {
       direccion: '',
       web: '',
       nit: ''
-
     },
     filters: [
       {
         field: 'nombre',
         label: 'Nombre de la Empresa',
+        type: 'text',
+        typeG: 'String'
+      },
+      {
+        field: 'telefonos',
+        label: 'Telefono/Celular',
         type: 'text',
         typeG: 'String'
       }

@@ -92,6 +92,8 @@
                 prepend-icon="terrain"
                 item-text="nombre"
                 item-value="id"
+                @change="actualizarFiltro"
+                v-model= "idComunidad"
                 :items="listaComunidades"
                 label="Comunidad"
               ></v-select>
@@ -109,7 +111,8 @@
                 dense
                 outlined
                 prepend-icon="category"
-                v-model="form.idCategoria"
+                @change="actualizarFiltroCategoria"
+                v-model="idCategoria"
                 item-text="nombre"
                 item-value="id"
                 :items="listaCategorias"
@@ -120,6 +123,7 @@
         </template>
       </v-container>
     </template>
+    <!--------------------FIN FILTROS COMUNIDADES, CATEGORIAS Y FECHAS-------------->
     <v-divider></v-divider>
     <crud-table
       :headers="headers"
@@ -513,10 +517,16 @@ export default {
   data: () => ({
     valid: false,
     listaComunidades: [],
+    idComunidad: null,
+    idCategoria: null,
     listaEmpresas: [],
+    itemsProyecto: [],
+    items: [],
     listaPoas: [],
     listaCategorias: [],
+    listaCronogramas: [],
     abrirDialogo: false,
+    abrirDialogoCronogramas: false,
     rules: {
       nombre: [
         val => (val || '').length > 0 || 'El campo nombre no puede estar vacío'
@@ -544,16 +554,28 @@ export default {
       ]
     },
     url: 'proyectos',
+    urlCronogramas: 'cronogramas',
     order: ['createdAt', 'DESC'],
     headers: [
       { text: 'Acciones', divider: false, sortable: false, align: 'center', value: 'ACTIONS' },
       { text: 'Nombre', value: 'nombre' },
-      { text: 'Comunidad', value: 'comunidad' },
-      { text: 'Poa', value: 'poa' },
-      { text: 'Empresa', value: 'empresa' },
-      { text: 'Categoria', value: 'categoria' },
+      { text: 'Comunidad', value: 'nombre' },
+      { text: 'Poa', value: 'nombre' },
+      { text: 'Empresa', value: 'nombre' },
+      { text: 'Categoria', value: 'nombre' },
       { text: 'Fecha Inicio', value: 'fechaInicio' },
       { text: 'Fecha Final', value: 'fechaFinal' },
+      { text: 'Estado', value: 'estado' },
+    ],
+    headersCronogramas: [
+      { text: 'Acciones', divider: false, sortable: false, align: 'center', value: 'ACTIONS' },
+      { text: 'Proyecto', value: 'nombre' },
+      { text: 'Nombre', value: 'nombre' },
+      { text: 'Actividad', value: 'actividad' },
+      { text: 'Fecha Inicio', value: 'fecIniCronograma' },
+      { text: 'Fecha Final', value: 'fecFinCronograma' },
+      { text: 'Estado de Actividad', value: 'estadoActividad' },
+      { text: 'Observación', value: 'observacion' },
       { text: 'Estado', value: 'estado' }
     ],
     form: {
@@ -564,7 +586,7 @@ export default {
       idPoa: '',
       idEmpresa: '',
       idCategoria: '',
-      idCronograma: '',
+      // idCronograma: '',
       fechaInicio: '',
       fechaFinal: ''
 
@@ -575,6 +597,18 @@ export default {
         label: 'Nombre del Proyecto',
         type: 'text',
         typeG: 'String'
+      },
+      {
+        field: 'fechaInicio',
+        label: 'Desde',
+        type: 'text',
+        typeG: 'String'
+      },
+      {
+        field: 'fechaFinal',
+        label: 'Hasta',
+        type: 'text',
+        typeG: 'String'
       }
     ],
     date: null,
@@ -582,7 +616,8 @@ export default {
     pdfGenerado: false,
     documentoPdf: null,
     dateFiltroInicio: null,
-    dateFiltroFinal: null
+    dateFiltroFinal: null,
+    filtroComunidadesValue: null,
   }),
   methods: {
     reset () {
@@ -594,13 +629,19 @@ export default {
         idPoa: '',
         idEmpresa: '',
         idCategoria: '',
-        idCronograma: '',
+        // idCronograma: '',
         fechaInicio: '',
         fechaFinal: ''
       };
     },
-    verCronogramas() {
+    async verCronogramas(proyecto) {
       console.log('Cronogra en desarrollo');
+      const respuestaCronogramas = await this.$service.get(`proyectos?idProyecto=${proyecto.id}`);
+      console.log('--CRONO---', respuestaCronogramas);
+      const prueba = respuestaCronogramas.rows;
+      console.log('--PRUEBA---', prueba);
+      this.abrirDialogoCronogramas = true;
+      this.listaCronogramas = respuestaCronogramas.rows;
     },
     async verFicha(proyecto) {
       console.log('Cronogra en desarrollo');
@@ -624,6 +665,11 @@ export default {
     },
     closeModal () {
       this.abrirDialogo = false;
+      this.abrirDialogoCronogramas = false;
+      this.reset();
+    },
+    closeModalCronogramas () {
+      this.abrirDialogoCronogramas = false;
       this.reset();
     },
     async openModal ({ items }) {
@@ -644,6 +690,20 @@ export default {
       const respuestaCategorias = await this.$service.get('categorias');
       this.listaCategorias = respuestaCategorias.rows;
       console.log('---->', this.abrirDialogo);
+    },
+    async openModalCronogramas ({ items }) {
+      if (items && items.id) {
+        this.$nextTick(() => {
+          this.form = items;
+        });
+      } else {
+        this.reset();
+      }
+      this.abrirDialogoCronogramas = true;
+      console.log('Cronogra en desarrollo');
+      // const respuestaCronogramas = await this.$service.get(`proyectos?idProyecto=${proyecto.id}`);
+      const respuestaCronogramas = await this.$service.get('cronogramas');
+      this.listaCronogramas = respuestaCronogramas.rows;
     },
     /**
      * @function save
@@ -676,11 +736,38 @@ export default {
       } else {
         this.$message.error('Faltan campos por llenar');
       }
-    }
+    },
+    // Metodo para filtrar por comunidades
+    async actualizarFiltro () {
+      console.log('----', this.idComunidad);
+      const respuestaComunidades = await this.$service.get(`proyectos?idComunidad=${this.idComunidad}`);
+      console.log('---->', respuestaComunidades);
+      // this.items = respuestaComunidades.rows;
+      const items = respuestaComunidades.rows;
+      console.log('---tito---', items);
+    },
+    // Metodo para filtrar por categorias
+    async actualizarFiltroCategoria () {
+      console.log('----IdCat--', this.idCategoria);
+      const respuestaCategorias = await this.$service.get(`proyectos?idCategoria=${this.idCategoria}`);
+      console.log('---->', respuestaCategorias);
+      // this.items = respuestaComunidades.rows;
+      const items = respuestaCategorias.rows;
+      console.log('---titoCat---', items);
+      // this.getData(items);
+    },
+    // async getData () {
+    // console.log('----', this.idComunidad);
+    // const respuestaComunidades = await this.$service.get('proyectos');
+    // console.log('---->', respuestaComunidades);
+    // this.itemsProyecto = respuestaComunidades.rows;
+    // this.items = [];
+    // console.log('---itemsproyecto....', this.itemsProyecto);
+    // },
   },
   async mounted () {
     this.$nextTick(() => {
-
+      // this.getData();
     });
     const respuestaComunidades = await this.$service.get('comunidades');
     this.listaComunidades = respuestaComunidades.rows;
