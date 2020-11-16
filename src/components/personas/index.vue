@@ -24,14 +24,14 @@
       </template>
     <!-- SLOT PARA EL FORMULARIO -->
       <template slot="form" slot-scope="">
-        <v-card-title class="ma-0 pa-1">
+        <v-card-title class="teal darken-4 white--text">
           <v-container fluid>
             <v-row no-gutters>
               <v-col
                 align="start"
                 justify="center"
                 :cols="11">
-                <v-icon>{{ form.id ? 'person' : 'person_add' }}</v-icon>
+                <v-icon color="white">{{ form.id ? 'person' : 'person_add' }}</v-icon>
                 {{ form.id ? 'Editar usuario' : 'Adicionar usuario' }}
               </v-col>
               <v-col :cols="1">
@@ -381,17 +381,17 @@ export default {
     url: 'personas',
     order: ['createdAt', 'DESC'],
     headers: [
-      { text: 'Acciones', divider: false, sortable: false, align: 'center', value: 'ACTIONS' },
-      { text: 'Nombres', align: 'center', value: 'nombres' },
-      { text: 'Primer apellido', value: 'primerApellido' },
-      { text: 'Segundo apellido', value: 'segundoApellido' },
-      { text: 'Cedula de Identidad', value: 'nro_documento' },
-      { text: 'Expedido', value: 'documento_expedido' },
-      { text: 'Fecha de Nacimiento', value: 'fecha_nacimiento' },
-      { text: 'Género', value: 'genero' },
-      { text: 'Número telefónico', value: 'telefono' },
-      { text: 'Correo Electrónico', value: 'email' },
-      { text: 'Estado', value: 'estado' }
+      { text: 'Acciones', divider: false, sortable: false, align: 'center', value: 'ACTIONS', class: 'teal darken-4 white--text' },
+      { text: 'Nombres', align: 'center', value: 'nombres', class: 'teal darken-4 white--text' },
+      { text: 'Primer apellido', value: 'primerApellido', class: 'teal darken-4 white--text' },
+      { text: 'Segundo apellido', value: 'segundoApellido', class: 'teal darken-4 white--text' },
+      { text: 'Cedula de Identidad', value: 'nro_documento', class: 'teal darken-4 white--text' },
+      { text: 'Expedido', value: 'documento_expedido', class: 'teal darken-4 white--text' },
+      { text: 'Fecha de Nacimiento', value: 'fecha_nacimiento', class: 'teal darken-4 white--text' },
+      { text: 'Género', value: 'genero', class: 'teal darken-4 white--text' },
+      { text: 'Número telefónico', value: 'telefono', class: 'teal darken-4 white--text' },
+      { text: 'Correo Electrónico', value: 'email', class: 'teal darken-4 white--text' },
+      { text: 'Estado', value: 'estado', class: 'teal darken-4 white--text' }
     ],
     form: {
       id: '',

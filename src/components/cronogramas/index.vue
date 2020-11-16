@@ -23,14 +23,14 @@
     </template>
     <!-- SLOT PARA EL FORMULARIO -->
     <template slot="form" slot-scope="">
-      <v-card-title class="ma-0 pa-1">
+      <v-card-title class="teal darken-4 white--text">
         <v-container fluid>
           <v-row no-gutters>
             <v-col
               align="start"
               justify="center"
               :cols="11">
-              <v-icon>{{ form.id ? 'calendar_today' : 'calendar_today' }}</v-icon>
+              <v-icon color="white">{{ form.id ? 'calendar_today' : 'calendar_today' }}</v-icon>
               {{ form.id ? 'Editar Cronograma' : 'Adicionar Cronograma' }}
             </v-col>
             <v-col :cols="1">
@@ -360,15 +360,15 @@ export default {
     url: 'cronogramas',
     order: ['createdAt', 'DESC'],
     headers: [
-      { text: 'Acciones', divider: false, sortable: false, align: 'center', value: 'ACTIONS' },
-      { text: 'Proyecto', value: 'nombre' },
-      { text: 'Nombre', value: 'nombre' },
-      { text: 'Actividad', value: 'actividad' },
-      { text: 'Fecha Inicio', value: 'fecIniCronograma' },
-      { text: 'Fecha Final', value: 'fecFinCronograma' },
-      { text: 'Estado de Actividad', value: 'estadoActividad' },
-      { text: 'Observación', value: 'observacion' },
-      { text: 'Estado', value: 'estado' }
+      { text: 'Acciones', divider: false, sortable: false, align: 'center', value: 'ACTIONS', class: 'teal darken-4 white--text' },
+      { text: 'Proyecto', value: 'nombre', class: 'teal darken-4 white--text' },
+      { text: 'Nombre', value: 'nombre', class: 'teal darken-4 white--text' },
+      { text: 'Actividad', value: 'actividad', class: 'teal darken-4 white--text' },
+      { text: 'Fecha Inicio', value: 'fecIniCronograma', class: 'teal darken-4 white--text' },
+      { text: 'Fecha Final', value: 'fecFinCronograma', class: 'teal darken-4 white--text' },
+      { text: 'Estado de Actividad', value: 'estadoActividad', class: 'teal darken-4 white--text' },
+      { text: 'Observación', value: 'observacion', class: 'teal darken-4 white--text' },
+      { text: 'Estado', value: 'estado', class: 'teal darken-4 white--text' }
     ],
     form: {
       id: '',
@@ -438,6 +438,7 @@ export default {
     async save () {
       if (this.$refs.form.validate()) {
         const data = { ...({}, this.form) };
+        console.log('------>', data);
         if (data.id) {
           const response = await this.$service.put(`cronogramas/${data.id}`, data);
           if (response) {

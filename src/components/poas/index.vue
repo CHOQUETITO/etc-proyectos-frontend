@@ -23,14 +23,14 @@
     </template>
     <!-- SLOT PARA EL FORMULARIO -->
     <template slot="form" slot-scope="">
-      <v-card-title class="ma-0 pa-1">
+      <v-card-title class="teal darken-4 white--text">
         <v-container fluid>
           <v-row no-gutters>
             <v-col
               align="start"
               justify="center"
               :cols="11">
-              <v-icon>{{ form.id ? 'folder_open' : 'folder_open' }}</v-icon>
+              <v-icon color="white">{{ form.id ? 'folder_open' : 'folder_open' }}</v-icon>
               {{ form.id ? 'Editar Poa' : 'Adicionar Poa' }}
             </v-col>
             <v-col :cols="1">
@@ -128,6 +128,7 @@
                   clearable
                   required
                   dense
+                  prefix="Bs."
                   oninput="this.value = this.value.replace(/[^0-9.]/g,'');"
                   :rules="rules.monto"
                   v-model="form.monto"
@@ -170,7 +171,7 @@
                     cols="12"
                     >
                     <v-btn color="primary" type="submit" :disabled="!valid">
-                      <v-icon dark>check</v-icon> Enviar
+                      <v-icon dark>check</v-icon> GUARDAR
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -256,11 +257,12 @@ export default {
     url: 'poas',
     order: ['createdAt', 'DESC'],
     headers: [
-      { text: 'Acciones', divider: false, sortable: false, align: 'center', value: 'ACTIONS' },
-      { text: 'Nombre', value: 'nombre' },
-      { text: 'Descripción', value: 'descripcion' },
-      { text: 'Gestión', value: 'gestion' },
-      { text: 'Monto/Bs.', value: 'monto' },
+      { text: 'Acciones', divider: false, sortable: false, align: 'center', value: 'ACTIONS', class: 'teal darken-4 white--text' },
+      { text: 'Nombre', value: 'nombre', class: 'teal darken-4 white--text' },
+      { text: 'Descripción', value: 'descripcion', class: 'teal darken-4 white--text' },
+      { text: 'Gestión', value: 'gestion', class: 'teal darken-4 white--text' },
+      { text: 'Monto/Bs.', value: 'monto', class: 'teal darken-4 white--text' },
+      { text: 'Estado', value: 'estado', class: 'teal darken-4 white--text' }
     ],
     form: {
       id: '',

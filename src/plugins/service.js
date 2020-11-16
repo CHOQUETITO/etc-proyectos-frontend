@@ -102,9 +102,13 @@ export default {
       remove (url, id) {
         return this.delete(url, id);
       },
-
+      // Cambios realizado aumentamos if-else Tito
       list(url, query) {
-        query = query ? '?' + Util.serialize(query) : '';
+        if (url.indexOf('?') === -1) {
+          query = query ? '?' + Util.serialize(query) : '';
+        } else {
+          query = query ? '&' + Util.serialize(query) : '';
+        }
         return _http('get', url + query);
       },
 

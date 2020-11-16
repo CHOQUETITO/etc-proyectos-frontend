@@ -23,14 +23,14 @@
     </template>
     <!-- SLOT PARA EL FORMULARIO -->
     <template slot="form" slot-scope="">
-      <v-card-title class="ma-0 pa-1">
+      <v-card-title class="teal darken-4 white--text">
         <v-container fluid>
           <v-row no-gutters>
             <v-col
               align="start"
               justify="center"
               :cols="11">
-              <v-icon>{{ form.id ? 'business' : 'business' }}</v-icon>
+              <v-icon color="white">{{ form.id ? 'business' : 'business' }}</v-icon>
               {{ form.id ? 'Editar Empresa' : 'Adicionar Empresa' }}
             </v-col>
             <v-col :cols="1">
@@ -349,15 +349,15 @@ export default {
     url: 'empresas',
     order: ['createdAt', 'DESC'],
     headers: [
-      { text: 'Acciones', divider: false, sortable: false, align: 'center', value: 'ACTIONS' },
-      { text: 'Nombre', value: 'nombre' },
-      { text: 'Sigla', value: 'sigla' },
-      { text: 'Email', value: 'email' },
-      { text: 'Telefono', value: 'telefonos' },
-      { text: 'Dirección', value: 'direccion' },
-      { text: 'Web', value: 'web' },
-      { text: 'nit', value: 'nit' },
-      { text: 'Estado', value: 'estado' }
+      { text: 'Acciones', divider: false, sortable: false, align: 'center', value: 'ACTIONS', class: 'teal darken-4 white--text' },
+      { text: 'Nombre', value: 'nombre', class: 'teal darken-4 white--text' },
+      { text: 'Sigla', value: 'sigla', class: 'teal darken-4 white--text' },
+      { text: 'Email', value: 'email', class: 'teal darken-4 white--text' },
+      { text: 'Telefono', value: 'telefonos', class: 'teal darken-4 white--text' },
+      { text: 'Dirección', value: 'direccion', class: 'teal darken-4 white--text' },
+      { text: 'Web', value: 'web', class: 'teal darken-4 white--text' },
+      { text: 'nit', value: 'nit', class: 'teal darken-4 white--text' },
+      { text: 'Estado', value: 'estado', class: 'teal darken-4 white--text' }
     ],
     form: {
       id: '',
