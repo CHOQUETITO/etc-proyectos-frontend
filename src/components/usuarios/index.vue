@@ -31,8 +31,8 @@
                 align="start"
                 justify="center"
                 :cols="11">
-                <v-icon color="white">{{ form.id ? 'person' : 'person_add' }}</v-icon>
-                {{ form.id ? 'Editar usuario' : 'Adicionar usuario' }}
+                <v-icon color="white">{{ formUsuario.id ? 'person' : 'person_add' }}</v-icon>
+                {{ formUsuario.id ? 'Editar usuario' : 'Adicionar usuario' }}
               </v-col>
               <v-col :cols="1">
                 <v-tooltip bottom>
@@ -69,7 +69,27 @@
                   clearable
                   required
                   :rules="rules.numeroDocumento"
-                  v-model="form.numeroDocumento"
+                  v-model="formUsuario.usuario"
+                  prepend-icon="account_circle"
+                  label="Nombre de Usuario"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+
+            <v-row no-gutters>
+              <v-col
+                cols="12"
+                :md="12"
+                :xs="12"
+                :sm="12"
+              >
+                <v-text-field
+                  dense
+                  color="success"
+                  clearable
+                  required
+                  :rules="rules.numeroDocumento"
+                  v-model="formUsuario.persona.numeroDocumento"
                   prepend-icon="account_circle"
                   label="Número de documento"
                 ></v-text-field>
@@ -88,7 +108,7 @@
                   required
                   dense
                   :rules="rules.nombres"
-                  v-model="form.nombres"
+                  v-model="formUsuario.persona.nombres"
                   prepend-icon="account_circle"
                   label="Nombres"
                 ></v-text-field>
@@ -104,7 +124,7 @@
                   label="Primer apellido"
                   required
                   dense
-                  v-model="form.primerApellido"
+                  v-model="formUsuario.persona.primerApellido"
                   :rules="rules.primerApellido"
                   prepend-icon="account_circle"
                   clearable
@@ -123,7 +143,7 @@
                   required
                   dense
                   label="Segundo apellido"
-                  v-model="form.segundoApellido"
+                  v-model="formUsuario.persona.segundoApellido"
                   :rules="rules.segundoApellido"
                   prepend-icon="account_circle"
                   clearable
@@ -148,7 +168,7 @@
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       dense
-                      v-model="form.fechaNacimiento"
+                      v-model="formUsuario.persona.fechaNacimiento"
                       label="Fecha de nacimiento"
                       prepend-icon="event"
                       readonly
@@ -157,7 +177,7 @@
                     ></v-text-field>
                   </template>
                   <v-date-picker
-                    v-model="form.fechaNacimiento"
+                    v-model="formUsuario.persona.fechaNacimiento"
                     @input="date = false"
                     :first-day-of-week="0"
                     locale="es-EN"
@@ -177,7 +197,7 @@
                   required
                   dense
                   label="Correo electrónico"
-                  v-model="form.correoElectronico"
+                  v-model="formUsuario.persona.correoElectronico"
                   :rules="rules.correoElectronico"
                   prepend-icon="contact_mail"
                   clearable
@@ -193,7 +213,7 @@
                   color="primary"
                   label="Teléfono"
                   dense
-                  v-model="form.telefono"
+                  v-model="formUsuario.persona.telefono"
                   prepend-icon="contact_phone"
                   clearable
                 ></v-text-field>
@@ -341,25 +361,29 @@ export default {
       { text: 'Fecha de creación', value: '_created_at', class: 'teal darken-4 white--text' },
       { text: 'Estado', sortable: false, value: 'estado', class: 'teal darken-4 white--text' }
     ],
-    form: {
+    formUsuario: {
+      usuario: '',
       id: '',
-      numeroDocumento: '',
-      complemento: '',
-      complementoVisible: false,
-      fechaNacimiento: '',
-      nombres: '',
-      primerApellido: '',
-      segundoApellido: '',
-      apellidoCasada: '',
-      id_pais_origen: null,
-      parIdEstadoCivil: 1,
-      parIdTipoDocumento: 1,
-      parIdTipoPersona: 1,
-      genero: 'MASCULINO',
-      nombre_completo: '',
-      telefono: '',
-      celular: '',
       correoElectronico: '',
+      persona: {
+        numeroDocumento: '',
+        complemento: '',
+        complementoVisible: false,
+        fechaNacimiento: '',
+        nombres: '',
+        primerApellido: '',
+        segundoApellido: '',
+        apellidoCasada: '',
+        id_pais_origen: null,
+        parIdEstadoCivil: 1,
+        parIdTipoDocumento: 1,
+        parIdTipoPersona: 1,
+        genero: 'MASCULINO',
+        nombre_completo: '',
+        telefono: '',
+        celular: '',
+        correoElectronico: '',
+      },
       fax: '',
       estado: 'ACTIVO'
     },
@@ -436,7 +460,7 @@ export default {
     openModal ({ items }) {
       if (items && items.id) {
         this.$nextTick(() => {
-          this.form = items;
+          this.formUsuario = items;
         });
       } else {
         this.reset();
@@ -449,16 +473,17 @@ export default {
      */
     async save () {
       if (this.$refs.form.validate()) {
-        const data = { ...({}, this.form) };
+        const data = { ...({}, this.formUsuario) };
+        console.log('Este es el usuarioooooooooooo', data);
         if (data.id) {
-          const response = await this.$service.put(`persona/${data.id}`, data);
+          const response = await this.$service.put(`system/usuario/${data.id}`, data);
           if (response) {
             this.$store.commit('closeModal');
             this.updateList();
             this.$message.success('Se actualizó el registro correctamente');
           }
         } else {
-          const response = await this.$service.post('persona', data);
+          const response = await this.$service.post('system/usuario', data);
           if (response) {
             this.$store.commit('closeModal');
             this.updateList();

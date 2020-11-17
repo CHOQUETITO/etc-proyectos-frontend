@@ -532,9 +532,15 @@
             <v-toolbar
               flat
               >
-              <v-toolbar-title>Proyecto:</v-toolbar-title>
+              <v-toolbar-title>Proyecto: {{proyectoActual.nombre}} {{proyectoActual.id}}</v-toolbar-title>
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
+              <!-- v-dialog para Agregar Cronograma desde proyectos-->
+              <!-- v-dialog para Agregar Cronograma desde proyectos-->
+              <!-- v-dialog para Agregar Cronograma desde proyectos-->
+              <!-- v-dialog para Agregar Cronograma desde proyectos-->
+              <!-- v-dialog para Agregar Cronograma desde proyectos-->
+              <!-- v-dialog para Agregar Cronograma desde proyectos-->
               <!-- v-dialog para Agregar Cronograma desde proyectos-->
               <v-dialog
                 v-model="abrirDialogoAgregarCronogramas"
@@ -588,29 +594,6 @@
 
                     </v-card-title>
                     <v-container fluid>
-                      <v-row no-gutters>
-                        <v-col
-                          cols="12"
-                          :md="12"
-                          :xs="12"
-                          :sm="12"
-                          >
-                          <v-select
-                            color="success"
-                            clearable
-                            required
-                            dense
-                            :rules="rules.nombreProyecto"
-                            v-model="formCronogramas.idProyecto"
-                            item-text="nombre"
-                            item-value="id"
-                            :items="listaProyectos"
-                            prepend-icon="assignment"
-                            label="Nombre del Proyecto"
-                            >
-                          </v-select>
-                        </v-col>
-                      </v-row>
                       <v-row no-gutters>
                         <v-col
                           cols="12"
@@ -874,6 +857,7 @@ import actions from '@/plugins/crud-table/mixins/crud-table';
 export default {
   mixins: [actions],
   data: () => ({
+    proyectoActual: {},
     valid: false,
     listaComunidades: [],
     idComunidad: null,
@@ -1050,7 +1034,11 @@ export default {
     },
     // FIN DOMINGO
     async verCronogramas(proyecto) {
+      console.log('proyecto actual', proyecto)
       this.abrirDialogoCronogramas = true;
+      this.proyectoActual.nombre = proyecto.nombre;
+      this.proyectoActual.id = proyecto.id;
+      // TODO agregar otros campos
       const respuestaCronogramas = await this.$service.get(`cronogramas?idProyecto=${proyecto.id}`);
       this.listaCronogramas = respuestaCronogramas.rows;
     },
@@ -1119,11 +1107,11 @@ export default {
       this.listaCategorias = respuestaCategorias.rows;
       console.log('---->', this.abrirDialogo);
     },
-    async openModalCronogramas ({ items }) {
-      console.log('--items--', items);
-      if (items && items) {
+    async openModalCronogramas (item) {
+      console.log('--item-- ', item);
+      if (item) {
         this.$nextTick(() => {
-          this.form = items;
+          this.formCronogramas = item;
         });
       } else {
         this.reset();
@@ -1177,17 +1165,27 @@ export default {
           const response = await this.$service.put(`cronogramas/${data.id}`, data);
           if (response) {
             this.abrirDialogoAgregarCronogramas = false;
+            const respuestaCronogramas = await this.$service.get(`cronogramas?idProyecto=${this.proyectoActual.id}`);
+            this.listaCronogramas = respuestaCronogramas.rows;
             this.$store.commit('closeModal');
-            await this.updateList();
+            // await this.updateList();
             this.$message.success('Se actualizó el registro correctamente');
           }
         } else {
+          // aca es nuevo
+          data.idProyecto = this.proyectoActual.id;
+          // ya tengo el objeto cronograma completo con proyecto mas
           const response = await this.$service.post('cronogramas', data);
           if (response) {
+            console.log('__________________', response);
+            const respuestaCronogramas = await this.$service.get(`cronogramas?idProyecto=${this.proyectoActual.id}`);
+            this.listaCronogramas = respuestaCronogramas.rows;
             this.abrirDialogoAgregarCronogramas = false;
             this.$store.commit('closeModal');
-            await this.updateList();
+            // await this.updateList();
             this.$message.success('El registro fue agregado correctamente');
+            // llamar al servicio cronogramas idproyecto
+            this.formCronogramas = {};
           }
         }
       } else {
