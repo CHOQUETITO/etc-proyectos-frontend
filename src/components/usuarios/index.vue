@@ -58,61 +58,6 @@
             <v-row no-gutters>
               <v-col
                 cols="12"
-                :md="6"
-                :xs="12"
-                :sm="12"
-                >
-                <v-text-field
-                  dense
-                  color="success"
-                  clearable
-                  required
-                  :rules="rules.usuario"
-                  v-model="formUsuario.usuario"
-                  prepend-icon="account_circle"
-                  label="Nombre de Usuario"
-                ></v-text-field>
-              </v-col>
-              <v-col
-                cols="12"
-                :md="6"
-                :xs="12"
-                :sm="12"
-                >
-                <v-text-field
-                  dense
-                  color="success"
-                  clearable
-                  required
-                  :rules="rules.contrasena"
-                  v-model="formUsuario.contrasena"
-                  prepend-icon="account_circle"
-                  label="Contraseña"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col
-                cols="12"
-                :md="12"
-                :xs="12"
-                :sm="12"
-              >
-                <v-text-field
-                  dense
-                  color="success"
-                  clearable
-                  required
-                  :rules="rules.email"
-                  v-model="formUsuario.email"
-                  prepend-icon="account_circle"
-                  label="Email"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col
-                cols="12"
                 :md="12"
                 :xs="12"
                 :sm="12"
@@ -230,7 +175,7 @@
                     ></v-text-field>
                   </template>
                   <v-date-picker
-                    v-model="formUsuario.fecha_nacimiento"
+                    v-model="formUsuario.persona.fecha_nacimiento"
                     @input="date = false"
                     :first-day-of-week="0"
                     locale="es-EN"
@@ -249,7 +194,7 @@
                   required
                   dense
                   prepend-icon="account_circle"
-                  v-model="formUsuario.genero"
+                  v-model="formUsuario.persona.genero"
                   :rules="rules.genero"
                   :items="genero"
                   label="Género"
@@ -289,6 +234,28 @@
                   prepend-icon="contact_mail"
                   clearable
                 ></v-text-field>
+              </v-col>
+            </v-row>
+
+            <v-row>
+            <v-col
+                cols="12"
+                :md="6"
+                :xs="12"
+                :sm="12"
+                >
+                <v-select
+                  color="success"
+                  clearable
+                  required
+                  dense
+                  prepend-icon="account_circle"
+                  v-model="formUsuario.idRol"
+                  :items="listaRoles"
+                  item-text="nombre"
+                  item-value="id"
+                  label="Rol en el Sistema"
+                ></v-select>
               </v-col>
             </v-row>
           </v-container>
@@ -372,6 +339,7 @@
             <span>Eliminar registro</span>
           </v-tooltip>
         </td>
+        <td>{{ item.usuario }}</td>
         <td>{{ item.persona.nombres }}</td>
         <td>{{ item.persona.primer_apellido }}</td>
         <td>{{ item.persona.segundo_apellido }}</td>
@@ -398,6 +366,7 @@ export default {
     valid: false,
     expedido: ['LP', 'CB', 'SC', 'CH', 'OR', 'PT', 'TJ', 'BE', 'PD'],
     genero: ['M', 'F', 'OTRO'],
+    listaRoles: [],
     rules: {
       nro_documento: [
         val => (val || '').length > 0 || 'El campo del número de documento no puede estar vacío'
@@ -424,6 +393,7 @@ export default {
     order: ['createdAt', 'DESC'],
     headers: [
       { text: 'Acciones', divider: false, sortable: false, align: 'center', value: 'ACTIONS', class: 'teal darken-4 white--text' },
+      { text: 'Usuario', divider: false, sortable: false, align: 'center', value: 'usuario', class: 'teal darken-4 white--text' },
       { text: 'Nombres', align: 'center', value: 'nombres', class: 'teal darken-4 white--text' },
       { text: 'Primer apellido', value: 'primer_pellido', class: 'teal darken-4 white--text' },
       { text: 'Segundo apellido', value: 'segundo_pellido', class: 'teal darken-4 white--text' },
@@ -516,9 +486,11 @@ export default {
       this.reset();
       this.$store.commit('closeModal');
     },
-    openModal ({ items }) {
+    async openModal ({ items }) {
+      const respuestaRoles = await this.$service.get('roles');
+      this.listaRoles = respuestaRoles.rows;
       if (items && items.id) {
-        this.$nextTick(() => {
+        this.$nextTick(async () => {
           this.formUsuario = items;
         });
       } else {
@@ -533,8 +505,8 @@ export default {
     async save () {
       if (this.$refs.form.validate()) {
         const data = { ...({}, this.formUsuario) };
-        console.log('Este es el usuarioooooooooooo', data);
         if (data.id) {
+          console.log('Este es el usuarioooooooooooo', data);
           const response = await this.$service.put(`system/usuario/${data.id}`, data);
           if (response) {
             this.$store.commit('closeModal');
