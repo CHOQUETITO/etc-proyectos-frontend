@@ -309,7 +309,12 @@
     -->
 
     {{items.proyecto.nombre}}
-
+    <v-simple-checkbox
+              class="teal darken-1"
+              :v-model="glutenfree(item.estadoActividad)"
+              :value="glutenfree(item.estadoActividad)"
+              :disabled="glutenfree(item.estadoActividad)"
+            ></v-simple-checkbox>
 <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
     <!-- Inicio de V-DIALOG -DATA-TABLE para CRONOGRAMAS ----------- -->
     <v-dialog
@@ -1027,3 +1032,168 @@
         </v-data-table>
       </v-card>
     </v-dialog>
+<!-- %%%%%%%%%%%%cambiando ususarios-->
+        
+        numeroDocumento: '',
+        complemento: '',
+        complementoVisible: false,
+        fechaNacimiento: '',
+        nombres: '',
+        primerApellido: '',
+        segundoApellido: '',
+        apellidoCasada: '',
+        id_pais_origen: null,
+        parIdEstadoCivil: 1,
+        parIdTipoDocumento: 1,
+        parIdTipoPersona: 1,
+        genero: 'MASCULINO',
+        nombre_completo: '',
+        telefono: '',
+        celular: '',
+        correoElectronico: '',
+
+<!-- &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&6-->
+
+<v-row no-gutters>
+            <v-col
+              cols="12"
+              :md="12"
+              :xs="12"
+              :sm="12"
+            >
+              <v-text-field
+                dense
+                color="success"
+                clearable
+                required
+                :rules="rules.numeroDocumento"
+                v-model="formUsuario.persona.numeroDocumento"
+                prepend-icon="account_circle"
+                label="Número de documento"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col
+              cols="12"
+              :md="6"
+              :xs="12"
+              :sm="12"
+              >
+              <v-text-field
+                color="success"
+                clearable
+                required
+                dense
+                :rules="rules.nombres"
+                v-model="formUsuario.persona.nombres"
+                prepend-icon="account_circle"
+                label="Nombres"
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="12"
+              :md="6"
+              :xs="12"
+              :sm="12"
+            >
+              <v-text-field
+                color="success"
+                label="Primer apellido"
+                required
+                dense
+                v-model="formUsuario.persona.primerApellido"
+                :rules="rules.primerApellido"
+                prepend-icon="account_circle"
+                clearable
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col
+              cols="12"
+              :md="6"
+              :xs="12"
+              :sm="12"
+            >
+              <v-text-field
+                color="primary"
+                required
+                dense
+                label="Segundo apellido"
+                v-model="formUsuario.persona.segundoApellido"
+                :rules="rules.segundoApellido"
+                prepend-icon="account_circle"
+                clearable
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="12"
+              :md="6"
+              :xs="12"
+              :sm="12"
+            >
+
+              <v-menu
+                v-model="date"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                locale="es-EN"
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-text-field
+                    dense
+                    v-model="formUsuario.persona.fechaNacimiento"
+                    label="Fecha de nacimiento"
+                    prepend-icon="event"
+                    readonly
+                    :rules="rules.fechaNacimiento"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="formUsuario.persona.fechaNacimiento"
+                  @input="date = false"
+                  :first-day-of-week="0"
+                  locale="es-EN"
+                ></v-date-picker>
+              </v-menu>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col
+              cols="12"
+              :md="6"
+              :xs="12"
+              :sm="12"
+            >
+              <v-text-field
+                color="primary"
+                required
+                dense
+                label="Correo electrónico"
+                v-model="formUsuario.persona.correoElectronico"
+                :rules="rules.email"
+                prepend-icon="contact_mail"
+                clearable
+              ></v-text-field>
+            </v-col>
+            <v-col
+              cols="12"
+              :md="6"
+              :xs="12"
+              :sm="12"
+            >
+              <v-text-field
+                color="primary"
+                label="Teléfono"
+                dense
+                v-model="formUsuario.persona.telefono"
+                prepend-icon="contact_phone"
+                clearable
+              ></v-text-field>
+            </v-col>
+          </v-row>

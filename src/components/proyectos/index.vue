@@ -526,19 +526,15 @@
         <v-data-table
           :headers="headersCronogramas"
           :items="listaCronogramas"
+          group-by="nombre"
+          show-group-by
           class="elevation-1"
           >
           <template v-slot:top>
-            <v-toolbar
-              flat
-              >
+            <v-toolbar flat>
               <v-toolbar-title>Proyecto: {{proyectoActual.nombre}} {{proyectoActual.id}}</v-toolbar-title>
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
-              <!-- v-dialog para Agregar Cronograma desde proyectos-->
-              <!-- v-dialog para Agregar Cronograma desde proyectos-->
-              <!-- v-dialog para Agregar Cronograma desde proyectos-->
-              <!-- v-dialog para Agregar Cronograma desde proyectos-->
               <!-- v-dialog para Agregar Cronograma desde proyectos-->
               <!-- v-dialog para Agregar Cronograma desde proyectos-->
               <!-- v-dialog para Agregar Cronograma desde proyectos-->
@@ -557,41 +553,36 @@
                     Agregar Actividad
                   </v-btn>
                 </template>
-
                 <!-- FORMULARIO PARA AGREGAR O EDITAR UNA ACTIVIDAD -->
-                <v-card>
-                  <v-card-title class="mx-auto mt-5" max-with="500">
-                    <v-container fluid>
-                      <v-row no-gutters>
-                        <v-col
-                          align="start"
-                          justify="center"
-                          :cols="11">
-                          <v-icon>{{ formCronogramas.id ? 'assignment' : 'assignment' }}</v-icon>
-                          {{ formCronogramas.id ? 'Editar Cronograma' : 'Adicionar Cronograma' }}
-                        </v-col>
-                        <v-col :cols="1">
-                          <v-tooltip bottom>
-                            <template v-slot:activator="{ on }">
-                              <v-btn icon color="gray" v-on="on" @click.stop="closeModalC">
-                                <v-icon>close</v-icon>
-                              </v-btn>
-                            </template>
-                            <span>Cerrar ventana</span>
-                          </v-tooltip>
-                        </v-col>
-                      </v-row>
-                    </v-container>
-                  </v-card-title>
                 <v-form
                   ref="formCronogramas"
                   v-model="valid"
                   lazy-validation
                   @submit.prevent="saveCronogramas"
                   >
-                  <v-card>
-                    <v-card-title class="mx-auto mt-5" max-with="500">
-
+                  <v-card class="mx-auto mt-5" max-with="500">
+                    <v-card-title class="amber darken-4 white--text">
+                      <v-container fluid>
+                        <v-row no-gutters>
+                          <v-col
+                            align="start"
+                            justify="center"
+                            :cols="11">
+                            <v-icon color="white">{{ formCronogramas.id ? 'assignment' : 'assignment' }}</v-icon>
+                            {{ formCronogramas.id ? 'Editar Cronograma' : 'Adicionar Cronograma' }}
+                          </v-col>
+                          <v-col :cols="1">
+                            <v-tooltip bottom>
+                              <template v-slot:activator="{ on }">
+                                <v-btn icon color="gray" v-on="on" @click.stop="closeModalC">
+                                  <v-icon>close</v-icon>
+                                </v-btn>
+                              </template>
+                              <span>Cerrar ventana</span>
+                            </v-tooltip>
+                          </v-col>
+                        </v-row>
+                      </v-container>
                     </v-card-title>
                     <v-container fluid>
                       <v-row no-gutters>
@@ -642,7 +633,7 @@
                           :sm="6"
                           >
                           <v-menu
-                            v-model="date"
+                            v-model="dateIniCronograma"
                             :close-on-content-click="false"
                             :nudge-right="40"
                             transition="scale-transition"
@@ -665,7 +656,7 @@
                             </template>
                             <v-date-picker
                               v-model="formCronogramas.fecIniCronograma"
-                              @input="date = false"
+                              @input="dateIniCronograma = false"
                               :first-day-of-week="0"
                               locale="es-EN"
                             ></v-date-picker>
@@ -678,7 +669,7 @@
                           :sm="6"
                           >
                           <v-menu
-                            v-model="dateFinal"
+                            v-model="dateFinCronograma"
                             :close-on-content-click="false"
                             :nudge-right="40"
                             transition="scale-transition"
@@ -701,7 +692,7 @@
                             </template>
                             <v-date-picker
                               v-model="formCronogramas.fecFinCronograma"
-                              @input="dateFinal = false"
+                              @input="dateFinCronograma = false"
                               :first-day-of-week="0"
                               locale="es-EN"
                             ></v-date-picker>
@@ -789,7 +780,6 @@
                     </v-card-actions>
                   </v-card>
                 </v-form>
-                </v-card>
               </v-dialog>
             </v-toolbar>
           </template>
@@ -805,7 +795,7 @@
             </v-tooltip>
             <v-tooltip bottom color="error">
               <template v-slot:activator="{ on }">
-                <v-btn icon v-on="on" @click.prevent="itemDeleteCronogramas(Object.assign({}, item))">
+                <v-btn icon v-on="on" @click.prevent="itemDeleteCronogramas(item)">
                   <v-icon color="red">delete</v-icon>
                 </v-btn>
               </template>
@@ -821,12 +811,11 @@
             </v-chip>
           </template>
           <template v-slot:item.glutenfree="{ item }">
-            <v-simple-checkbox
-              class="teal darken-1"
-              :v-model="glutenfree(item.estadoActividad)"
-              :value="glutenfree(item.estadoActividad)"
-              :disabled="glutenfree(item.estadoActividad)"
-            ></v-simple-checkbox>
+            <v-checkbox
+            :input-value="glutenfree(item.estadoActividad)"
+            :value="glutenfree(item.estadoActividad)"
+            :color="getColor(item.estadoActividad)"
+          ></v-checkbox>
           </template>
         </v-data-table>
       </v-card>
@@ -873,9 +862,7 @@ export default {
     abrirDialogoAgregarCronogramas: false,
     estadoActividad: ['PENDIENTE', 'DESARROLLO', 'CONCLUIDO'],
     listaProyectos: [],
-    // prueba Domingo
 
-    // fin prueba
     rules: {
       nombre: [
         val => (val || '').length > 0 || 'El campo nombre no puede estar vacío'
@@ -884,16 +871,16 @@ export default {
         val => (val || '').length > 0 || 'El campo descripción no puede estar vacío'
       ],
       idComunidad: [
-        val => (val || '') || 'Seleccione una comunidad'
+        val => !!val || 'Seleccione una comunidad'
       ],
       categoria: [
-        val => (val || '') || 'Selecciones una categoria'
+        val => !!val || 'Selecciones una categoria'
       ],
       poa: [
-        val => (val || '') || 'Seleccione el poa'
+        val => !!val || 'Seleccione el poa'
       ],
       empresa: [
-        val => (val || '') || 'Seleccione una empresa'
+        val => !!val || 'Seleccione una empresa'
       ],
       fechaInicio: [
         val => (val || '').length > 0 || 'El campo de la fecha inicio no puede estar vacío'
@@ -917,13 +904,13 @@ export default {
       { text: 'Estado', value: 'estado', class: 'teal darken-4 white--text' },
     ],
     headersCronogramas: [
-      { text: '', value: 'glutenfree', class: 'teal darken-4 white--text' },
+      { text: '', value: 'glutenfree', class: 'teal darken-4 white--text', groupable: false },
       { text: 'Nombre', value: 'nombre', class: 'teal darken-4 white--text' },
-      { text: 'Actividad', value: 'actividad', class: 'teal darken-4 white--text' },
-      { text: 'Fecha Inicio', value: 'fecIniCronograma', class: 'teal darken-4 white--text' },
-      { text: 'Fecha Final', value: 'fecFinCronograma', class: 'teal darken-4 white--text' },
+      { text: 'Actividad', value: 'actividad', class: 'teal darken-4 white--text', groupable: false },
+      { text: 'Fecha Inicio', value: 'fecIniCronograma', class: 'teal darken-4 white--text', groupable: false },
+      { text: 'Fecha Final', value: 'fecFinCronograma', class: 'teal darken-4 white--text', groupable: false },
       { text: 'Estado de Actividad', value: 'estadoActividad', class: 'teal darken-4 white--text' },
-      { text: 'Observación', value: 'observacion', class: 'teal darken-4 white--text' },
+      { text: 'Observación', value: 'observacion', class: 'teal darken-4 white--text', groupable: false },
       { text: 'Acciones', divider: false, sortable: false, align: 'center', value: 'actions', class: 'teal darken-4 white--text' },
     ],
     form: {
@@ -975,6 +962,8 @@ export default {
     documentoPdf: null,
     dateFiltroInicio: null,
     dateFiltroFinal: null,
+    dateIniCronograma: null,
+    dateFinCronograma: null,
     filtroComunidadesValue: null,
   }),
   methods: {
@@ -992,49 +981,21 @@ export default {
         fechaFinal: ''
       };
     },
-    // Metodo para CRONOGRAMAS DOMINGO
+    // Metodos para alertas
     getColor (estadoActividad) {
       if (estadoActividad === 'PENDIENTE') return 'red';
       else if (estadoActividad === 'DESARROLLO') return 'orange';
       else return 'green';
     },
     glutenfree (estadoActividad) {
-      console.log('--glu--', estadoActividad);
       if (estadoActividad === 'PENDIENTE') return false;
       else if (estadoActividad === 'DESARROLLO') return false;
       else return true;
     },
-    deleteItem (item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialogDelete = true;
-    },
-    editItem (item) {
-      this.editedIndex = this.desserts.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
-    },
-    deleteItemConfirm () {
-      this.desserts.splice(this.editedIndex, 1);
-      this.closeDelete();
-    },
-    close () {
-      this.abrirDialogoAgregarCronogramas = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
-    closeDelete () {
-      this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      })
-    },
-    // FIN DOMINGO
+    // Fin metodos alertas
+    // Metodo Ver Cronogramas
     async verCronogramas(proyecto) {
-      console.log('proyecto actual', proyecto)
+      console.log('proyecto actual', proyecto);
       this.abrirDialogoCronogramas = true;
       this.proyectoActual.nombre = proyecto.nombre;
       this.proyectoActual.id = proyecto.id;
@@ -1064,13 +1025,15 @@ export default {
       }, () => {});
     },
     // Metodo para eliminar Cronogramas Tito
-    itemDeleteCronogramas ({ items }) {
-      console.log('--items---', items);
+    itemDeleteCronogramas (item) {
+      console.log('--items---', item);
       const message = '¿Está seguro de eliminar este registro?';
       this.$confirm(message, async () => {
         try {
-          await this.$service.delete(`cronogramas/${items.id}`);
-          await this.updateList();
+          await this.$service.delete(`cronogramas/${item.id}`);
+          // await this.updateList();
+          const respuestaCronogramas = await this.$service.get(`cronogramas?idProyecto=${this.proyectoActual.id}`);
+          this.listaCronogramas = respuestaCronogramas.rows;
           this.$message.success('Registro eliminado satisfactoriamente');
         } catch (err) {
           this.$message.error(err.message);
@@ -1085,10 +1048,12 @@ export default {
     },
     closeModalC () {
       this.abrirDialogoAgregarCronogramas = false;
+      this.formCronogramas = {};
       this.reset();
     },
     async openModal ({ items }) {
       console.log('--itemsProy--', items);
+      // this.rules = this.data.rules; para volver asignar roles
       if (items && items.id) {
         this.$nextTick(() => {
           this.form = items;
@@ -1117,9 +1082,6 @@ export default {
         this.reset();
       }
       this.abrirDialogoAgregarCronogramas = true;
-      console.log('Cronogra en desarrollo');
-      // const respuestaCronogramas = await this.$service.get(`cronogramas?idProyecto=${proyecto.id}`);
-      // this.listaCronogramas = respuestaCronogramas.rows;
     },
     /**
      * @function save
@@ -1139,6 +1101,7 @@ export default {
             this.abrirDialogo = false;
             await this.updateList();
             this.$message.success('Se actualizó el registro correctamente');
+            // this.rules = ''; Quitando rules
           }
         } else {
           const response = await this.$service.post('proyectos', data);
@@ -1147,6 +1110,7 @@ export default {
             this.abrirDialogo = false;
             await this.updateList();
             this.$message.success('El registro fue agregado correctamente');
+            // this.rules = ''; Quitando rules
           }
         }
       } else {
@@ -1170,6 +1134,7 @@ export default {
             this.$store.commit('closeModal');
             // await this.updateList();
             this.$message.success('Se actualizó el registro correctamente');
+            this.formCronogramas = {};
           }
         } else {
           // aca es nuevo
