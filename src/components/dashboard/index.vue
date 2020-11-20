@@ -1,117 +1,7 @@
 <template>
   <v-container fluid>
-        <v-row align="center">
-          <v-col class="d-flex"
-            cols="12"
-            :md="6"
-            :xs="12"
-            :sm="12"
-            >
-            <v-menu
-              v-model="date"
-              :close-on-content-click="false"
-              :nudge-right="40"
-              transition="scale-transition"
-              offset-y
-              min-width="290px"
-              >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  color="success"
-                  dense
-                  v-model="fechaInicio"
-                  label="Fecha Inicio"
-                  prepend-icon="event"
-                  readonly
-                  outlined
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-date-picker
-                v-model="fechaInicio"
-                @input="date = false"
-                :first-day-of-week="0"
-                locale="es-EN"
-                >
-              </v-date-picker>
-            </v-menu>
-          </v-col>
-          <v-col class="d-flex"
-            cols="12"
-            :md="6"
-            :xs="12"
-            :sm="12"
-            >
-            <v-menu
-              v-model="dateFinal"
-              :close-on-content-click="false"
-              :nudge-right="40"
-              transition="scale-transition"
-              offset-y
-              min-width="290px"
-              >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  color="success"
-                  dense
-                  v-model="fechaFinal"
-                  label="Fecha Final"
-                  prepend-icon="event"
-                  readonly
-                  outlined
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-date-picker
-                v-model="fechaFinal"
-                @input="dateFinal = false"
-                :first-day-of-week="0"
-                locale="es-EN"
-                >
-              </v-date-picker>
-            </v-menu>
-          </v-col>
-          <v-col class="d-flex"
-            cols="12"
-            :md="6"
-            :xs="12"
-            :sm="12"
-            >
-            <v-select
-              color="success"
-              clearable
-              required
-              dense
-              outlined
-              prepend-icon="terrain"
-              item-text="nombre"
-              item-value="id"
-              :items="listaComunidades"
-              label="Comunidad"
-            ></v-select>
-          </v-col>
-          <v-col class="d-flex"
-            cols="12"
-            :md="6"
-            :xs="12"
-            :sm="12"
-            >
-            <v-select
-              color="success"
-              clearable
-              required
-              dense
-              outlined
-              prepend-icon="category"
-              item-text="nombre"
-              item-value="id"
-              :items="listaCategorias"
-              label="Categoria"
-            ></v-select>
-          </v-col>
-        </v-row>
+        <!-- $$$$$$$$$ FILTRO DEL DASH $$$$$$$$$$ -->
+        <!-- $$$$$$$$$    FIN FILTRO   $$$$$$$$$$ -->
         <!------- Echarts ------->
         <v-row>
           <!-- pie proyectos por Comunidades -->
@@ -160,6 +50,23 @@
             </div>
           </v-col>
         </v-row>
+        <v-col
+          cols="12"
+          :sm="12"
+          :md="12"
+          :lg="12"
+          :xs="12"
+          class="mt-2 mb-2"
+          >
+          <v-alert
+            border="left"
+            type="success"
+            text
+            >
+            Representación gráfica de los principales indicadores sobre los (PROYECTOS)<br>
+            <strong><small>que está orientada a la toma de decisiones para optimizar la estrategia del Gobieno Autónomo Municipal de Catacora (Área técnica de Proyectos).</small></strong>
+          </v-alert>
+        </v-col>
   </v-container>
 </template>
 <script>

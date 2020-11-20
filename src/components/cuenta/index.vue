@@ -2,25 +2,10 @@
   <crud-table
     :headers="headers"
     :url="url"
-    :filters="filters"
     :widthModal="800"
     :order="order"
     :custom="true"
     >
-    <template slot="buttons">
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn
-            color="primary"
-            dark
-            v-on="on"
-            @click.native.stop="openModal"
-            slot="activator"
-          ><v-icon dark>person_add</v-icon> Agregar </v-btn>
-        </template>
-        <span> Agregar usuario </span>
-      </v-tooltip>
-    </template>
     <!-- SLOT PARA EL FORMULARIO -->
     <template slot="form" slot-scope="">
       <v-card-title class="teal darken-4 white--text">
@@ -31,7 +16,7 @@
               justify="center"
               :cols="11">
               <v-icon color="white">{{ formUsuario.id ? 'person' : 'person_add' }}</v-icon>
-              {{ formUsuario.id ? 'Editar usuario' : 'Adicionar usuario' }}
+              {{ formUsuario.id ? 'Editar mi Cuenta' : 'Adicionar usuario' }}
             </v-col>
             <v-col :cols="1">
               <v-tooltip bottom>
@@ -46,7 +31,7 @@
           </v-row>
         </v-container>
       </v-card-title>
-      <!-- FORMULARIO PARA AGREGAR O EDITAR -->
+      <!-- FORMULARIO PARA EDITAR -->
       <v-form
         ref="form"
         v-model="valid"
@@ -55,7 +40,51 @@
         >
         <v-card>
           <v-container fluid>
+            <br>
             <v-row no-gutters>
+              <v-col
+                cols="12"
+                :md="6"
+                :xs="12"
+                :sm="12"
+                >
+                <v-text-field
+                  dense
+                  color="success"
+                  clearable
+                  required
+                  :rules="rules.usario"
+                  v-model="formUsuario.usuario"
+                  prepend-icon="account_circle"
+                  label="Usuario"
+                ></v-text-field>
+              </v-col>
+              <v-col
+                cols="12"
+                :md="6"
+                :xs="12"
+                :sm="12"
+                >
+                <v-text-field
+                  dense
+                  color="success"
+                  :append-icon="show ? 'remove_red_eye' : 'visibility_off'"
+                  :type="show ? 'text' : 'password'"
+                  class="input-group--focused"
+                  clearable
+                  required
+                  hint="instroduzca 6 caracteres como mínimo"
+                  @click:append="show = !show"
+                  v-model="formUsuario.contrasena"
+                  prepend-icon="account_circle"
+                  label="Contraseña"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <br>
+            <v-divider></v-divider>
+            <v-divider></v-divider><br>
+             <v-row no-gutters>
               <v-col
                 cols="12"
                 :md="12"
@@ -74,13 +103,13 @@
                 ></v-text-field>
               </v-col>
             </v-row>
-            <v-row>
+            <v-row no-gutters>
               <v-col
                 cols="12"
                 :md="6"
                 :xs="12"
                 :sm="12"
-              >
+                >
                 <v-text-field
                   color="success"
                   clearable
@@ -97,7 +126,7 @@
                 :md="6"
                 :xs="12"
                 :sm="12"
-              >
+                >
                 <v-text-field
                   color="success"
                   label="Apellido Materno"
@@ -110,7 +139,7 @@
                 ></v-text-field>
               </v-col>
             </v-row>
-            <v-row>
+            <v-row no-gutters>
               <v-col
                 cols="12"
                 :md="6"
@@ -147,7 +176,7 @@
                 ></v-select>
               </v-col>
             </v-row>
-            <v-row>
+            <v-row no-gutters>
               <v-col
                 cols="12"
                 :md="6"
@@ -162,7 +191,7 @@
                   offset-y
                   locale="es-EN"
                   min-width="290px"
-                >
+                  >
                   <template v-slot:activator="{ on }">
                     <v-text-field
                       dense
@@ -201,13 +230,13 @@
                 ></v-select>
               </v-col>
             </v-row>
-            <v-row>
+            <v-row no-gutters>
               <v-col
                 cols="12"
                 :md="6"
                 :xs="12"
                 :sm="12"
-              >
+                >
                 <v-text-field
                   color="primary"
                   label="Teléfono"
@@ -236,28 +265,6 @@
                 ></v-text-field>
               </v-col>
             </v-row>
-
-            <v-row>
-            <v-col
-                cols="12"
-                :md="6"
-                :xs="12"
-                :sm="12"
-                >
-                <v-select
-                  color="success"
-                  clearable
-                  required
-                  dense
-                  prepend-icon="account_circle"
-                  v-model="formUsuario.idRol"
-                  :items="listaRoles"
-                  item-text="nombre"
-                  item-value="id"
-                  label="Rol en el Sistema"
-                ></v-select>
-              </v-col>
-            </v-row>
           </v-container>
           <v-card-actions>
             <v-container fluid>
@@ -278,7 +285,7 @@
                   :md="3"
                   :lg="3"
                   cols="12"
-                >
+                  >
                   <v-btn block @click.stop="closeModal"><v-icon>cancel</v-icon> Cancelar </v-btn>
                 </v-col>
                 <v-col
@@ -288,7 +295,7 @@
                   :md="4"
                   :lg="4"
                   cols="12"
-                >
+                  >
                   <v-btn color="primary" type="submit" :disabled="!valid">
                     <v-icon dark>check</v-icon> Enviar
                   </v-btn>
@@ -309,14 +316,6 @@
         </template>
         <span>Editar registro</span>
       </v-tooltip>
-      <v-tooltip bottom color="error">
-        <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on" @click.stop="itemDelete(Object.assign({}, item))">
-            <v-icon color="red">delete</v-icon>
-          </v-btn>
-        </template>
-        <span>Eliminar registro</span>
-      </v-tooltip>
     </template>
     <!-- SLOT PARA TODOS LOS ITEMS (Solo en caso de que se quiera personalizar cada columna o mas de 1 columna) -->
     <template slot="items" slot-scope="items">
@@ -329,14 +328,6 @@
               </v-btn>
             </template>
             <span>Editar registro</span>
-          </v-tooltip>
-          <v-tooltip bottom color="error">
-            <template v-slot:activator="{ on }">
-              <v-btn icon v-on="on" @click.prevent="itemDelete(Object.assign({}, items))">
-                <v-icon color="red">delete</v-icon>
-              </v-btn>
-            </template>
-            <span>Eliminar registro</span>
           </v-tooltip>
         </td>
         <td>{{ item.usuario }}</td>
@@ -367,7 +358,19 @@ export default {
     expedido: ['LP', 'CB', 'SC', 'CH', 'OR', 'PT', 'TJ', 'BE', 'PD'],
     genero: ['M', 'F', 'OTRO'],
     listaRoles: [],
+    show: null,
+    password: null,
+    listaUsuario: {},
+    usuarioActual: [],
     rules: {
+      constrasena: [
+        value => !!value || 'El campo de la contraseña es obligatorio',
+      ],
+      minConstrasena: [
+        v => v.length >= 6 || 'Minimo 6 caracteres',
+      ],
+    },
+    rulesPersona: {
       nro_documento: [
         val => (val || '').length > 0 || 'El campo del número de documento no puede estar vacío'
       ],
@@ -421,20 +424,6 @@ export default {
       },
       estado: 'ACTIVO'
     },
-    filters: [
-      {
-        field: 'nombres',
-        label: 'Nombres',
-        type: 'text',
-        typeG: 'String'
-      },
-      {
-        field: 'telefono',
-        label: 'Teléfono',
-        type: 'text',
-        typeG: 'String'
-      }
-    ],
     date: null
   }),
   methods: {
@@ -458,11 +447,10 @@ export default {
       };
     },
     itemDelete ({ items }) {
-      console.log('----------------', items);
       const message = '¿Está seguro de eliminar este registro?';
       this.$confirm(message, async () => {
         try {
-          await this.$service.delete(`system/usuario/${items.id}`);
+          await this.$service.delete(`persona/${items.id}`);
           this.updateList();
           this.$store.commit('closeModal');
           this.$message.success('Registro eliminado satisfactoriamente');
@@ -476,8 +464,8 @@ export default {
       this.$store.commit('closeModal');
     },
     async openModal ({ items }) {
-      const respuestaRoles = await this.$service.get('roles');
-      this.listaRoles = respuestaRoles.rows;
+      // const respuestaRoles = await this.$service.get('roles');
+      // this.listaRoles = respuestaRoles.rows;
       if (items && items.id) {
         this.$nextTick(async () => {
           this.formUsuario = items;
@@ -496,14 +484,14 @@ export default {
         const data = { ...({}, this.formUsuario) };
         if (data.id) {
           console.log('Este es el usuarioooooooooooo', data);
-          const response = await this.$service.put(`system/usuario/${data.id}`, data);
+          const response = await this.$service.put(`system/usuario-actualizar/${data.id}`, data);
           if (response) {
             this.$store.commit('closeModal');
             this.updateList();
             this.$message.success('Se actualizó el registro correctamente');
           }
         } else {
-          const response = await this.$service.post('system/usuario/', data);
+          const response = await this.$service.post('system/usuario', data);
           if (response) {
             this.$store.commit('closeModal');
             this.updateList();
@@ -514,6 +502,16 @@ export default {
         this.$message.error('Faltan campos por llenar');
       }
     }
+  },
+  async mounted () {
+    this.$nextTick(() => {
+    });
+    const respuestaUsuario = await this.$service.get(`system/usuario?id=${this.id}`);
+    this.listaUsuario = respuestaUsuario.rows;
+    console.log('--aaaabbbbbbbUsuario----', this.listaUsuario);
+    // const respuestaUsuario = await this.$service.get(`system/usuario?id=${listaUsuario.id}`);
+    // this.usuarioActual = respuestaUsuario.rows;
+    // console.log('--Usuario----', this.usuarioActual);
   },
   components: {
     CrudTable

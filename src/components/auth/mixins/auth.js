@@ -60,7 +60,7 @@ export default {
         this.$storage.set('token', nuevoToken.datos.token);
         this.$storage.set('user', nuevoToken.datos.usuario);
       } catch (error) {
-        this.$message.error(error.message || 'Ocurrio un error a tratar de conectarse con ciudadania digital');
+        this.$message.error(error.message || 'Ocurrio un error a tratar de conectarse a SISCEPROM');
       }
     },
     async getCode () {
@@ -75,7 +75,7 @@ export default {
         this.$storage.set('oauth2_state', response.data.codigo);
         window.location.href = new URL(response.data.url);
       } catch (error) {
-        this.$message.error(error.message || 'Ocurrio un error a tratar de conectarse con ciudadania digital');
+        this.$message.error(error.message || 'Ocurrio un error a tratar de conectarse con SISCEPROM');
       }
     },
     reload() {
@@ -128,7 +128,7 @@ export default {
           if (this.$store) this.$store.commit('setAuth', false);
         });
       } catch (error) {
-        this.$message.error(error.message || 'Ocurrio un error a tratar de conectarse con ciudadania digital');
+        this.$message.error(error.message || 'Ocurrio un error a tratar de conectarse con SISCEPROM');
       }
     }
   }

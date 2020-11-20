@@ -1,128 +1,6 @@
 <template>
   <div>
     <!-- TEMPLATE PARA FILTROS COMUNIDADES, CATEGORIAS Y FECHAS-->
-    <template>
-      <v-container fluid>
-        <template>
-          <v-row align="center">
-            <v-col class="d-flex"
-              cols="12"
-              :md="6"
-              :xs="12"
-              :sm="12"
-              >
-              <v-menu
-                v-model="dateFiltroInicio"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="290px"
-                >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    color="success"
-                    dense
-                    v-model="form.fechaInicio"
-                    label="Fecha Inicio"
-                    prepend-icon="event"
-                    readonly
-                    outlined
-                    v-bind="attrs"
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  v-model="form.fechaInicio"
-                  @input="dateFiltroInicio = false"
-                  :first-day-of-week="0"
-                  locale="es-EN"
-                  >
-                </v-date-picker>
-              </v-menu>
-            </v-col>
-            <v-col class="d-flex"
-              cols="12"
-              :md="6"
-              :xs="12"
-              :sm="12"
-              >
-              <v-menu
-                v-model="dateFiltroFinal"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="290px"
-                >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    color="success"
-                    dense
-                    v-model="form.fechaFinal"
-                    label="Fecha Final"
-                    prepend-icon="event"
-                    readonly
-                    outlined
-                    v-bind="attrs"
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  v-model="form.fechaFinal"
-                  @input="dateFiltroFinal = false"
-                  :first-day-of-week="0"
-                  locale="es-EN"
-                  >
-                </v-date-picker>
-              </v-menu>
-            </v-col>
-            <v-col
-              cols="12"
-              :md="6"
-              :xs="12"
-              :sm="12"
-              >
-              <v-select
-                color="success"
-                clearable
-                required
-                dense
-                outlined
-                prepend-icon="terrain"
-                item-text="nombre"
-                item-value="id"
-                @change="actualizarFiltro"
-                v-model= "idComunidad"
-                :items="listaComunidades"
-                label="Comunidad"
-              ></v-select>
-            </v-col>
-            <v-col class="d-flex"
-              cols="12"
-              :md="6"
-              :xs="12"
-              :sm="12"
-              >
-              <v-select
-                color="success"
-                clearable
-                required
-                dense
-                outlined
-                prepend-icon="category"
-                @change="actualizarFiltroCategoria"
-                v-model="idCategoria"
-                item-text="nombre"
-                item-value="id"
-                :items="listaCategorias"
-                label="Categoria"
-              ></v-select>
-            </v-col>
-          </v-row>
-        </template>
-      </v-container>
-    </template>
     <!--------------------FIN FILTROS COMUNIDADES, CATEGORIAS Y FECHAS-------------->
     <!-- INICIO crud-table PROYECTOS------------------------- -->
     <v-divider></v-divider>
@@ -532,7 +410,9 @@
           >
           <template v-slot:top>
             <v-toolbar flat>
-              <v-toolbar-title>Proyecto: {{proyectoActual.nombre}} {{proyectoActual.id}}</v-toolbar-title>
+              <v-toolbar-title>
+                <h4>PROYECTO: {{proyectoActual.nombre}}</h4>
+              </v-toolbar-title>
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
               <!-- v-dialog para Agregar Cronograma desde proyectos-->
@@ -943,18 +823,6 @@ export default {
         type: 'text',
         typeG: 'String'
       },
-      {
-        field: 'fechaInicio',
-        label: 'Desde',
-        type: 'text',
-        typeG: 'String'
-      },
-      {
-        field: 'fechaFinal',
-        label: 'Hasta',
-        type: 'text',
-        typeG: 'String'
-      }
     ],
     date: null,
     dateFinal: null,
@@ -998,7 +866,8 @@ export default {
       console.log('proyecto actual', proyecto);
       this.abrirDialogoCronogramas = true;
       this.proyectoActual.nombre = proyecto.nombre;
-      this.proyectoActual.id = proyecto.id;
+      this.proyectoActual.fechaInicio = proyecto.fechaInicio;
+      this.proyectoActual.fechaFinal = proyecto.fechaFinal;
       // TODO agregar otros campos
       const respuestaCronogramas = await this.$service.get(`cronogramas?idProyecto=${proyecto.id}`);
       this.listaCronogramas = respuestaCronogramas.rows;
