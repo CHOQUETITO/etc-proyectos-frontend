@@ -11,7 +11,7 @@ export default {
         };
         const response = await this.$service.post('auth', credentials);
         console.log('++++++++', response);
-        if (!response) throw new Error('Existen problemas de conexión. Por favor revise su configuración a Internet.');
+        if (!response) throw new Error('Existen problemas de autenticación, por favor vuelva a intentarlo');
         if (response.hasOwnProperty('error') || response.finalizado === false) throw new Error(response.error || response.mensaje);
         this.$storage.set('user', response.usuario);
         this.$storage.set('roles', response.roles);

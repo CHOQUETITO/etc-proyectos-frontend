@@ -1448,4 +1448,40 @@ Inicio del Proyecto:{{proyectoActual.fechaInicio}}
           </v-col>
         </v-row>
 <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%FIND%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
-<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%reportes%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+ <v-col
+        cols="12"
+        :sm="12"
+        :md="12"
+        :lg="12"
+        :xs="12"
+        >
+        <v-sheet
+          color="transparent"
+          class="px-3 pt-3 pb-3"
+        >
+          <v-skeleton-loader
+            class="mx-auto"
+            type="article, image, table-tfoot"
+          ></v-skeleton-loader>
+        </v-sheet>
+      </v-col>
+
+      <v-col
+        cols="12"
+        :sm="12"
+        :md="12"
+        :lg="12"
+        :xs="12"
+        class="mt-2 mb-2"
+      >
+        <v-alert
+          type="error"
+          text
+          outlined
+        >
+          Pantallas bloqueantes
+        </v-alert>
+      </v-col>
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%reportes%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->

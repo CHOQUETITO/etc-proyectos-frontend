@@ -3,6 +3,7 @@
     <!-- TEMPLATE PARA FILTROS COMUNIDADES, CATEGORIAS Y FECHAS-->
     <!--------------------FIN FILTROS COMUNIDADES, CATEGORIAS Y FECHAS-------------->
     <!-- INICIO crud-table PROYECTOS------------------------- -->
+    <h2 class="teal darken-2 text-center white--text">Gestión de Proyectos</h2>
     <v-divider></v-divider>
     <crud-table
       :headers="headers"
@@ -420,7 +421,7 @@
               <!-- v-dialog para Agregar Cronograma desde proyectos-->
               <v-dialog
                 v-model="abrirDialogoAgregarCronogramas"
-                max-width="500px"
+                max-width="600px"
                 >
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
@@ -449,7 +450,7 @@
                             justify="center"
                             :cols="11">
                             <v-icon color="white">{{ formCronogramas.id ? 'assignment' : 'assignment' }}</v-icon>
-                            {{ formCronogramas.id ? 'Editar Cronograma' : 'Adicionar Cronograma' }}
+                            {{ formCronogramas.id ? 'Editar Cronograma' : 'Adicionar Actividad' }}
                           </v-col>
                           <v-col :cols="1">
                             <v-tooltip bottom>
@@ -497,7 +498,7 @@
                             clearable
                             required
                             dense
-                            :rules="rules.actividad"
+                            :rules="rules.actividadCronograma"
                             v-model="formCronogramas.actividad"
                             prepend-icon="calendar_today"
                             label="Actividad del Cronograma"
@@ -606,8 +607,13 @@
                           :xs="12"
                           :sm="12"
                           >
-                          <v-text-field
+                          <v-textarea
                             color="success"
+                            auto-grow
+                            filled
+                            rows="3"
+                            row-height="30"
+                            shaped
                             clearable
                             required
                             dense
@@ -616,7 +622,7 @@
                             prepend-icon="calendar_today"
                             label="Observaciones"
                             >
-                          </v-text-field>
+                          </v-textarea>
                         </v-col>
                       </v-row>
                     </v-container>
@@ -681,6 +687,14 @@
               </template>
               <span>Eliminar registro</span>
             </v-tooltip>
+            <v-tooltip bottom color="error">
+              <template v-slot:activator="{ on }">
+                <v-btn icon v-on="on" @click.stop="verFichaCronograma(Object.assign({}, item))">
+                  <v-icon color="blue">picture_as_pdf</v-icon>
+                </v-btn>
+              </template>
+              <span>Ver ficha</span>
+            </v-tooltip>
           </template>
           <template v-slot:item.estadoActividad="{ item }">
             <v-chip
@@ -701,7 +715,7 @@
       </v-card>
     </v-dialog>
     <!---- FIN de V-DIALOG -DATA-TABLE para CRONOGRAMAS ----------- -->
-    <!-- -- INICIO V-DIALOG PDF------------------------------------ -->
+    <!-- -- INICIO V-DIALOG PDF PARA FICHA DEL PROYECTO------------ -->
     <v-dialog v-model="pdfGenerado" width="900" persistent>
       <v-toolbar color="secondary" dark text>
         <span class="title">Ficha de proyecto</span>
@@ -713,6 +727,21 @@
       <v-card style="height: 80vh">
         <v-card-text class="pa-0" style="height: 100%">
           <iframe :src="documentoPdf" width="100%"  height="100%" type="application/pdf"></iframe>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+    <!-- -- INICIO V-DIALOG PDF PARA FICHA DE CRONOGRAMAS------------ -->
+    <v-dialog v-model="pdfGeneradoCronogramas" width="900" persistent>
+      <v-toolbar color="secondary" dark text>
+        <span class="title">Cronograma del Proyecto</span>
+        <v-spacer></v-spacer>
+        <v-btn class="mx-2" fab dark small color="primary" @click="pdfGeneradoCronogramas = false">
+          <v-icon dark>close</v-icon>
+        </v-btn>
+      </v-toolbar>
+      <v-card style="height: 80vh">
+        <v-card-text class="pa-0" style="height: 100%">
+          <iframe :src="documentoPdfCronogramas" width="100%"  height="100%" type="application/pdf"></iframe>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -767,7 +796,19 @@ export default {
       ],
       fechaFinal: [
         val => (val || '').length > 0 || 'El campo de la fecha final no puede estar vacío'
-      ]
+      ],
+      actividadCronograma: [
+        val => (val || '').length > 0 || 'El campo Actividad no puede estar vacío'
+      ],
+      estadoActividad: [
+        val => !!val || 'Seleccione el estado de la Actividad'
+      ],
+      fecIniCronograma: [
+        val => (val || '').length > 0 || 'El campo de la Fecha Inicio no puede estar vacío'
+      ],
+      fecFinCronograma: [
+        val => (val || '').length > 0 || 'El campo de la Fecha Fin no puede estar vacío'
+      ],
     },
     url: 'proyectos',
     urlCronogramas: '',
@@ -827,7 +868,9 @@ export default {
     date: null,
     dateFinal: null,
     pdfGenerado: false,
+    pdfGeneradoCronogramas: false,
     documentoPdf: null,
+    documentoPdfCronogramas: false,
     dateFiltroInicio: null,
     dateFiltroFinal: null,
     dateIniCronograma: null,
@@ -848,6 +891,16 @@ export default {
         fechaInicio: '',
         fechaFinal: ''
       };
+      this.formCronogramas = {
+        id: '',
+        idProyecto: '',
+        nombre: '',
+        actividad: '',
+        fecIniCronograma: '',
+        fecFinCronograma: '',
+        estadoActividad: '',
+        observacion: ''
+      };
     },
     // Metodos para alertas
     getColor (estadoActividad) {
@@ -866,6 +919,7 @@ export default {
       console.log('proyecto actual', proyecto);
       this.abrirDialogoCronogramas = true;
       this.proyectoActual.nombre = proyecto.nombre;
+      this.proyectoActual.id = proyecto.id;
       this.proyectoActual.fechaInicio = proyecto.fechaInicio;
       this.proyectoActual.fechaFinal = proyecto.fechaFinal;
       // TODO agregar otros campos
@@ -873,12 +927,25 @@ export default {
       this.listaCronogramas = respuestaCronogramas.rows;
     },
     async verFicha(proyecto) {
-      console.log('Cronogra en desarrollo');
+      console.log('Cronogra en desarrollo Antiguo', proyecto);
       const pdf = await this.$service.post(`proyectos/reporte/${proyecto.id}`);
       const contentType = 'application/pdf';
       const blob = this.b64toBlob(pdf, contentType);
       this.documentoPdf = URL.createObjectURL(blob);
       this.pdfGenerado = true;
+    },
+    async verFichaCronograma() {
+      // delete proyecto.nombre;
+      // delete proyecto.id;
+      // delete proyecto.fechaInicio;
+      // delete proyecto.fechaFinal;
+      // console.log('Reporte Cronogra en desarrollo Actual 1', proyecto);
+      // const pdfCronogramas = await this.$service.get(`cronogramas?idProyecto=${this.proyectoActual.id}`);
+      const pdf = await this.$service.post(`cronogramas/reporteCronogramas/${this.proyectoActual.id}`);
+      const contentType = 'application/pdf';
+      const blob = this.b64toBlob(pdf, contentType);
+      this.documentoPdfCronogramas = URL.createObjectURL(blob);
+      this.pdfGeneradoCronogramas = true;
     },
     itemDelete ({ items }) {
       console.log('--items---', items);
@@ -942,7 +1009,7 @@ export default {
       console.log('---->', this.abrirDialogo);
     },
     async openModalCronogramas (item) {
-      console.log('--item-- ', item);
+      console.log('--item Agregar Cronogrmas-- ', item);
       if (item) {
         this.$nextTick(() => {
           this.formCronogramas = item;
@@ -1003,13 +1070,15 @@ export default {
             this.$store.commit('closeModal');
             // await this.updateList();
             this.$message.success('Se actualizó el registro correctamente');
-            this.formCronogramas = {};
+            // this.formCronogramas = {};
+            this.rest();
           }
         } else {
           // aca es nuevo
           data.idProyecto = this.proyectoActual.id;
           // ya tengo el objeto cronograma completo con proyecto mas
           const response = await this.$service.post('cronogramas', data);
+          console.log('--------------response----', response);
           if (response) {
             console.log('__________________', response);
             const respuestaCronogramas = await this.$service.get(`cronogramas?idProyecto=${this.proyectoActual.id}`);
@@ -1019,7 +1088,9 @@ export default {
             // await this.updateList();
             this.$message.success('El registro fue agregado correctamente');
             // llamar al servicio cronogramas idproyecto
-            this.formCronogramas = {};
+            // this.verCronogramas(this.proyecto);
+            this.abrirDialogoCronogramas = true;
+            this.reset();
           }
         }
       } else {

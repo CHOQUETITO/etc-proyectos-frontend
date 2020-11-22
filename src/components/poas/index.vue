@@ -1,235 +1,238 @@
 <template>
-  <crud-table
-    :headers="headers"
-    :url="url"
-    :filters="filters"
-    :widthModal="500"
-    :order="order"
-    :custom="true"
-    >
-    <template slot="buttons">
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn
-            color="primary"
-            dark
-            v-on="on"
-            @click.native.stop="openModal"
-            slot="activator"
-          ><v-icon dark>description</v-icon> Agregar </v-btn>
-        </template>
-          <span> Agregar Poa </span>
-      </v-tooltip>
-    </template>
-    <!-- SLOT PARA EL FORMULARIO -->
-    <template slot="form" slot-scope="">
-      <v-card-title class="teal darken-4 white--text">
-        <v-container fluid>
-          <v-row no-gutters>
-            <v-col
-              align="start"
-              justify="center"
-              :cols="11">
-              <v-icon color="white">{{ form.id ? 'folder_open' : 'folder_open' }}</v-icon>
-              {{ form.id ? 'Editar Poa' : 'Adicionar Poa' }}
-            </v-col>
-            <v-col :cols="1">
-              <v-tooltip bottom>
-                <template v-slot:activator="{ on }">
-                  <v-btn icon color="gray" v-on="on" @click.stop="closeModal">
-                    <v-icon>close</v-icon>
-                  </v-btn>
-                </template>
-                <span>Cerrar ventana</span>
-              </v-tooltip>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-card-title>
-      <!-- FORMULARIO PARA AGREGAR O EDITAR -->
-      <v-form
-        ref="form"
-        v-model="valid"
-        lazy-validation
-        @submit.prevent="save"
-        >
-        <v-card>
+  <div>
+    <h2 class="teal darken-4 text-center white--text">Gestión de Poas</h2>
+    <crud-table
+      :headers="headers"
+      :url="url"
+      :filters="filters"
+      :widthModal="500"
+      :order="order"
+      :custom="true"
+      >
+      <template slot="buttons">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-btn
+              color="primary"
+              dark
+              v-on="on"
+              @click.native.stop="openModal"
+              slot="activator"
+            ><v-icon dark>description</v-icon> Agregar </v-btn>
+          </template>
+            <span> Agregar Poa </span>
+        </v-tooltip>
+      </template>
+      <!-- SLOT PARA EL FORMULARIO -->
+      <template slot="form" slot-scope="">
+        <v-card-title class="teal darken-4 white--text">
           <v-container fluid>
             <v-row no-gutters>
               <v-col
-                cols="12"
-                :md="12"
-                :xs="12"
-                :sm="12"
-                >
-                <v-text-field
-                  dense
-                  color="success"
-                  clearable
-                  required
-                  :rules="rules.nombre"
-                  v-model="form.nombre"
-                  prepend-icon="folder_open"
-                  label="Nombre del Poa"
-                  >
-                </v-text-field>
+                align="start"
+                justify="center"
+                :cols="11">
+                <v-icon color="white">{{ form.id ? 'folder_open' : 'folder_open' }}</v-icon>
+                {{ form.id ? 'Editar Poa' : 'Adicionar Poa' }}
               </v-col>
-            </v-row >
-            <v-row no-gutters>
-              <v-col
-                cols="12"
-                :md="12"
-                :xs="12"
-                :sm="12"
-                >
-                <v-text-field
-                  color="success"
-                  clearable
-                  required
-                  dense
-                  :rules="rules.descripcion"
-                  v-model="form.descripcion"
-                  prepend-icon="folder_open"
-                  label="Descripción del Poa"
-                  >
-                </v-text-field>
-              </v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col
-                cols="12"
-                :md="12"
-                :xs="12"
-                :sm="12"
-                >
-                <v-text-field
-                  color="success"
-                  clearable
-                  required
-                  dense
-                  oninput="this.value = this.value.replace(/[^0-9]/g,'');"
-                  :rules="rules.gestion"
-                  v-model="form.gestion"
-                  prepend-icon="folder_open"
-                  label="Gestión"
-                  >
-                </v-text-field>
-              </v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col
-                cols="12"
-                :md="12"
-                :xs="12"
-                :sm="12"
-                >
-                <v-text-field
-                  color="success"
-                  clearable
-                  required
-                  dense
-                  prefix="Bs."
-                  oninput="this.value = this.value.replace(/[^0-9.]/g,'');"
-                  :rules="rules.monto"
-                  v-model="form.monto"
-                  prepend-icon="folder_open"
-                  label="Monto del Poa/Bs."
-                  >
-                </v-text-field>
+              <v-col :cols="1">
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on }">
+                    <v-btn icon color="gray" v-on="on" @click.stop="closeModal">
+                      <v-icon>close</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Cerrar ventana</span>
+                </v-tooltip>
               </v-col>
             </v-row>
           </v-container>
-            <v-card-actions>
-              <v-container fluid>
-                <v-row>
-                  <v-col
-                    justify="start"
-                    :xs="12"
-                    :sm="12"
-                    :md="5"
-                    :lg="5"
-                    cols="12"
+        </v-card-title>
+        <!-- FORMULARIO PARA AGREGAR O EDITAR -->
+        <v-form
+          ref="form"
+          v-model="valid"
+          lazy-validation
+          @submit.prevent="save"
+          >
+          <v-card>
+            <v-container fluid>
+              <v-row no-gutters>
+                <v-col
+                  cols="12"
+                  :md="12"
+                  :xs="12"
+                  :sm="12"
+                  >
+                  <v-text-field
+                    dense
+                    color="success"
+                    clearable
+                    required
+                    :rules="rules.nombre"
+                    v-model="form.nombre"
+                    prepend-icon="folder_open"
+                    label="Nombre del Poa"
                     >
-                    <small class="error--text text-required">* Los campos son obligatorios</small>
-                  </v-col>
-                  <v-col
-                    align="right"
-                    :sm="12"
-                    :xs="12"
-                    :md="3"
-                    :lg="3"
-                    cols="12"
+                  </v-text-field>
+                </v-col>
+              </v-row >
+              <v-row no-gutters>
+                <v-col
+                  cols="12"
+                  :md="12"
+                  :xs="12"
+                  :sm="12"
+                  >
+                  <v-text-field
+                    color="success"
+                    clearable
+                    required
+                    dense
+                    :rules="rules.descripcion"
+                    v-model="form.descripcion"
+                    prepend-icon="folder_open"
+                    label="Descripción del Poa"
                     >
-                    <v-btn block @click.stop="closeModal"><v-icon>cancel</v-icon> Cancelar </v-btn>
-                  </v-col>
-                  <v-col
-                    align="right"
-                    :sm="12"
-                    :xs="12"
-                    :md="4"
-                    :lg="4"
-                    cols="12"
+                  </v-text-field>
+                </v-col>
+              </v-row>
+              <v-row no-gutters>
+                <v-col
+                  cols="12"
+                  :md="12"
+                  :xs="12"
+                  :sm="12"
+                  >
+                  <v-text-field
+                    color="success"
+                    clearable
+                    required
+                    dense
+                    oninput="this.value = this.value.replace(/[^0-9]/g,'');"
+                    :rules="rules.gestion"
+                    v-model="form.gestion"
+                    prepend-icon="folder_open"
+                    label="Gestión"
                     >
-                    <v-btn color="primary" type="submit" :disabled="!valid">
-                      <v-icon dark>check</v-icon> GUARDAR
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-actions>
-        </v-card>
-      </v-form>
-    </template>
-    <!-- SLOT PARA LAS ACCIONES DEL CRUD TABLE  -->
-    <template slot="actions" slot-scope="item">
-      <v-tooltip bottom color="success">
-        <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on" @click="openModal(item)">
-            <v-icon color="success">edit</v-icon>
-          </v-btn>
-        </template>
-        <span>Editar registro</span>
-      </v-tooltip>
-      <v-tooltip bottom color="error">
-        <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on" @click.stop="itemDelete(Object.assign({}, item))">
-            <v-icon color="red">delete</v-icon>
-          </v-btn>
-        </template>
-        <span>Eliminar registro</span>
-      </v-tooltip>
-    </template>
-    <!-- SLOT PARA TODOS LOS ITEMS (Solo en caso de que se quiera personalizar cada columna o mas de 1 columna) -->
-    <template slot="items" slot-scope="items">
-      <tr v-for="item in items" :key="item.id">
-        <td>
-          <v-tooltip bottom color="success">
-            <template v-slot:activator="{ on }">
-              <v-btn icon v-on="on" @click.stop="openModal(Object.assign({}, items))">
-                <v-icon color="success">edit</v-icon>
-              </v-btn>
-            </template>
-            <span>Editar registro</span>
-          </v-tooltip>
-          <v-tooltip bottom color="error">
-            <template v-slot:activator="{ on }">
-              <v-btn icon v-on="on" @click.prevent="itemDelete(Object.assign({}, items))">
-                <v-icon color="red">delete</v-icon>
-              </v-btn>
-            </template>
-            <span>Eliminar registro</span>
-          </v-tooltip>
-        </td>
-        <td>{{ item.nombre }}</td>
-        <td>{{ item.descripcion }}</td>
-        <td>{{ item.gestion }}</td>
-        <td>{{ item.monto }}</td>
-        <td>
-          <v-btn outlined :color="item.estado === 'ACTIVO' ? 'info' : 'default'">{{ item.estado}}</v-btn>
-        </td>
-      </tr>
-    </template>
-  </crud-table>
+                  </v-text-field>
+                </v-col>
+              </v-row>
+              <v-row no-gutters>
+                <v-col
+                  cols="12"
+                  :md="12"
+                  :xs="12"
+                  :sm="12"
+                  >
+                  <v-text-field
+                    color="success"
+                    clearable
+                    required
+                    dense
+                    prefix="Bs."
+                    oninput="this.value = this.value.replace(/[^0-9.]/g,'');"
+                    :rules="rules.monto"
+                    v-model="form.monto"
+                    prepend-icon="folder_open"
+                    label="Monto del Poa/Bs."
+                    >
+                  </v-text-field>
+                </v-col>
+              </v-row>
+            </v-container>
+              <v-card-actions>
+                <v-container fluid>
+                  <v-row>
+                    <v-col
+                      justify="start"
+                      :xs="12"
+                      :sm="12"
+                      :md="5"
+                      :lg="5"
+                      cols="12"
+                      >
+                      <small class="error--text text-required">* Los campos son obligatorios</small>
+                    </v-col>
+                    <v-col
+                      align="right"
+                      :sm="12"
+                      :xs="12"
+                      :md="3"
+                      :lg="3"
+                      cols="12"
+                      >
+                      <v-btn block @click.stop="closeModal"><v-icon>cancel</v-icon> Cancelar </v-btn>
+                    </v-col>
+                    <v-col
+                      align="right"
+                      :sm="12"
+                      :xs="12"
+                      :md="4"
+                      :lg="4"
+                      cols="12"
+                      >
+                      <v-btn color="primary" type="submit" :disabled="!valid">
+                        <v-icon dark>check</v-icon> GUARDAR
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-actions>
+          </v-card>
+        </v-form>
+      </template>
+      <!-- SLOT PARA LAS ACCIONES DEL CRUD TABLE  -->
+      <template slot="actions" slot-scope="item">
+        <v-tooltip bottom color="success">
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on" @click="openModal(item)">
+              <v-icon color="success">edit</v-icon>
+            </v-btn>
+          </template>
+          <span>Editar registro</span>
+        </v-tooltip>
+        <v-tooltip bottom color="error">
+          <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on" @click.stop="itemDelete(Object.assign({}, item))">
+              <v-icon color="red">delete</v-icon>
+            </v-btn>
+          </template>
+          <span>Eliminar registro</span>
+        </v-tooltip>
+      </template>
+      <!-- SLOT PARA TODOS LOS ITEMS (Solo en caso de que se quiera personalizar cada columna o mas de 1 columna) -->
+      <template slot="items" slot-scope="items">
+        <tr v-for="item in items" :key="item.id">
+          <td>
+            <v-tooltip bottom color="success">
+              <template v-slot:activator="{ on }">
+                <v-btn icon v-on="on" @click.stop="openModal(Object.assign({}, items))">
+                  <v-icon color="success">edit</v-icon>
+                </v-btn>
+              </template>
+              <span>Editar registro</span>
+            </v-tooltip>
+            <v-tooltip bottom color="error">
+              <template v-slot:activator="{ on }">
+                <v-btn icon v-on="on" @click.prevent="itemDelete(Object.assign({}, items))">
+                  <v-icon color="red">delete</v-icon>
+                </v-btn>
+              </template>
+              <span>Eliminar registro</span>
+            </v-tooltip>
+          </td>
+          <td>{{ item.nombre }}</td>
+          <td>{{ item.descripcion }}</td>
+          <td>{{ item.gestion }}</td>
+          <td>{{ item.monto }}</td>
+          <td>
+            <v-btn outlined :color="item.estado === 'ACTIVO' ? 'info' : 'default'">{{ item.estado}}</v-btn>
+          </td>
+        </tr>
+      </template>
+    </crud-table>
+  </div>
 </template>
 
 <script>

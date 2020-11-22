@@ -96,7 +96,7 @@
                   color="success"
                   clearable
                   required
-                  :rules="rules.nombres"
+                  :rules="rulesPersona.nombre"
                   v-model="formUsuario.persona.nombres"
                   prepend-icon="account_circle"
                   label="Nombres"
@@ -115,7 +115,7 @@
                   clearable
                   required
                   dense
-                  :rules="rules.primer_apellido"
+                  :rules="rulesPersona.primer_apellido"
                   v-model="formUsuario.persona.primer_apellido"
                   prepend-icon="account_circle"
                   label="Apellido Paterno"
@@ -133,7 +133,6 @@
                   required
                   dense
                   v-model="formUsuario.persona.segundo_apellido"
-                  :rules="rules.segundo_apellido"
                   prepend-icon="account_circle"
                   clearable
                 ></v-text-field>
@@ -151,7 +150,7 @@
                   clearable
                   required
                   dense
-                  :rules="rules.numeroDocumento"
+                  :rules="rulesPersona.numeroDocumento"
                   v-model="formUsuario.persona.nro_documento"
                   prepend-icon="account_circle"
                   label="Cedula de Identidad"
@@ -170,7 +169,7 @@
                   dense
                   prepend-icon="account_circle"
                   v-model="formUsuario.persona.documento_expedido"
-                  :rules="rules.documentoExpedido"
+                  :rules="rulesPersona.documentoExpedido"
                   :items="expedido"
                   label="Expedido"
                 ></v-select>
@@ -199,7 +198,7 @@
                       label="Fecha de nacimiento"
                       prepend-icon="event"
                       readonly
-                      :rules="rules.fechaNacimiento"
+                      :rules="rulesPersona.fecha_nacimiento"
                       v-on="on"
                     ></v-text-field>
                   </template>
@@ -224,7 +223,7 @@
                   dense
                   prepend-icon="account_circle"
                   v-model="formUsuario.persona.genero"
-                  :rules="rules.genero"
+                  :rules="rulesPersona.genero"
                   :items="genero"
                   label="Género"
                 ></v-select>
@@ -369,28 +368,27 @@ export default {
       minConstrasena: [
         v => v.length >= 6 || 'Minimo 6 caracteres',
       ],
+      email: [
+        val => (val || '').length > 0 || 'El campo email no puede estar vacío',
+        val => /\S+@\S+\.\S+/.test(val) || 'El campo email no es válido'
+      ],
     },
     rulesPersona: {
-      nro_documento: [
-        val => (val || '').length > 0 || 'El campo del número de documento no puede estar vacío'
-      ],
       nombres: [
-        val => (val || '').length > 0 || 'El campo usuario no puede estar vacío',
-        val => (val || '').length > 5 || 'El campo usuario no puede tener menos de 10 caracteres'
+        val => (val || '').length > 0 || 'El campo nombre no puede estar vacío',
       ],
       primer_apellido: [
         val => (val || '').length > 0 || 'El campo del primer apellido no puede estar vacío',
       ],
-      segundo_apellido: [
-        val => (val || '').length > 0 || 'El campo del segundo apellido no puede estar vacío',
+      nro_documento: [
+        val => (val || '').length > 0 || 'El campo del número de documento no puede estar vacío'
+      ],
+      documento_expedido: [
+        val => !!val || 'Seleccione su expedición'
       ],
       fecha_nacimiento: [
         val => (val || '').length > 0 || 'El campo de la fecha de nacimiento no puede estar vacío',
       ],
-      email: [
-        val => (val || '').length > 0 || 'El campo email no puede estar vacío',
-        val => /\S+@\S+\.\S+/.test(val) || 'El campo email no es válido'
-      ]
     },
     url: 'system/usuario',
     order: ['createdAt', 'DESC'],
@@ -509,6 +507,7 @@ export default {
     const respuestaUsuario = await this.$service.get(`system/usuario?id=${this.id}`);
     this.listaUsuario = respuestaUsuario.rows;
     console.log('--aaaabbbbbbbUsuario----', this.listaUsuario);
+    // this.openModal(this.listaUsuario);
     // const respuestaUsuario = await this.$service.get(`system/usuario?id=${listaUsuario.id}`);
     // this.usuarioActual = respuestaUsuario.rows;
     // console.log('--Usuario----', this.usuarioActual);
