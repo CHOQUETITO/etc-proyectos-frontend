@@ -4,7 +4,6 @@
     <crud-table
       :headers="headers"
       :url="url"
-      :filters="filters"
       :widthModal="800"
       :order="order"
       :custom="true"

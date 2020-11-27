@@ -504,9 +504,10 @@ export default {
   async mounted () {
     this.$nextTick(() => {
     });
-    const respuestaUsuario = await this.$service.get(`system/usuario?id=${this.id}`);
-    this.listaUsuario = respuestaUsuario.rows;
-    console.log('--aaaabbbbbbbUsuario----', this.listaUsuario);
+    // const respuestaUsuario = await this.$service.get(`system/usuario?id=${this.id}`);
+    // const respuestaUsuario = await this.$storage.get('user');
+    // this.listaUsuario = respuestaUsuario.rows;
+    // console.log('--aaaabbbbbbbUsuario----', this.listaUsuario);
     // this.openModal(this.listaUsuario);
     // const respuestaUsuario = await this.$service.get(`system/usuario?id=${listaUsuario.id}`);
     // this.usuarioActual = respuestaUsuario.rows;

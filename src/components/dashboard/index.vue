@@ -3,6 +3,25 @@
         <!-- $$$$$$$$$ FILTRO DEL DASH $$$$$$$$$$ -->
         <!-- $$$$$$$$$    FIN FILTRO   $$$$$$$$$$ -->
         <!------- Echarts ------->
+        <v-row no-gutters>
+          <v-col
+            cols="12"
+            :sm="12"
+            :md="12"
+            :lg="12"
+            :xs="12"
+            class="mt-2 mb-2"
+            >
+            <v-alert
+              border="left"
+              type="success"
+              text
+              >
+              Gobiero Autónomo Municipal de Catacora - Segunda Sección de Municipal - Provincia Jose Manuel Pando <br>
+              <strong><small>Para mejorar el seguimiento y control de Proyectos esta ventana modal represtan los REPORTES de forma grafica</small></strong>
+            </v-alert>
+          </v-col>
+        </v-row>
         <v-row>
           <!-- pie proyectos por Comunidades -->
           <v-col class="d-flex"
