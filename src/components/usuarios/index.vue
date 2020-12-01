@@ -71,7 +71,7 @@
                     :rules="rulesPersona.nombres"
                     v-model="formUsuario.persona.nombres"
                     prepend-icon="account_circle"
-                    label="Nombres"
+                    label="(*) Nombres"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -90,7 +90,7 @@
                     :rules="rulesPersona.primer_apellido"
                     v-model="formUsuario.persona.primer_apellido"
                     prepend-icon="account_circle"
-                    label="Apellido Paterno"
+                    label="(*) Apellido Paterno"
                   ></v-text-field>
                 </v-col>
                 <v-col
@@ -125,7 +125,7 @@
                     :rules="rulesPersona.nro_documento"
                     v-model="formUsuario.persona.nro_documento"
                     prepend-icon="account_circle"
-                    label="Cedula de Identidad"
+                    label="(*) Cedula de Identidad"
                   ></v-text-field>
                 </v-col>
                 <v-col
@@ -143,7 +143,7 @@
                     v-model="formUsuario.persona.documento_expedido"
                     :rules="rulesPersona.documento_expedido"
                     :items="expedido"
-                    label="Expedido"
+                    label="(*) Expedido"
                   ></v-select>
                 </v-col>
               </v-row>
@@ -167,7 +167,7 @@
                       <v-text-field
                         dense
                         v-model="formUsuario.persona.fecha_nacimiento"
-                        label="Fecha de nacimiento"
+                        label="(*) Fecha de nacimiento"
                         prepend-icon="event"
                         readonly
                         :rules="rulesPersona.fecha_nacimiento"
@@ -197,7 +197,7 @@
                     v-model="formUsuario.persona.genero"
                     :rules="rulesPersona.genero"
                     :items="genero"
-                    label="Género"
+                    label="(*) Género"
                   ></v-select>
                 </v-col>
               </v-row>
@@ -228,7 +228,7 @@
                     color="primary"
                     required
                     dense
-                    label="Correo electrónico"
+                    label="(*) Correo electrónico"
                     v-model="formUsuario.email"
                     :rules="rules.email"
                     prepend-icon="contact_mail"
@@ -255,7 +255,7 @@
                     :rules="rulesPersona.rol"
                     item-text="nombre"
                     item-value="id"
-                    label="Rol en el Sistema"
+                    label="(*) Rol en el Sistema"
                   ></v-select>
                 </v-col>
               </v-row>
@@ -348,7 +348,6 @@
           <td>{{ item.email }}</td>
           <td>{{ item.persona.telefono }}</td>
           <td>{{ item.persona.genero }}</td>
-          <td>{{ $datetime.format(item._created_at, 'dd/MM/YYYY' )}}</td>
           <td>
             <v-btn outlined :color="item.estado === 'ACTIVO' ? 'info' : 'default'">{{ item.estado}}</v-btn>
           </td>
@@ -416,8 +415,8 @@ export default {
       { text: 'Correo Electrónico', value: 'email', class: 'teal darken-4 white--text' },
       { text: 'Número telefónico', value: 'telefono', class: 'teal darken-4 white--text' },
       { text: 'Género', value: 'genero', class: 'teal darken-4 white--text' },
-      { text: 'Fecha de creación', value: '_created_at', class: 'teal darken-4 white--text' },
       { text: 'Estado', sortable: false, value: 'estado', class: 'teal darken-4 white--text' }
+      // { text: 'Fecha de creación', value: '_created_at', class: 'teal darken-4 white--text' },
     ],
     formUsuario: {
       id: '',

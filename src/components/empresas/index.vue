@@ -72,7 +72,7 @@
                     :rules="rules.nombre"
                     v-model="form.nombre"
                     prepend-icon="business"
-                    label="Nombre de la Empresa"
+                    label="(*) Nombre de la Empresa"
                     >
                   </v-text-field>
                 </v-col>
@@ -111,7 +111,7 @@
                     :rules="rules.sigla"
                     v-model="form.sigla"
                     prepend-icon="business"
-                    label="Sigla de la Empresa"
+                    label="(*) Sigla de la Empresa"
                     >
                   </v-text-field>
                 </v-col>
@@ -131,7 +131,7 @@
                     :rules="rules.email"
                     v-model="form.email"
                     prepend-icon="business"
-                    label="Email de la Empresa"
+                    label="(*) Email de la Empresa"
                     >
                   </v-text-field>
                 </v-col>
@@ -152,7 +152,7 @@
                     :rules="rules.telefono"
                     v-model="form.telefonos"
                     prepend-icon="business"
-                    label="Telefono/Celular de la Empresa"
+                    label="(*) Telefono/Celular de la Empresa"
                     >
                   </v-text-field>
                 </v-col>
@@ -172,7 +172,7 @@
                     :rules="rules.direccion"
                     v-model="form.direccion"
                     prepend-icon="business"
-                    label="Dirección de la Empresa"
+                    label="(*) Dirección de la Empresa"
                     >
                   </v-text-field>
                 </v-col>
@@ -192,7 +192,7 @@
                     :rules="rules.web"
                     v-model="form.web"
                     prepend-icon="business"
-                    label="Pagina Web de la Empresa"
+                    label="(*) Pagina Web de la Empresa"
                     >
                   </v-text-field>
                 </v-col>
@@ -213,7 +213,7 @@
                     :rules="rules.nit"
                     v-model="form.nit"
                     prepend-icon="business"
-                    label="Nit de la Empresa"
+                    label="(*) Nit de la Empresa"
                     >
                   </v-text-field>
                 </v-col>

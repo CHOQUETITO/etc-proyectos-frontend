@@ -75,7 +75,7 @@
                     item-value="id"
                     :items="listaProyectos"
                     prepend-icon="assignment"
-                    label="Nombre del Proyecto"
+                    label="(*) Nombre del Proyecto"
                     >
                   </v-select>
                 </v-col>
@@ -95,7 +95,7 @@
                     :rules="rules.nombre"
                     v-model="form.nombre"
                     prepend-icon="calendar_today"
-                    label="Nombre del Cronograma"
+                    label="(*) Nombre del Cronograma"
                     >
                   </v-text-field>
                 </v-col>
@@ -115,7 +115,7 @@
                     :rules="rules.actividad"
                     v-model="form.actividad"
                     prepend-icon="calendar_today"
-                    label="Actividad del Cronograma"
+                    label="(*) Actividad del Cronograma"
                     >
                   </v-text-field>
                 </v-col>
@@ -140,9 +140,9 @@
                       <v-text-field
                         color="seccess"
                         dense
-                        :rules="rules.fecIniCronograma"
+                        :rules="rules.fechaInicio"
                         v-model="form.fecIniCronograma"
-                        label="Fecha Inicio de la Actividad"
+                        label="(*) Fecha Inicio de la Actividad"
                         prepend-icon="event"
                         readonly
                         v-bind="attrs"
@@ -176,9 +176,9 @@
                       <v-text-field
                         color="success"
                         dense
-                        :rules="rules.fecFinCronograma"
+                        :rules="rules.fechaFinal"
                         v-model="form.fecFinCronograma"
-                        label="Fecha Final de la Actividad"
+                        label="(*) Fecha Final de la Actividad"
                         prepend-icon="event"
                         readonly
                         v-bind="attrs"
@@ -208,9 +208,9 @@
                     dense
                     prepend-icon="account_circle"
                     v-model="form.estadoActividad"
-                    :rules="rules.estadoActividad"
+                    :rules="rules.actividad"
                     :items="estadoActividad"
-                    label="Estado de la Actividad"
+                    label="(*) Estado de la Actividad"
                   ></v-select>
                 </v-col>
               </v-row>
@@ -349,6 +349,9 @@ export default {
     rules: {
       nombre: [
         val => (val || '').length > 0 || 'El campo Nombre no puede estar vacío'
+      ],
+      nombreProyecto: [
+        val => !!val || 'Seleccione nombre del Proyecto'
       ],
       actividad: [
         val => (val || '').length > 0 || 'El campo Actividad no puede estar vacío',

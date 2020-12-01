@@ -12,6 +12,7 @@
   justify-content: center;
   overflow: hidden;
   background:#004D40;
+  //background-image: image("../img/logo2.png");
   //background-size: contain;
   .app-login__header {
     position: fixed;
@@ -36,7 +37,7 @@
         flex-grow: 1;
         height: 90px;
         //color: $primary;
-        color: yellow;
+        color: white;
         background: $white;
         font-size: 25px;
         font-weight: 600;
@@ -67,7 +68,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 330px;
+    width: 350px;
     margin: auto;
     background: $white;
     border: 2px solid $primary;

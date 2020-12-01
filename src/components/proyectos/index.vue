@@ -100,8 +100,12 @@
           <td>{{ item.fechaInicio }}</td>
           <td>{{ item.fechaFinal }}</td>
           <td>
-            <v-btn outlined :color="item.estado === 'ACTIVO' ? 'info' : 'default'">{{ item.estado}}</v-btn>
+            <v-btn outlined :color="item.estadoProyecto === 'EJECUCION' ? 'success' : 'blue'">{{ item.estadoProyecto }}</v-btn>
           </td>
+          <!--
+          <td>
+            <v-btn outlined :color="item.estado === 'ACTIVO' ? 'info' : 'default'">{{ item.estado}}</v-btn>
+          </td> -->
         </tr>
       </template>
     </crud-table>
@@ -143,6 +147,23 @@
             </v-container>
           </v-card-title>
           <v-container fluid>
+            <v-row>
+              <v-col
+                cols="12"
+                :sm="12"
+                :md="12"
+                :lg="12"
+                :xs="12"
+                class="d-flex">
+              <v-alert
+                color="success"
+                type="info"
+                text
+              >
+              <strong><small> {{ form.id ? 'Verifique bien los cambios antes de actualizar' : 'NOTA: Antes de registrar un Proyecto es necesario agregar el POA y la Empresa ejecutora si es que no esta registrada..' }}</small></strong>
+              </v-alert>
+            </v-col>
+            </v-row>
             <v-row no-gutters>
               <v-col
                 cols="12"
@@ -158,7 +179,7 @@
                   :rules="rules.nombre"
                   v-model="form.nombre"
                   prepend-icon="assignment"
-                  label="Nombre del Proyecto"
+                  label="(*) Nombre del Proyecto"
                   >
                 </v-text-field>
               </v-col>
@@ -178,7 +199,7 @@
                   :rules="rules.descripcion"
                   v-model="form.descripcion"
                   prepend-icon="assignment"
-                  label="Descripción del Proyecto"
+                  label="(*) Descripción del Proyecto"
                   >
                 </v-text-field>
               </v-col>
@@ -201,7 +222,7 @@
                   item-value="id"
                   :items="listaComunidades"
                   prepend-icon="assignment"
-                  label="Comunidad donde se ejecuta el Proyecto"
+                  label="(*) Comunidad donde se ejecuta el Proyecto"
                   >
                 </v-select>
               </v-col>
@@ -222,7 +243,7 @@
                   item-value="id"
                   :items="listaCategorias"
                   prepend-icon="assignment"
-                  label="Categoria del Proyecto"
+                  label="(*) Categoria del Proyecto"
                   >
                 </v-select>
               </v-col>
@@ -243,7 +264,7 @@
                   item-value="id"
                   :items="listaPoas"
                   prepend-icon="assignment"
-                  label="Poa del Proyecto"
+                  label="(*) Poa del Proyecto"
                   >
                 </v-select>
               </v-col>
@@ -264,19 +285,17 @@
                   item-value="id"
                   :items="listaEmpresas"
                   prepend-icon="assignment"
-                  label="Empresa que ejecuta el Proyecto"
+                  label="(*) Empresa que ejecuta el Proyecto"
                   >
                 </v-select>
               </v-col>
             </v-row>
             <v-row no-gutters>
-            </v-row>
-            <v-row no-gutters>
               <v-col
                 cols="12"
-                :md="6"
+                :md="4"
                 :xs="12"
-                :sm="6"
+                :sm="4"
                 >
                 <v-menu
                   v-model="date"
@@ -293,7 +312,7 @@
                       dense
                       :rules="rules.fechaInicio"
                       v-model="form.fechaInicio"
-                      label="Fecha Inicio"
+                      label="(*) Fecha Inicio"
                       prepend-icon="event"
                       readonly
                       v-bind="attrs"
@@ -310,9 +329,9 @@
               </v-col>
               <v-col
                 cols="12"
-                :md="6"
+                :md="4"
                 :xs="12"
-                :sm="6"
+                :sm="4"
                 >
                 <v-menu
                   v-model="dateFinal"
@@ -329,7 +348,7 @@
                       dense
                       :rules="rules.fechaFinal"
                       v-model="form.fechaFinal"
-                      label="Fecha Final"
+                      label="(*) Fecha Final"
                       prepend-icon="event"
                       readonly
                       v-bind="attrs"
@@ -343,6 +362,24 @@
                     locale="es-EN"
                   ></v-date-picker>
                 </v-menu>
+              </v-col>
+              <v-col
+                cols="12"
+                :md="4"
+                :xs="12"
+                :sm="4"
+                >
+                <v-select
+                  color="success"
+                  clearable
+                  required
+                  dense
+                  prepend-icon="account_circle"
+                  v-model="form.estadoProyecto"
+                  :rules="rules.estadoProyecto"
+                  :items="estadoProyecto"
+                  label="(*) Estado del Proyecto"
+                ></v-select>
               </v-col>
             </v-row>
           </v-container>
@@ -481,7 +518,7 @@
                             :rules="rules.nombre"
                             v-model="formCronogramas.nombre"
                             prepend-icon="calendar_today"
-                            label="Nombre del Cronograma"
+                            label="(*) Nombre del Cronograma"
                             >
                           </v-text-field>
                         </v-col>
@@ -501,7 +538,7 @@
                             :rules="rules.actividadCronograma"
                             v-model="formCronogramas.actividad"
                             prepend-icon="calendar_today"
-                            label="Actividad del Cronograma"
+                            label="(*) Actividad del Cronograma"
                             >
                           </v-text-field>
                         </v-col>
@@ -528,7 +565,7 @@
                                 dense
                                 :rules="rules.fecIniCronograma"
                                 v-model="formCronogramas.fecIniCronograma"
-                                label="Fecha Inicio de la Actividad"
+                                label="(*) Fecha Inicio de la Actividad"
                                 prepend-icon="event"
                                 readonly
                                 v-bind="attrs"
@@ -564,7 +601,7 @@
                                 dense
                                 :rules="rules.fecFinCronograma"
                                 v-model="formCronogramas.fecFinCronograma"
-                                label="Fecha Final de la Actividad"
+                                label="(*) Fecha Final de la Actividad"
                                 prepend-icon="event"
                                 readonly
                                 v-bind="attrs"
@@ -596,7 +633,7 @@
                             v-model="formCronogramas.estadoActividad"
                             :rules="rules.estadoActividad"
                             :items="estadoActividad"
-                            label="Estado de la Actividad"
+                            label="(*) Estado de la Actividad"
                           ></v-select>
                         </v-col>
                       </v-row>
@@ -769,6 +806,7 @@ export default {
     abrirDialogo: false,
     abrirDialogoCronogramas: false,
     abrirDialogoAgregarCronogramas: false,
+    estadoProyecto: ['EJECUCION', 'CONCLUIDO'],
     estadoActividad: ['PENDIENTE', 'DESARROLLO', 'CONCLUIDO'],
     listaProyectos: [],
 
@@ -797,6 +835,9 @@ export default {
       fechaFinal: [
         val => (val || '').length > 0 || 'El campo de la fecha final no puede estar vacío'
       ],
+      estadoProyecto: [
+        val => !!val || 'Seleccione estado del Proyecto'
+      ],
       actividadCronograma: [
         val => (val || '').length > 0 || 'El campo Actividad no puede estar vacío'
       ],
@@ -822,7 +863,8 @@ export default {
       { text: 'Categoria', value: 'nombre', class: 'teal darken-4 white--text' },
       { text: 'Fecha Inicio', value: 'fechaInicio', class: 'teal darken-4 white--text' },
       { text: 'Fecha Final', value: 'fechaFinal', class: 'teal darken-4 white--text' },
-      { text: 'Estado', value: 'estado', class: 'teal darken-4 white--text' },
+      { text: 'Estado de Proyecto', value: 'estadoProyecto', class: 'teal darken-4 white--text' },
+      // { text: 'Estado', value: 'estado', class: 'teal darken-4 white--text' },
     ],
     headersCronogramas: [
       { text: '', value: 'glutenfree', class: 'teal darken-4 white--text', groupable: false },
@@ -844,7 +886,8 @@ export default {
       idCategoria: '',
       // idCronograma: '',
       fechaInicio: '',
-      fechaFinal: ''
+      fechaFinal: '',
+      estadoActividad: '',
 
     },
     formCronogramas: {
@@ -889,7 +932,8 @@ export default {
         idCategoria: '',
         // idCronograma: '',
         fechaInicio: '',
-        fechaFinal: ''
+        fechaFinal: '',
+        estadoProyecto: '',
       };
       this.formCronogramas = {
         id: '',
@@ -925,6 +969,7 @@ export default {
       // TODO agregar otros campos
       const respuestaCronogramas = await this.$service.get(`cronogramas?idProyecto=${proyecto.id}`);
       this.listaCronogramas = respuestaCronogramas.rows;
+      console.log('lista:', this.listaCronogramas);
     },
     async verFicha(proyecto) {
       console.log('Cronogra en desarrollo Antiguo', proyecto);
@@ -988,7 +1033,7 @@ export default {
       this.reset();
     },
     async openModal ({ items }) {
-      console.log('--itemsProy--', items);
+      console.log('--itemsProyecto2020--', items);
       // this.rules = this.data.rules; para volver asignar roles
       if (items && items.id) {
         this.$nextTick(() => {
@@ -1010,6 +1055,7 @@ export default {
     },
     async openModalCronogramas (item) {
       console.log('--item Agregar Cronogrmas-- ', item);
+      this.abrirDialogoAgregarCronogramas = true;
       if (item) {
         this.$nextTick(() => {
           this.formCronogramas = item;
@@ -1017,7 +1063,7 @@ export default {
       } else {
         this.reset();
       }
-      this.abrirDialogoAgregarCronogramas = true;
+      // this.abrirDialogoAgregarCronogramas = true;
     },
     /**
      * @function save
@@ -1068,9 +1114,8 @@ export default {
             const respuestaCronogramas = await this.$service.get(`cronogramas?idProyecto=${this.proyectoActual.id}`);
             this.listaCronogramas = respuestaCronogramas.rows;
             this.$store.commit('closeModal');
-            // await this.updateList();
             this.$message.success('Se actualizó el registro correctamente');
-            // this.formCronogramas = {};
+            this.formCronogramas = {}; // cambiado 28Nov
             this.rest();
           }
         } else {

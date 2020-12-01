@@ -169,8 +169,8 @@ export default {
         },
         legend: {
           type: 'scroll',
-          orient: 'vertical',
-          left: 'left',
+          orient: 'horizontal',
+          left: 'center',
           top: 'bottom',
           data: nombre,
         },
@@ -179,6 +179,36 @@ export default {
             type: 'pie',
             radius: '50%',
             name: 'Pie',
+            label: {
+              formatter: '{b| {b}：} {per|{d}%}',
+              backgroundColor: '#eee',
+              borderColor: '#aaa',
+              borderWidth: 1,
+              borderRadius: 4,
+              rich: {
+                a: {
+                  color: '#999',
+                  lineHeight: 22,
+                  align: 'center'
+                },
+                hr: {
+                  borderColor: '#aaa',
+                  width: '100%',
+                  borderWidth: 0.5,
+                  height: 0
+                },
+                b: {
+                  fontSize: 16,
+                  lineHeight: 33
+                },
+                per: {
+                  color: '#eee',
+                  backgroundColor: '#334455',
+                  padding: [2, 4],
+                  borderRadius: 2
+                }
+              }
+            },
             data: [
               { value: pie[0], name: nombre[0] },
               { value: pie[1], name: nombre[1] },
@@ -198,7 +228,7 @@ export default {
                 shadowColor: 'rgba(0, 0, 0, 0.5)'
               }
             }
-          }
+          },
         ]
       };
     },

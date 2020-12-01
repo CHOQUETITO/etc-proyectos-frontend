@@ -72,7 +72,7 @@
                     :rules="rules.nombre"
                     v-model="form.nombre"
                     prepend-icon="folder_open"
-                    label="Nombre del Poa"
+                    label="(*) Nombre del Poa"
                     >
                   </v-text-field>
                 </v-col>
@@ -92,7 +92,7 @@
                     :rules="rules.descripcion"
                     v-model="form.descripcion"
                     prepend-icon="folder_open"
-                    label="Descripción del Poa"
+                    label="(*) Descripción del Poa"
                     >
                   </v-text-field>
                 </v-col>
@@ -113,7 +113,7 @@
                     :rules="rules.gestion"
                     v-model="form.gestion"
                     prepend-icon="folder_open"
-                    label="Gestión"
+                    label="(*) Gestión"
                     >
                   </v-text-field>
                 </v-col>
@@ -135,7 +135,7 @@
                     :rules="rules.monto"
                     v-model="form.monto"
                     prepend-icon="folder_open"
-                    label="Monto del Poa/Bs."
+                    label="(*) Monto del Poa/Bs."
                     >
                   </v-text-field>
                 </v-col>

@@ -23,7 +23,7 @@
           <v-list-item-subtitle>
           <v-card-title class="container--userinfo">
               <div class="initial--name text-center"> {{ user && user.nombres ? user.nombres.charAt(0) : 'U'}}</div>
-              <div>{{ user.nombres }}</div>
+              <div class="fs10 mt-2 black--text">{{ user.nombres }}</div>
               <div class="fs8 mt-2 white--text">{{ user.email ? user.email : 'usuario@demo.com'}}</div>
             </v-card-title>
           </v-list-item-subtitle>
