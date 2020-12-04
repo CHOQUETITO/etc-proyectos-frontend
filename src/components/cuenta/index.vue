@@ -82,7 +82,7 @@
                     @click:append="show = !show"
                     v-model="formUsuario.contrasena"
                     prepend-icon="account_circle"
-                    label="Contraseña"
+                    label="Ingrese contraseña nueva"
                   ></v-text-field>
                 </v-col>
               </v-row>

@@ -101,7 +101,6 @@
                 dense
                 prepend-icon="format_list_numbered"
                 v-model="estadoProyecto"
-                :rules="rules.estadoProyecto"
                 :items="listaEstado"
                 label="(*) Estado del Proyecto"
               ></v-select>
@@ -247,6 +246,7 @@
       </v-card>
       <!-- Fin fila de filtros -->
       <!-- $$$$$$$$$$$$$$$ V-model para Reportes $$$$$$$$$$$$$$ -->
+      <!-- v-dialog para reporte por Estado y fecha de proyecto -->
       <v-dialog v-model="pdfGeneradoEstado" width="900" persistent>
         <v-toolbar color="secondary" dark text>
           <span class="title">Reporte de Proyectos por Estado</span>
@@ -258,6 +258,21 @@
         <v-card style="height: 80vh">
           <v-card-text class="pa-0" style="height: 100%">
             <iframe :src="documentoPdfEstado" width="100%"  height="100%" type="application/pdf"></iframe>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+      <!-- v-dialog para reporte por comunidad -->
+      <v-dialog v-model="pdfGeneradoComunidad" width="900" persistent>
+        <v-toolbar color="secondary" dark text>
+          <span class="title">Reporte de Proyectos por Comunidad</span>
+          <v-spacer></v-spacer>
+          <v-btn class="mx-2" fab dark small color="primary" @click="pdfGeneradoComunidad = false">
+            <v-icon dark>close</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-card style="height: 80vh">
+          <v-card-text class="pa-0" style="height: 100%">
+            <iframe :src="documentoPdfComunidad" width="100%"  height="100%" type="application/pdf"></iframe>
           </v-card-text>
         </v-card>
       </v-dialog>
@@ -286,7 +301,9 @@ export default {
     fechaFinalComunidad: null,
     estadoProyecto: null,
     pdfGeneradoEstado: false,
+    pdfGeneradoComunidad: false,
     documentoPdfEstado: false,
+    documentoPdfComunidad: false,
 
     rules: {
       fechaInicio: [
@@ -299,11 +316,6 @@ export default {
         val => !!val || 'Seleccione estado del Proyecto'
       ],
     },
-    // form: {
-    // fechaInicio: '',
-    // fechaFinal: '',
-    // estadoProyecto: '',
-    // },
   }),
 
   methods: {
@@ -313,36 +325,51 @@ export default {
       console.log('fechaInico', respuesta);
 
       if (this.fechaInicio != null && this.fechaFinal != null && this.estadoProyecto != null) {
-        this.verFichaEstadoItems = [
-          {
+        if (this.fechaInicio <= this.fechaFinal) {
+          const data = {
             fechaDesde: this.fechaInicio,
             fechaHasta: this.fechaFinal,
-            estadoProyecto: this.estadoProyecto,
-          }
-        ];
-        const data = {
-          fechaDesde: this.fechaInicio,
-          fechaHasta: this.fechaFinal,
-          estadoProyecto: this.estadoProyecto
-        };
-        console.log('query', data);
-        const pdf = await this.$service.post('proyectos/reporteEstadoProyecto', data);
-        const contentType = 'application/pdf';
-        const blob = this.b64toBlob(pdf, contentType);
-        this.documentoPdfEstado = URL.createObjectURL(blob);
-        this.pdfGeneradoEstado = true;
+            estadoProyecto: this.estadoProyecto
+          };
+          console.log('query', data);
+          const pdf = await this.$service.post('proyectos/reporteEstadoProyecto', data);
+          const contentType = 'application/pdf';
+          const blob = this.b64toBlob(pdf, contentType);
+          this.documentoPdfEstado = URL.createObjectURL(blob);
+          this.pdfGeneradoEstado = true;
+        } else {
+          this.$message.error('Fecha hasta no puede ser menor a Fecha desde');
+        }
       } else {
         this.$message.error('Faltan campos por llenar');
       }
     },
     // Filtro para Proyectos por Fechas y Comunidad
-    verFichaComunidad () {
-      this.$confirm('Reporte Proyectos por Comunidad en desarrollo', () => {
-        this.$message.success('Presionaste aceptar');
-      }, () => {
-        this.$message.warning('Presionaste cancelar');
-      });
+    async verFichaComunidad () {
+      const respuesta = this.idComunidades;
+      console.log('idComunidades####', respuesta);
+
+      if (this.fechaInicioComunidad != null && this.fechaFinalComunidad != null && this.idComunidades != null) {
+        if (this.fechaInicioComunidad <= this.fechaFinalComunidad) {
+          const data = {
+            fechaDesde: this.fechaInicioComunidad,
+            fechaHasta: this.fechaFinalComunidad,
+            idComunidad: this.idComunidades
+          };
+          console.log('query', data);
+          const pdf = await this.$service.post('proyectos/reporteComunidadProyecto', data);
+          const contentType = 'application/pdf';
+          const blob = this.b64toBlob(pdf, contentType);
+          this.documentoPdfComunidad = URL.createObjectURL(blob);
+          this.pdfGeneradoComunidad = true;
+        } else {
+          this.$message.error('Fecha hasta no puede ser menor a Fecha desde');
+        }
+      } else {
+        this.$message.error('Faltan campos por llenar');
+      }
     },
+
     async resetCampos () {
       this.listaComunidades = null;
       this.listaCategorias = null;

@@ -206,7 +206,7 @@
                     clearable
                     required
                     dense
-                    prepend-icon="account_circle"
+                    prepend-icon="dns"
                     v-model="form.estadoActividad"
                     :rules="rules.actividad"
                     :items="estadoActividad"
@@ -228,7 +228,7 @@
                     dense
                     :rules="rules.observacion"
                     v-model="form.observacion"
-                    prepend-icon="calendar_today"
+                    prepend-icon="description"
                     label="Observaciones"
                     >
                   </v-text-field>

@@ -112,7 +112,7 @@
                     oninput="this.value = this.value.replace(/[^0-9]/g,'');"
                     :rules="rules.gestion"
                     v-model="form.gestion"
-                    prepend-icon="folder_open"
+                    prepend-icon="date_range"
                     label="(*) Gestión"
                     >
                   </v-text-field>
@@ -134,7 +134,7 @@
                     oninput="this.value = this.value.replace(/[^0-9.]/g,'');"
                     :rules="rules.monto"
                     v-model="form.monto"
-                    prepend-icon="folder_open"
+                    prepend-icon="monetization_on"
                     label="(*) Monto del Poa/Bs."
                     >
                   </v-text-field>
@@ -173,7 +173,7 @@
                       cols="12"
                       >
                       <v-btn color="primary" type="submit" :disabled="!valid">
-                        <v-icon dark>check</v-icon> GUARDAR
+                        <v-icon dark>check</v-icon> ENVIAR
                       </v-btn>
                     </v-col>
                   </v-row>

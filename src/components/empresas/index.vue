@@ -130,7 +130,7 @@
                     dense
                     :rules="rules.email"
                     v-model="form.email"
-                    prepend-icon="business"
+                    prepend-icon="email"
                     label="(*) Email de la Empresa"
                     >
                   </v-text-field>
@@ -151,7 +151,7 @@
                     oninput="this.value = this.value.replace(/[^0-9]/g,'');"
                     :rules="rules.telefono"
                     v-model="form.telefonos"
-                    prepend-icon="business"
+                    prepend-icon="phone"
                     label="(*) Telefono/Celular de la Empresa"
                     >
                   </v-text-field>
@@ -191,7 +191,7 @@
                     dense
                     :rules="rules.web"
                     v-model="form.web"
-                    prepend-icon="business"
+                    prepend-icon="explore"
                     label="(*) Pagina Web de la Empresa"
                     >
                   </v-text-field>
@@ -212,7 +212,7 @@
                     oninput="this.value = this.value.replace(/[^0-9]/g,'');"
                     :rules="rules.nit"
                     v-model="form.nit"
-                    prepend-icon="business"
+                    prepend-icon="ballot"
                     label="(*) Nit de la Empresa"
                     >
                   </v-text-field>

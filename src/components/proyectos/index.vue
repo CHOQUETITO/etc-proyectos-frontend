@@ -221,7 +221,7 @@
                   item-text="nombre"
                   item-value="id"
                   :items="listaComunidades"
-                  prepend-icon="assignment"
+                  prepend-icon="landscape"
                   label="(*) Comunidad donde se ejecuta el Proyecto"
                   >
                 </v-select>
@@ -242,7 +242,7 @@
                   item-text="nombre"
                   item-value="id"
                   :items="listaCategorias"
-                  prepend-icon="assignment"
+                  prepend-icon="burst_mode"
                   label="(*) Categoria del Proyecto"
                   >
                 </v-select>
@@ -263,7 +263,7 @@
                   item-text="nombre"
                   item-value="id"
                   :items="listaPoas"
-                  prepend-icon="assignment"
+                  prepend-icon="local_atm"
                   label="(*) Poa del Proyecto"
                   >
                 </v-select>
@@ -284,7 +284,7 @@
                   item-text="nombre"
                   item-value="id"
                   :items="listaEmpresas"
-                  prepend-icon="assignment"
+                  prepend-icon="business"
                   label="(*) Empresa que ejecuta el Proyecto"
                   >
                 </v-select>
@@ -374,7 +374,7 @@
                   clearable
                   required
                   dense
-                  prepend-icon="account_circle"
+                  prepend-icon="dns"
                   v-model="form.estadoProyecto"
                   :rules="rules.estadoProyecto"
                   :items="estadoProyecto"
@@ -629,7 +629,7 @@
                             clearable
                             required
                             dense
-                            prepend-icon="account_circle"
+                            prepend-icon="dns"
                             v-model="formCronogramas.estadoActividad"
                             :rules="rules.estadoActividad"
                             :items="estadoActividad"
@@ -656,7 +656,7 @@
                             dense
                             :rules="rules.observacion"
                             v-model="formCronogramas.observacion"
-                            prepend-icon="calendar_today"
+                            prepend-icon="description"
                             label="Observaciones"
                             >
                           </v-textarea>
@@ -954,7 +954,7 @@ export default {
     },
     glutenfree (estadoActividad) {
       if (estadoActividad === 'PENDIENTE') return false;
-      else if (estadoActividad === 'DESARROLLO') return false;
+      else if (estadoActividad === 'DESARROLLO') return true;
       else return true;
     },
     // Fin metodos alertas
